@@ -28,6 +28,16 @@ export const getAccounts = async () => {
   return getAccountsManager().getAccounts();
 };
 
+export const getAddresses = async () => {
+  const accounts = await getAccounts();
+  return accounts.map((account) => account.address);
+};
+
+export const getAccountByAddress = async (address) => {
+  const accounts = await getAccounts();
+  return accounts.find((account) => account.address === address);
+};
+
 export const setActiveAccount = async (address) => {
   await getAccountsManager().selectAccountByAddress(address);
 };
