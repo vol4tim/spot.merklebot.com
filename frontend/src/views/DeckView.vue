@@ -1,39 +1,21 @@
-<template>Deck</template>
+<template>
+  <p>Deck</p>
+  <p>Addresses: {{ this.addresses }}</p>
+</template>
 
 <script>
-import {
-  getInstance as getRobonomics,
-  getAddresses,
-  getAccountByAddress,
-  setActiveAccount,
-} from "@/plugins/robonomics";
+import { getAddresses } from "@/plugins/robonomics";
 
 export default {
   data() {
     return {
       addresses: [],
-      activeAccount: {},
-      ready: {
-        robonomics: false,
-      },
     };
   },
   mounted() {
-    getRobonomics()
-      .then(() => {
-        return getAddresses();
-      })
-      .then((addresses) => {
-        this.addresses = addresses;
-        this.activeAccount = { address: this.addresses[0] };
-        return setActiveAccount(this.addresses[0]);
-      })
-      .then(() => {
-        return getAccountByAddress(this.activeAccount.address);
-      })
-      .then((activeAccount) => {
-        this.activeAccount = activeAccount;
-      });
+    getAddresses().then((addresses) => {
+      this.addresses = addresses;
+    });
   },
 };
 </script>
