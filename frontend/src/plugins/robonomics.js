@@ -23,3 +23,13 @@ export const getAddresses = async () => {
   const accounts = await robonomics.accountManager.getAccounts();
   return accounts.map((account) => account.address);
 };
+
+export const getAccounts = async () => {
+  const robonomics = await getInstance();
+  return await robonomics.accountManager.getAccounts();
+};
+
+export const setActiveAccount = async (address) => {
+  const robonomics = await getInstance();
+  await robonomics.accountManager.selectAccountByAddress(address);
+};

@@ -1,21 +1,42 @@
 <template>
-  <p>Deck</p>
-  <p>Addresses: {{ this.addresses }}</p>
+  <h1>Deck</h1>
+  <span>
+    <h2>Select account</h2>
+    <form>
+      <select v-model="selectedAccount">
+        <option v-for="(account, idx) in accounts" :key="idx" :value="account">
+          {{ account.meta.name }} - {{ addressShort(account.address) }}
+        </option>
+      </select>
+    </form>
+  </span>
 </template>
 
 <script>
-import { getAddresses } from "@/plugins/robonomics";
+import { getAccounts, setActiveAccount } from "@/plugins/robonomics";
 
 export default {
   data() {
     return {
-      addresses: [],
+      accounts: [],
+      selectedAccount: null,
     };
   },
   mounted() {
-    getAddresses().then((addresses) => {
-      this.addresses = addresses;
+    getAccounts().then((accounts) => {
+      this.accounts = accounts;
+      this.selectedAccount = accounts[0];
     });
+  },
+  methods: {
+    addressShort(address) {
+      return address.slice(0, 6) + "..." + address.slice(-4);
+    },
+  },
+  watch: {
+    selectedAccount(account) {
+      setActiveAccount(account.address);
+    },
   },
 };
 </script>
