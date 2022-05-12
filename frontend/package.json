@@ -9,6 +9,9 @@
   },
   "dependencies": {
     "@polkadot/api": "^8.3.2",
+    "@polkadot/ui-keyring": "^2.1.1",
+    "cids": "^1.1.9",
+    "multihashing-async": "^2.1.4",
     "pinia": "^2.0.13",
     "robonomics-interface": "^0.2.0",
     "vue": "^3.2.33",
