@@ -1,9 +1,7 @@
-import {
-  Robonomics,
-  AccountManager as RobonomicsAccountManager,
-} from "robonomics-interface";
+import { Robonomics } from "robonomics-interface";
 import AccountManager from "robonomics-interface/dist/accountManagerUi";
 import keyring from "@polkadot/ui-keyring";
+import { blake2AsHex } from "@polkadot/util-crypto";
 
 let robonomics;
 
@@ -12,7 +10,7 @@ export const getInstance = async () => {
   robonomics = new Robonomics({
     endpoint: "wss://kusama.rpc.robonomics.network/",
   });
-  robonomics.setAccountManager(new RobonomicsAccountManager(keyring));
+  robonomics.setAccountManager(new AccountManager(keyring));
   await robonomics.run();
   await AccountManager.initPlugin(robonomics.accountManager.keyring);
   return robonomics;
@@ -43,4 +41,16 @@ export const subscribeToBalanceUpdates = async (address, onBalanceUpdate) => {
     address,
     onBalanceUpdate
   );
+};
+
+export const makeLaunchTx = async (targetAddress, enabledFlag) => {
+  const robonomics = await getInstance();
+  const tx = robonomics.launch.send(targetAddress, blake2AsHex(enabledFlag));
+  return tx;
+};
+
+export const signAndSendTxWithActiveAccount = async (tx) => {
+  const robonomics = await getInstance();
+  const resultTx = await robonomics.accountManager.signAndSend(tx);
+  return resultTx;
 };
