@@ -1,0 +1,124 @@
+<template>
+  <div>
+    <canvas :id="canvasId" class="canvas-style" v-on:mousedown="mouseDown"/>
+    <button type="button"
+            class="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
+            @click="resetCanvas">
+      Reset
+    </button>
+
+    <button type="button"
+            class="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
+            @click="sendCommand">
+      Send Command
+    </button>
+
+  </div>
+
+</template>
+
+<script>
+const paper = require('paper')
+export default {
+  name: 'DrawingPanel',
+  props: ['canvasId'],
+  data: () => {
+    return {
+      path: null,
+      scope: null,
+      paths: []
+    }
+  },
+  methods: {
+    resetCanvas() {
+      this.scope.project.activeLayer.removeChildren()
+      this.paths = []
+    },
+    sendCommand () {
+      const segments = []
+      console.log('Sending command')
+      console.log(this.paths)
+
+      this.paths.forEach((path) => {
+        let segment = []
+        console.log(path._segments)
+        path._segments.forEach((_segment) => {
+          segment.push([_segment.point.x, _segment.point.y])
+        })
+        segments.push(segment)
+      })
+      console.log(segments)
+      fetch('http://10.200.0.3:1234/draw_figure', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          'segments': segments
+        })
+      }).then(response => response.json()).then(data => {
+        alert('Sent SHEDEVR to spot')
+        console.log(data)
+      })
+    },
+    pathCreate (scope) {
+      scope.activate()
+      return new paper.Path({
+        strokeColor: '#000000',
+        strokeJoin: 'round',
+        strokeWidth: 1.5
+      })
+    },
+    createTool(scope) {
+      console.log('createTool')
+      scope.activate()
+      return new paper.Tool()
+    },
+    mouseDown(ev) {
+      console.log('mouse down')
+      // in order to access functions in nested tool
+      let self = this
+      // create drawing tool
+      this.tool = this.createTool(this.scope)
+      this.tool.onMouseDown = (event) => {
+        // init path
+        self.path = self.pathCreate(self.scope)
+        // add point to path
+        self.path.add(event.point)
+      }
+      this.tool.onMouseDrag = (event) => {
+        console.log('mouse drag')
+        self.path.add(event)
+      }
+      this.tool.onMouseUp = (event) => {
+        console.log('mouse up')
+        // line completed
+        self.path.add(event.point)
+        self.path.simplify(10)
+        self.path.flatten(10)
+        self.paths.push({...self.path})
+        console.log(self.paths)
+
+      }
+
+    }
+  },
+  mounted() {
+    this.scope = new paper.PaperScope()
+    this.scope.setup(this.canvasId)
+  }
+}
+</script>
+
+<style scoped>
+.canvas-style {
+  cursor: crosshair;
+  width: 100% !important;
+  height: 500px !important;
+  border: 5px solid black;
+  border-radius: 10px;
+  display: block;
+  margin: auto;
+  box-shadow: 0 10px 8px -8px black;
+}
+</style>
