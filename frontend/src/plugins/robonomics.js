@@ -33,3 +33,14 @@ export const setActiveAccount = async (address) => {
   const robonomics = await getInstance();
   await robonomics.accountManager.selectAccountByAddress(address);
 };
+
+let activeAccountBalanceUnsubscribe;
+
+export const subscribeToBalanceUpdates = async (address, onBalanceUpdate) => {
+  if (activeAccountBalanceUnsubscribe) activeAccountBalanceUnsubscribe();
+  const robonomics = await getInstance();
+  activeAccountBalanceUnsubscribe = await robonomics.account.getBalance(
+    address,
+    onBalanceUpdate
+  );
+};
