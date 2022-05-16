@@ -60,6 +60,8 @@ export default {
   },
   methods: {
     async launchCps () {
+      this.cps.launch.txInfo = null
+      this.cps.launch.txStatus = null
       const launchTx = await makeLaunchTx(this.cps.address, true)
       this.cps.status = 'wait_tx'
       this.cps.launch.txInfo = await signAndSendTxWithActiveAccount(launchTx)
