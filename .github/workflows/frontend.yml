@@ -1,4 +1,4 @@
-name: CI
+name: Frontend
 
 on:
   push:
@@ -26,8 +26,7 @@ jobs:
 
       - run: yarn generate
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+      - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: ./frontend/dist
