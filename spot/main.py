@@ -9,6 +9,8 @@ from flask import Flask
 from flask import request
 from flask_cors import CORS, cross_origin
 
+import robonomicsinterface as RI
+
 PROCESSES = []
 
 # Constants to access spot robot
@@ -21,6 +23,9 @@ VIDEOSERVER_URL = os.environ.get("VIDEOSERVER_IP", "http://10.200.0.8:8000/")
 
 # Security token to execute video server commands
 VIDEOSERVER_TOKEN = os.environ.get("VIDEOSERVER_TOKEN", "")
+
+USE_ROBONOMICS = os.environ.get("USE_ROBONOMICS", 1)
+ROBONOMICS_LISTEN_ROBOT_ACCOUNT = os.environ.get("ROBONOMICS_LISTEN_ROBOT_ACCOUNT", "4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j")
 
 max_width = 400
 max_height = 300
@@ -75,12 +80,13 @@ def server(drawing_queue):
 
 
 def spot_controller(drawing_queue):
-    while True:
+
+    def execute_drawing_command():
         segments_task = drawing_queue.get()
         print("Got task", segments_task)
         if not segments_task:
             time.sleep(1)
-            continue
+            return
 
         # notify videoserver to clear canvas
         send_command_to_videoserver("clear_canvas")
@@ -115,6 +121,16 @@ def spot_controller(drawing_queue):
         sc.power_off_sit_down()
         print("Robot powered off and sit down")
         time.sleep(1)
+
+    def robonomics_transaction_callback(data):
+        execute_drawing_command()
+
+    if USE_ROBONOMICS:
+        interface = RI.RobonomicsInterface()
+        subscriber = RI.Subscriber(interface, RI.SubEvent.NewLaunch, robonomics_transaction_callback, "4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j")
+
+    while True:
+        execute_drawing_command()
 
 
 def main():
