@@ -1,6 +1,7 @@
 from spot_controller import SpotController
 
 import multiprocessing
+from ctypes import c_char_p
 import os
 import requests
 import time
@@ -148,7 +149,7 @@ def spot_controller(drawing_queue, robot_state):
 def main():
     ctx = multiprocessing.get_context('spawn')
     drawing_queue = ctx.Queue()
-    robot_state = ctx.Value('s', 'idle')
+    robot_state = ctx.Value(c_char_p, 'idle')
 
     spot_controller_process = ctx.Process(target=spot_controller, args=(drawing_queue,robot_state))
     server_process = ctx.Process(target=server, args=(drawing_queue,robot_state))
