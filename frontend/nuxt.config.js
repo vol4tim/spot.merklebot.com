@@ -55,10 +55,10 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-  },
+  }
 
   // Support GitHub Pages URL like http://<username>.github.io/<repository-name>
-  router: {
-    base: '/davos.merklebot.com/'
-  }
+  // router: {
+  //   base: '/davos.merklebot.com/'
+  // }
 }
