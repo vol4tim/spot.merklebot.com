@@ -1,24 +1,33 @@
-import multiprocessing
 from spot_controller import SpotController
+
+import multiprocessing
+import os
+import requests
 import time
+
 from flask import Flask
 from flask import request
 from flask_cors import CORS, cross_origin
-import numpy as np
-import requests
 
 PROCESSES = []
 
-SPOT_USERNAME = "admin"
-SPOT_PASSWORD = "2zqa8dgw7lor"
-SPOT_IP = "192.168.50.3"
+# Constants to access spot robot
+SPOT_USERNAME = os.environ.get("SPOT_USERNAME", "admin")
+SPOT_PASSWORD = os.environ.get("SPOT_PASSWORD", "2zqa8dgw7lor")
+SPOT_IP = os.environ.get("SPOT_IP", "192.168.50.3")
+
+# Videoserver url
+VIDEOSERVER_URL = os.environ.get("VIDEOSERVER_IP", "http://10.200.0.8:8000/")
+
+# Security token to execute video server commands
+VIDEOSERVER_TOKEN = os.environ.get("VIDEOSERVER_TOKEN", "")
 
 max_width = 400
 max_height = 300
 
 
 def send_command_to_videoserver(command_name):
-    requests.post('http://10.200.0.8:8000/' + command_name, json={"token": "efbuhuj2n3f23cwt2"})
+    requests.post(VIDEOSERVER_URL + command_name, json={"token": VIDEOSERVER_TOKEN})
 
 
 def notify_start_line():
@@ -72,6 +81,7 @@ def spot_controller(drawing_queue):
         if not segments_task:
             time.sleep(1)
             continue
+
         # notify videoserver to clear canvas
         send_command_to_videoserver("clear_canvas")
 
@@ -89,7 +99,6 @@ def spot_controller(drawing_queue):
         print("Robot powered and stand up")
 
         print("Starting movement...")
-
         for i, segments in enumerate(segments_task):
             print("Drawing segment")
 
@@ -97,7 +106,8 @@ def spot_controller(drawing_queue):
 
             xx, yy = centralize([segment[0] for segment in segments], [segment[1] for segment in segments],
                                 all_segments)
-            sc.move_to_draw(start_drawing_trigger_handler=notify_start_line, end_drawing_trigger_handler=notify_stop_line,
+            sc.move_to_draw(start_drawing_trigger_handler=notify_start_line,
+                            end_drawing_trigger_handler=notify_stop_line,
                             xx=xx, yy=yy)
             time.sleep(0.1)
         print("Movement finished")
@@ -111,18 +121,15 @@ def main():
     ctx = multiprocessing.get_context('spawn')
     drawing_queue = ctx.Queue()
 
-    manager = multiprocessing.Manager()
-
     spot_controller_process = ctx.Process(target=spot_controller, args=(drawing_queue,))
     server_process = ctx.Process(target=server, args=(drawing_queue,))
 
     PROCESSES.append(spot_controller_process)
     PROCESSES.append(server_process)
 
-    # PROCESSES.append(socket_handler)
     for p in PROCESSES:
         p.start()
-    # Wait forever
+
     while True:
         pass
 
