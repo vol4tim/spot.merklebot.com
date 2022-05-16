@@ -130,8 +130,8 @@ def main():
     for p in PROCESSES:
         p.start()
 
-    while True:
-        pass
+    for p in PROCESSES:
+        p.join()
 
 
 if __name__ == '__main__':
