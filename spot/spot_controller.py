@@ -33,10 +33,9 @@ class SpotController:
         for i in range(len(yaws)):
             footprint_r_body = EulerZXY(yaw=yaws[i], roll=rolls[i], pitch=pitches[i])
             params = RobotCommandBuilder.mobility_params(footprint_R_body=footprint_r_body, body_height=body_height)
-            blocking_stand(self.command_client, timeout_sec=timeout, update_frequency=0.1, params=params)
+            blocking_stand(self.command_client, timeout_sec=timeout, update_frequency=0.02, params=params)
             self.robot.logger.info("Moved to yaw={} rolls={} pitch={}".format(yaws[i], rolls[i], pitches[i]))
-            # cmd = RobotCommandBuilder.synchro_stand_command()
-            # self.command_client.robot_command(cmd)
+
 
     def lease_control(self):
         lease_client = self.robot.ensure_client('lease')
@@ -51,6 +50,7 @@ class SpotController:
         blocking_stand(self.command_client, timeout_sec=10)
 
     def power_off_sit_down(self):
+        self.move_head_in_points(yaws=[0], pitches=[0], rolls=[0])
         self.robot.power_off(cut_immediately=False)
 
     def move_to_draw(self, start_drawing_trigger_handler, end_drawing_trigger_handler,
@@ -61,20 +61,23 @@ class SpotController:
         pitches = [coord[1] for coord in coords]
         rolls = [coord[2] for coord in coords]
 
-        self.lease_control()
-        # self.power_on_stand_up()
-
         self.move_head_in_points(yaws=yaws[0:1], pitches=pitches[0:1], rolls=rolls[0:1], body_height=body_height)
         start_drawing_trigger_handler()
         self.move_head_in_points(yaws=yaws[1:], pitches=pitches[1:], rolls=rolls[1:], body_height=body_height)
         end_drawing_trigger_handler()
 
-        # self.power_off_sit_down()
 
     def interpolate_coords(self, x, y):
         return self.yaw_interpolate(x, y), self.pitch_interpolate(x, y), 0
+    
+    def calibration_movement(self, mark_point_callback, body_height=-0.3):
+        yaws = [(-1) ** (j % 2) * i / 10 for j in range(8) for i in range(-5, 6, 1)]
+        pitches = [i / 10 for i in range(-5, 6, 1) for j in range(8)]
+        rolls = [0] * len(yaws)
 
+        for i in range(len(yaws)):
+            self.move_head_in_points(yaws=yaws[i:i+1], pitches=pitches[i:i+1],
+                                     rolls=rolls[0:1], body_height=body_height)
+            mark_point_callback((yaws[i], pitch[i]))
+            time.sleep(0.3)
 
-# yaws = [(-1) ** (j % 2) * i / 10 for j in range(11) for i in range(-5, 6, 1)]
-# pitches = [i / 10 for i in range(-5, 6, 1) for j in range(11)]
-# rolls = [0] * len(yaws)
