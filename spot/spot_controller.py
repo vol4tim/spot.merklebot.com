@@ -3,8 +3,9 @@ import bosdyn.client
 from bosdyn.client.robot_command import RobotCommandClient, RobotCommandBuilder, blocking_stand  # , blocking_sit
 from bosdyn.geometry import EulerZXY
 from bosdyn.api.spot import robot_command_pb2 as spot_command_pb2
-import picture_to_coods_data as ptc
+import picture_to_coords_data as ptc
 from scipy.interpolate import interp2d
+import json
 
 
 class SpotController:
@@ -66,18 +67,31 @@ class SpotController:
         self.move_head_in_points(yaws=yaws[1:], pitches=pitches[1:], rolls=rolls[1:], body_height=body_height)
         end_drawing_trigger_handler()
 
-
     def interpolate_coords(self, x, y):
         return self.yaw_interpolate(x, y), self.pitch_interpolate(x, y), 0
-    
+
     def calibration_movement(self, mark_point_callback, body_height=-0.3):
         yaws = [(-1) ** (j % 2) * i / 10 for j in range(8) for i in range(-5, 6, 1)]
         pitches = [i / 10 for i in range(-5, 6, 1) for j in range(8)]
         rolls = [0] * len(yaws)
 
+        calibration_result = {
+            "x": [], "y": [], "yaw": [], "pitch": []
+        }
+
         for i in range(len(yaws)):
             self.move_head_in_points(yaws=yaws[i:i+1], pitches=pitches[i:i+1],
-                                     rolls=rolls[0:1], body_height=body_height)
-            mark_point_callback((yaws[i], pitches[i]))
+                                     rolls=rolls[i:i+1], body_height=body_height)
+            x, y = mark_point_callback((yaws[i], pitches[i]))
+            calibration_result["x"].append(x)
+            calibration_result["y"].append(y)
+            calibration_result["yaw"].append(yaws[i])
+            calibration_result["pitch"].append(pitches[i])
             time.sleep(0.3)
+
+        print(calibration_result)
+
+        with open('calibration_data.json', 'w') as outfile:
+            json_string = json.dumps(calibration_result)
+            outfile.write(json_string)
 
