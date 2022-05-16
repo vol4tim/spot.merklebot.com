@@ -51,7 +51,7 @@ export default {
         .then(() => {
           // build and return json offer.
           const offer = this.pc.localDescription
-          return fetch('http://localhost:8000/offer', {
+          return fetch('http://10.200.0.8:8000/offer', {
             body: JSON.stringify({
               sdp: offer.sdp,
               type: offer.type

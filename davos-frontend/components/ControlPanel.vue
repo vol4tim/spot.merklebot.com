@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  name: "ControlPanel",
+  name: 'ControlPanel',
   data () {
     return {
       checked: false
