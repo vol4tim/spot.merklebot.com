@@ -1,7 +1,8 @@
 <template>
   <div>
     <span>
-      <h2>Launch the robot</h2>
+      <p>Queued: {{ queueSize }}</p>
+      <p>Robot state: {{ robotState }}</p>
       <button :disabled="false" @click="launchCps">
         Launch
       </button>
@@ -36,6 +37,8 @@ export default {
   name: 'ControlPanel',
   data () {
     return {
+      queueSize: null,
+      robotState: null,
       selectedAccount: {
         account: null,
         balanceRaw: null,
@@ -52,6 +55,9 @@ export default {
 
     }
   },
+  mounted () {
+    this.doRobotStatePolling()
+  },
   methods: {
     async launchCps () {
       const launchTx = await makeLaunchTx(this.cps.address, true)
@@ -62,8 +68,19 @@ export default {
     },
     addressShort (address) {
       return address.slice(0, 6) + '...' + address.slice(-4)
-    }
+    },
+    async updateRobotState () {
+      const response = await fetch('http://10.200.0.3:1234/current_state', { method: 'GET' })
+      const json = await response.json()
 
+      this.robotState = json.robot_state
+      this.queueSize = json.queue_size
+      return true
+    },
+    async doRobotStatePolling () {
+      await this.updateRobotState()
+      setTimeout(this.doRobotStatePolling, 1000)
+    }
   }
 }
 </script>
