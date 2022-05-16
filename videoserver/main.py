@@ -3,17 +3,14 @@ from vidgear.gears.asyncio import WebGear
 from vidgear.gears.asyncio.helper import reducer
 from detect import process_frame
 from collections import deque
-import numpy as np
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.routing import Route
+import os
 
-# initialize WebGear app without any source
-web = WebGear(logging=True)
-
-TOKEN = "efbuhuj2n3f23cwt2"
+TOKEN = os.environ.get('VIDEOSERVER_TOKEN', "token") # token to access this server's drawing functions
 
 cur_points = deque(maxlen=512)
 segments = []
@@ -47,19 +44,6 @@ async def frame_producer():
         yield (b"--frame\r\nContent-Type:image/jpeg\r\n\r\n" + encodedImage + b"\r\n")
         await asyncio.sleep(0)
     stream.release()
-
-
-web.middleware = [
-    Middleware(
-        CORSMiddleware,
-        allow_origins=["*"],
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
-]
-
-web.config["generator"] = frame_producer
 
 
 async def clear_canvas(request: Request):
@@ -100,12 +84,25 @@ async def stop_line(request: Request):
     return JSONResponse({"status": "ok"})
 
 
+web = WebGear(logging=True)
+
+web.middleware = [
+    Middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+]
+
+web.config["generator"] = frame_producer
+
 web.routes.append(Route("/clear_canvas", endpoint=clear_canvas, methods=["POST"]))
 web.routes.append(Route("/start_line", endpoint=start_line, methods=["POST"]))
 web.routes.append(Route("/stop_line", endpoint=stop_line, methods=["POST"]))
 
-# run this app on Uvicorn server at address http://localhost:8000/
-uvicorn.run(web(), host="0.0.0.0", port=8000)
+if __name__ == "__main__":
+    uvicorn.run(web(), host="0.0.0.0", port=8000)
 
-# close app safely
-web.shutdown()
+    web.shutdown()
