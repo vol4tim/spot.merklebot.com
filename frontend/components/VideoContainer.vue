@@ -16,7 +16,7 @@ export default {
     }
   },
   methods: {
-    negotiate () {
+    negotiate() {
       //  creates a new RTCRtpTransceiver `video` and adds it to the
       // set of transceivers associated with the RTCPeerConnection
       this.pc.addTransceiver('video', {
@@ -51,7 +51,7 @@ export default {
         .then(() => {
           // build and return json offer.
           const offer = this.pc.localDescription
-          return fetch('http://10.200.0.8:8000/offer', {
+          return fetch(process.env.VIDEOSERVER_URL + '/offer', {
             body: JSON.stringify({
               sdp: offer.sdp,
               type: offer.type
@@ -76,7 +76,7 @@ export default {
           alert(e)
         })
     },
-    initPc () {
+    initPc() {
       const config = {
         sdpSemantics: 'unified-plan'
       }
@@ -93,7 +93,7 @@ export default {
       })
     }
   },
-  mounted () {
+  mounted() {
     this.initPc()
     this.negotiate()
   }

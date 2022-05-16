@@ -1,27 +1,69 @@
 <template>
-  <div class="mb-3">
-    <div class="relative inline-block w-10 mr-2 align-middle select-none">
-      <input v-model="checked" type="checkbox" name="toggle" id="Blue"
-             class=" outline-none focus:outline-none  duration-200 ease-in absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"
-             :class="{'bg-blue-500': checked, 'right-0': checked, 'right-4': !checked}"
-      />
-      <label for="Blue" class="block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer">
-      </label>
-    </div>
-    <span class="text-gray-400 font-medium">
-               Detect faces
-            </span>
+  <div>
+    <span>
+      <h2>Launch the robot</h2>
+      <button :disabled="false" @click="launchCps">
+        Launch
+      </button>
+      <ul style="list-style: none; padding: 0">
+        <li>Robot status: {{ cps.status }}</li>
+        <li v-if="cps.launch.txStatus">
+          Transaction status: {{ cps.launch.txStatus }}
+        </li>
+        <li v-if="cps.launch.txInfo">
+          View transaction:
+          <a
+            :href="
+              'https://robonomics.subscan.io/extrinsic/' + cps.launch.txInfo.tx
+            "
+            target="_blank"
+            rel="noopener noreferrer"
+          >{{ addressShort(cps.launch.txInfo.tx) }}</a>
+        </li>
+      </ul>
+    </span>
   </div>
-
 </template>
 
 <script>
+
+import {
+  makeLaunchTx,
+  signAndSendTxWithActiveAccount
+} from '@/plugins/robonomics'
+
 export default {
   name: 'ControlPanel',
   data () {
     return {
-      checked: false
+      selectedAccount: {
+        account: null,
+        balanceRaw: null,
+        balanceFormatted: null
+      },
+      cps: {
+        address: '4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j',
+        status: 'unknown',
+        launch: {
+          txInfo: null,
+          txStatus: null
+        }
+      }
+
     }
+  },
+  methods: {
+    async launchCps () {
+      const launchTx = await makeLaunchTx(this.cps.address, true)
+      this.cps.status = 'wait_tx'
+      this.cps.launch.txInfo = await signAndSendTxWithActiveAccount(launchTx)
+      this.cps.launch.txStatus = 'accepted'
+      this.cps.status = 'activated'
+    },
+    addressShort (address) {
+      return address.slice(0, 6) + '...' + address.slice(-4)
+    }
+
   }
 }
 </script>
