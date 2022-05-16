@@ -1,7 +1,6 @@
 from spot_controller import SpotController
 
 import multiprocessing
-from ctypes import c_char_p
 import os
 import requests
 import time
@@ -73,7 +72,7 @@ def server(drawing_queue, robot_state):
     def current_state():
         return {
             'queue_size': drawing_queue.qsize(),
-            'robot_state': robot_state.value
+            'robot_state': robot_state['state']
         }
 
     @app.route('/draw_figure', methods=['POST'])
@@ -104,7 +103,7 @@ def spot_controller(drawing_queue, robot_state):
             all_segments += segment
         print("Got segments", all_segments)
 
-        robot_state.value = "executing"
+        robot_state['state'] = "executing"
 
         print("Starting spot controller")
         sc = SpotController(SPOT_USERNAME, SPOT_PASSWORD, SPOT_IP)
@@ -129,7 +128,7 @@ def spot_controller(drawing_queue, robot_state):
         print("Movement finished")
         print("Ready to turn off")
         sc.power_off_sit_down()
-        robot_state.value = "idle"
+        robot_state['state'] = "idle"
         print("Robot powered off and sit down")
         time.sleep(1)
 
@@ -147,9 +146,12 @@ def spot_controller(drawing_queue, robot_state):
 
 
 def main():
+    manager = multiprocessing.Manager()
+
     ctx = multiprocessing.get_context('spawn')
     drawing_queue = ctx.Queue()
-    robot_state = ctx.Value(c_char_p, 'idle')
+    robot_state = manager.dict()
+    robot_state['state'] = "idle"
 
     spot_controller_process = ctx.Process(target=spot_controller, args=(drawing_queue,robot_state))
     server_process = ctx.Process(target=server, args=(drawing_queue,robot_state))
