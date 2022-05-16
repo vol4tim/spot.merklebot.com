@@ -78,6 +78,6 @@ class SpotController:
         for i in range(len(yaws)):
             self.move_head_in_points(yaws=yaws[i:i+1], pitches=pitches[i:i+1],
                                      rolls=rolls[0:1], body_height=body_height)
-            mark_point_callback((yaws[i], pitch[i]))
+            mark_point_callback((yaws[i], pitches[i]))
             time.sleep(0.3)
 
