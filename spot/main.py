@@ -25,7 +25,8 @@ VIDEOSERVER_URL = os.environ.get("VIDEOSERVER_IP", "http://10.200.0.8:8000/")
 VIDEOSERVER_TOKEN = os.environ.get("VIDEOSERVER_TOKEN", "")
 
 USE_ROBONOMICS = os.environ.get("USE_ROBONOMICS", 1)
-ROBONOMICS_LISTEN_ROBOT_ACCOUNT = os.environ.get("ROBONOMICS_LISTEN_ROBOT_ACCOUNT", "4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j")
+ROBONOMICS_LISTEN_ROBOT_ACCOUNT = os.environ.get("ROBONOMICS_LISTEN_ROBOT_ACCOUNT",
+                                                 "4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j")
 
 max_width = 400
 max_height = 300
@@ -63,9 +64,16 @@ def empty_handler():
     pass
 
 
-def server(drawing_queue):
+def server(drawing_queue, robot_state):
     app = Flask(__name__)
     CORS(app, resources={r"/*": {"origins": "*"}})
+
+    @app.route("/current_state", methods=["GET"])
+    def current_state():
+        return {
+            'queue_size': drawing_queue.qsize(),
+            'robot_state': robot_state.value
+        }
 
     @app.route('/draw_figure', methods=['POST'])
     def draw_figure():
@@ -79,8 +87,7 @@ def server(drawing_queue):
     app.run(host='0.0.0.0', port=1234)
 
 
-def spot_controller(drawing_queue):
-
+def spot_controller(drawing_queue, robot_state):
     def execute_drawing_command():
         segments_task = drawing_queue.get()
         print("Got task", segments_task)
@@ -95,6 +102,8 @@ def spot_controller(drawing_queue):
         for segment in segments_task:
             all_segments += segment
         print("Got segments", all_segments)
+
+        robot_state.value = "executing"
 
         print("Starting spot controller")
         sc = SpotController(SPOT_USERNAME, SPOT_PASSWORD, SPOT_IP)
@@ -119,6 +128,7 @@ def spot_controller(drawing_queue):
         print("Movement finished")
         print("Ready to turn off")
         sc.power_off_sit_down()
+        robot_state.value = "idle"
         print("Robot powered off and sit down")
         time.sleep(1)
 
@@ -127,7 +137,9 @@ def spot_controller(drawing_queue):
 
     if USE_ROBONOMICS:
         interface = RI.RobonomicsInterface()
-        subscriber = RI.Subscriber(interface, RI.SubEvent.NewLaunch, robonomics_transaction_callback, "4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j")
+        print("Robonomics subscriber starting...")
+        subscriber = RI.Subscriber(interface, RI.SubEvent.NewLaunch, robonomics_transaction_callback,
+                                   "4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j")
 
     while True:
         execute_drawing_command()
@@ -136,9 +148,10 @@ def spot_controller(drawing_queue):
 def main():
     ctx = multiprocessing.get_context('spawn')
     drawing_queue = ctx.Queue()
+    robot_state = ctx.Value('s', 'idle')
 
-    spot_controller_process = ctx.Process(target=spot_controller, args=(drawing_queue,))
-    server_process = ctx.Process(target=server, args=(drawing_queue,))
+    spot_controller_process = ctx.Process(target=spot_controller, args=(drawing_queue,robot_state))
+    server_process = ctx.Process(target=server, args=(drawing_queue,robot_state))
 
     PROCESSES.append(spot_controller_process)
     PROCESSES.append(server_process)
