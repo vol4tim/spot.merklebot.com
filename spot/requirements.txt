@@ -2,3 +2,5 @@ bosdyn-client
 bosdyn-mission
 bosdyn-choreography-client
 scipy
+robonomics-interface
+substrate-interface
