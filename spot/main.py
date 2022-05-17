@@ -258,6 +258,7 @@ def spot_controller(drawing_queue, robot_state):
             execute_drawing_command()
         finally:
             recorder.terminate()
+        time.sleep(5)  # wait while recorder process closes the file
         pinata = PinataPy(PINATA_API_KEY, PINATA_SECRET_API_KEY)
         pinata_resp = pinata.pin_file_to_ipfs("/home/spot/davos.merklebot.com/spot/traces/{}".format(bag_name))
         ipfs_cid = pinata_resp["IpfsHash"]
