@@ -37,7 +37,7 @@ PINATA_SECRET_API_KEY = os.environ["PINATA_SECRET_API_KEY"]
 
 max_width = 400
 max_height = 300
-coord_nodes = {
+coord_nodes = json.load(open("calibration_data_final.json")) if os.path.exists("calibration_data_final.json") else {
     "x": [0, 0, 400, 400],
     "y": [0, 300, 0, 300],
     "yaw": [-0.4, -0.4, 0.4, 0.4],
