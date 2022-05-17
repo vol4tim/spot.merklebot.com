@@ -3,7 +3,7 @@ import bosdyn.client
 from bosdyn.client.robot_command import RobotCommandClient, RobotCommandBuilder, blocking_stand  # , blocking_sit
 from bosdyn.geometry import EulerZXY
 from bosdyn.api.spot import robot_command_pb2 as spot_command_pb2
-from scipy.interpolate import interp2d
+from scipy.interpolate import Rbf
 
 
 class SpotController:
@@ -22,13 +22,16 @@ class SpotController:
         self.robot.authenticate(username, password)
 
         self.command_client = self.robot.ensure_client(RobotCommandClient.default_service_name)
-        self.yaw_interpolate = interp2d(x=self.coord_nodes["x"], y=self.coord_nodes["y"],
-                                                     z=self.coord_nodes["yaw"], kind="linear")
-
-        self.pitch_interpolate = interp2d(x=self.coord_nodes["x"], y=self.coord_nodes["y"],
-                                                     z=self.coord_nodes["pitch"], kind="linear")
+        self.yaw_interpolate = Rbf(coord_nodes["x"], coord_nodes["y"], coord_nodes["yaw"], function="linear")
+        self.pitch_interpolate = Rbf(coord_nodes["x"], coord_nodes["y"], coord_nodes["pitch"], function="linear")
 
         self.robot.logger.info("Authenticated")
+
+    def update_interpolator(self, coord_nodes):
+        self.coord_nodes = coord_nodes
+        self.yaw_interpolate = Rbf(coord_nodes["x"], coord_nodes["y"], coord_nodes["yaw"], function="linear")
+        self.pitch_interpolate = Rbf(coord_nodes["x"], coord_nodes["y"], coord_nodes["pitch"], function="linear")
+
 
     def move_head_in_points(self, yaws, pitches, rolls, body_height=-0.3, sleep_after_point_reached=0, timeout=3):
         for i in range(len(yaws)):
@@ -68,4 +71,4 @@ class SpotController:
         end_drawing_trigger_handler()
 
     def interpolate_coords(self, x, y):
-        return self.yaw_interpolate(x, y), self.pitch_interpolate(x, y), 0
+        return float(self.yaw_interpolate(x, y)), float(self.pitch_interpolate(x, y)), 0

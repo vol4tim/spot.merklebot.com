@@ -131,14 +131,14 @@ def calibration_movement(sc):
         outfile.write(json_string)
 
     left_upper_x = max([calibration_result["x"][i] for i in range(len(calibration_result["x"]))
-                        if calibration_result["pitch"][i] == min(pitches)])
-    left_upper_y = max([calibration_result["y"][i] for i in range(len(calibration_result["y"]))
                         if calibration_result["yaw"][i] == min(yaws)])
+    left_upper_y = max([calibration_result["y"][i] for i in range(len(calibration_result["y"]))
+                        if calibration_result["pitch"][i] == min(pitches)])
 
     right_bottom_x = min([calibration_result["x"][i] for i in range(len(calibration_result["x"]))
-                          if calibration_result["pitch"][i] == max(pitches)])
-    right_bottom_y = min([calibration_result["y"][i] for i in range(len(calibration_result["y"]))
                           if calibration_result["yaw"][i] == max(yaws)])
+    right_bottom_y = min([calibration_result["y"][i] for i in range(len(calibration_result["y"]))
+                          if calibration_result["pitch"][i] == max(pitches)])
 
     max_width = right_bottom_x - left_upper_x
     max_height = right_bottom_y - left_upper_y
@@ -151,6 +151,8 @@ def calibration_movement(sc):
     with open('calibration_data_final.json', 'w') as outfile:
         json_string = json.dumps(coord_nodes)
         outfile.write(json_string)
+
+    sc.update_interpolator(coord_nodes)
 
 
 def server(drawing_queue, robot_state):
