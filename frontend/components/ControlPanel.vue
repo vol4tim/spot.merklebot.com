@@ -72,7 +72,8 @@ export default {
       return address.slice(0, 6) + '...' + address.slice(-4)
     },
     async updateRobotState () {
-      const response = await fetch('http://10.200.0.3:1234/current_state', { method: 'GET' })
+      // const response = await fetch('http://10.200.0.3:1234/current_state', { method: 'GET' })
+      const response = await fetch('https://api.merklebot.com/strelka/current_state', { method: 'GET' })
       const json = await response.json()
 
       this.robotState = json.robot_state
