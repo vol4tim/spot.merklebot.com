@@ -72,7 +72,7 @@ def empty_handler():
     pass
 
 
-def calibration_movement(sc, mark_point_callback):
+def calibration_movement(sc):
     global max_width, max_height, coord_nodes
 
     yaws = [(-1) ** (j % 2) * i / 10 for j in range(8) for i in range(-5, 6, 1)]
@@ -85,7 +85,7 @@ def calibration_movement(sc, mark_point_callback):
 
     for i in range(len(yaws)):
         sc.move_head_in_points(yaws=yaws[i:i+1], pitches=pitches[i:i+1], rolls=rolls[i:i+1])
-        x, y = mark_point_callback()
+        x, y = get_spot_face_on_camera_coords()
         calibration_result["x"].append(x)
         calibration_result["y"].append(y)
         calibration_result["yaw"].append(yaws[i])
