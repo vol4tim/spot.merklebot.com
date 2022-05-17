@@ -35,14 +35,17 @@ ROBONOMICS_LISTEN_ROBOT_ACCOUNT = os.environ.get("ROBONOMICS_LISTEN_ROBOT_ACCOUN
 PINATA_API_KEY = os.environ["PINATA_API_KEY"]
 PINATA_SECRET_API_KEY = os.environ["PINATA_SECRET_API_KEY"]
 
-max_width = 400
-max_height = 300
 coord_nodes = json.load(open("calibration_data_final.json")) if os.path.exists("calibration_data_final.json") else {
     "x": [0, 0, 400, 400],
     "y": [0, 300, 0, 300],
     "yaw": [-0.4, -0.4, 0.4, 0.4],
     "pitch": [-0.4, 0.4, -0.4, 0.4],
+    "max_width": 400,
+    "max_height": 300
 }
+
+max_width = coord_nodes["max_width"]
+max_height = coord_nodes["max_height"]
 
 
 def send_command_to_videoserver(command_name):
@@ -147,6 +150,8 @@ def calibration_movement(sc):
     calibration_result["y"] = [calibration_result["y"][i] - left_upper_y for i in range(len(calibration_result["y"]))]
 
     coord_nodes = calibration_result
+    coord_nodes["max_width"] = max_width
+    coord_nodes["max_height"] = max_height
 
     with open('calibration_data_final.json', 'w') as outfile:
         json_string = json.dumps(coord_nodes)
