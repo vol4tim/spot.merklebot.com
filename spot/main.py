@@ -243,7 +243,8 @@ def spot_controller(drawing_queue, robot_state):
 
         sender, recipient, _ = data
         session_id = get_account_nonce(sender)
-        bag_name = "session-{}-{}.bag".format(
+        bag_name = "user-{}-session-{}-{}.bag".format(
+            sender,
             session_id,
             datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S"),
         )
