@@ -4,12 +4,17 @@ import multiprocessing
 import os
 import requests
 import time
+import subprocess
+from datetime import datetime
 
 from flask import Flask
 from flask import request
 from flask_cors import CORS, cross_origin
 import json
 import robonomicsinterface as RI
+from substrateinterface import SubstrateInterface
+from pinatapy import PinataPy
+import requests
 
 PROCESSES = []
 
@@ -27,6 +32,8 @@ VIDEOSERVER_TOKEN = os.environ.get("VIDEOSERVER_TOKEN", "")
 USE_ROBONOMICS = os.environ.get("USE_ROBONOMICS", 1)
 ROBONOMICS_LISTEN_ROBOT_ACCOUNT = os.environ.get("ROBONOMICS_LISTEN_ROBOT_ACCOUNT",
                                                  "4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j")
+PINATA_API_KEY = os.environ["PINATA_API_KEY"]
+PINATA_SECRET_API_KEY = os.environ["PINATA_SECRET_API_KEY"]
 
 max_width = 400
 max_height = 300
@@ -69,6 +76,28 @@ def centralize(xx, yy, all_segments):
     xx = [x * max_width / max_x for x in xx]
     yy = [y * max_height / max_y for y in yy]
     return xx, yy
+
+
+def get_account_nonce(address) -> int:
+    substrate = SubstrateInterface(
+        url="wss://kusama.rpc.robonomics.network/",
+        ss58_format=32,
+        type_registry_preset="substrate-node-template",
+        type_registry={
+            "types": {
+                "Record": "Vec<u8>",
+                "<T as frame_system::Config>::AccountId": "AccountId",
+                "RingBufferItem": {
+                    "type": "struct",
+                    "type_mapping": [
+                        ["timestamp", "Compact<u64>"],
+                        ["payload", "Vec<u8>"],
+                    ],
+                },
+            }
+        }
+    )
+    return substrate.get_account_nonce(address)
 
 
 def empty_handler():
@@ -201,7 +230,41 @@ def spot_controller(drawing_queue, robot_state):
         time.sleep(1)
 
     def robonomics_transaction_callback(data):
-        execute_drawing_command()
+        """Execution sequence.
+
+        1. Start robot state recording,
+        2. Move the robot,
+        3. Stop recording,
+        4. Upload recording to Pinata,
+        5. Create trace on the backend.
+        """
+
+        sender, recipient, _ = data
+        session_id = get_account_nonce(sender)
+        bag_name = "session-{}-{}.bag".format(
+            session_id,
+            datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S"),
+        )
+        print("New launch, sender={}, recipient={}, session_id={}, bag={}".format(
+            sender, recipient, session_id, bag_name))
+        try:
+            # duration=5m limits max recoding time and prevents orphan processes keep recording forever
+            recorder = subprocess.Popen(
+                ["rosbag", "record", "--duration=5m", "--output-name={}".format(bag_name), "/tf", "/tf_static"],
+                cwd="./traces/",  # directory to put files
+            )
+            execute_drawing_command()
+        finally:
+            recorder.terminate()
+        pinata = PinataPy(PINATA_API_KEY, PINATA_SECRET_API_KEY)
+        pinata_resp = pinata.pin_file_to_ipfs("./traces/{}".format(bag_name))
+        ipfs_cid = pinata_resp["IpfsHash"]
+        requests.post("https://api.merklebot.com/davos/traces", json={
+            "user_account_address": sender,
+            "session_id": session_id,
+            "ipfs_cid": ipfs_cid,
+        })
+        print("Session {} trace created with IPFS CID {}".format(session_id, ipfs_cid))
 
     if USE_ROBONOMICS:
         interface = RI.RobonomicsInterface()
