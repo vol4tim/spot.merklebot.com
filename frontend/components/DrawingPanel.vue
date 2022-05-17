@@ -48,7 +48,8 @@ export default {
         segments.push(segment)
       })
       console.log(segments)
-      fetch('http://10.200.0.3:1234/draw_figure', {
+      // fetch('http://10.200.0.3:1234/draw_figure', {
+      fetch('https://api.merklebot.com/strelka/draw_figure', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

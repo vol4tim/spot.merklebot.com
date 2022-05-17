@@ -259,7 +259,7 @@ def spot_controller(drawing_queue, robot_state):
         finally:
             recorder.terminate()
         pinata = PinataPy(PINATA_API_KEY, PINATA_SECRET_API_KEY)
-        pinata_resp = pinata.pin_file_to_ipfs("./traces/{}".format(bag_name))
+        pinata_resp = pinata.pin_file_to_ipfs("/home/spot/davos.merklebot.com/spot/traces/{}".format(bag_name))
         ipfs_cid = pinata_resp["IpfsHash"]
         requests.post("https://api.merklebot.com/davos/traces", json={
             "user_account_address": sender,

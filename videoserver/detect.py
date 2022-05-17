@@ -138,7 +138,7 @@ def process_frame(frame):
         cv2.circle(frame, (obj_x, obj_y), 5, colors[1], -1)
 
 
-    return frame, ([obj_x, obj_y] if obj_x and obj_y else None)
+    return frame, ([int(obj_x), int(obj_y)] if obj_x and obj_y else None)
 
 
 if __name__ == '__main__':

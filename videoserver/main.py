@@ -10,12 +10,13 @@ from starlette.responses import JSONResponse
 from starlette.routing import Route
 import os
 
-TOKEN = os.environ.get('VIDEOSERVER_TOKEN', "token") # token to access this server's drawing functions
+TOKEN = os.environ.get('VIDEOSERVER_TOKEN', "token")  # token to access this server's drawing functions
 
 cur_points = deque(maxlen=512)
 segments = []
 draw_line = False
 obj_coords = [0, 0]
+
 
 async def frame_producer():
     global cur_points, draw_line, obj_coords
@@ -31,9 +32,12 @@ async def frame_producer():
         frame = await reducer(frame, percentage=30, interpolation=cv2.INTER_AREA)  # reduce frame by 30%
 
         frame, obj = process_frame(frame)
+
+        if obj:
+            obj_coords = obj.copy()
+
         if obj and draw_line:
             cur_points.appendleft(obj)
-            obj_coords = obj.copy()
 
         for segment_points in segments + [cur_points]:
             for i in range(1, len(segment_points)):
@@ -83,6 +87,7 @@ async def stop_line(request: Request):
     cur_points = deque(maxlen=512)
     draw_line = False
     return JSONResponse({"status": "ok"})
+
 
 async def get_obj_coords(request: Request):
     global obj_coords
