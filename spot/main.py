@@ -43,7 +43,7 @@ def send_command_to_videoserver(command_name):
 
 
 def get_spot_face_on_camera_coords():
-    res = requests.get(VIDEOSERVER_URL + "/get_spot_face_coords", json={"token": VIDEOSERVER_TOKEN})
+    res = requests.get(VIDEOSERVER_URL + "get_spot_face_coords", json={"token": VIDEOSERVER_TOKEN})
     return res.json()['coords']
 
 
