@@ -109,6 +109,7 @@ web.config["generator"] = frame_producer
 web.routes.append(Route("/clear_canvas", endpoint=clear_canvas, methods=["POST"]))
 web.routes.append(Route("/start_line", endpoint=start_line, methods=["POST"]))
 web.routes.append(Route("/stop_line", endpoint=stop_line, methods=["POST"]))
+web.routes.append(Route("/get_spot_face_coords", endpoint=stop_line, methods=["POST"]))
 
 if __name__ == "__main__":
     uvicorn.run(web(), host="0.0.0.0", port=8000)
