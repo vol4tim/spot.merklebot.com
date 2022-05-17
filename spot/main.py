@@ -31,18 +31,21 @@ ROBONOMICS_LISTEN_ROBOT_ACCOUNT = os.environ.get("ROBONOMICS_LISTEN_ROBOT_ACCOUN
 max_width = 400
 max_height = 300
 coord_nodes = {
-            "x":     [0,       0,  400, 400],
-            "y":     [0,     300,    0, 300],
-            "yaw":   [-0.4, -0.4,  0.4, 0.4],
-            "pitch": [-0.4,  0.4, -0.4, 0.4],
-        }
+    "x": [0, 0, 400, 400],
+    "y": [0, 300, 0, 300],
+    "yaw": [-0.4, -0.4, 0.4, 0.4],
+    "pitch": [-0.4, 0.4, -0.4, 0.4],
+}
+
 
 def send_command_to_videoserver(command_name):
     requests.post(VIDEOSERVER_URL + command_name, json={"token": VIDEOSERVER_TOKEN})
 
+
 def get_spot_face_on_camera_coords():
     res = requests.get(VIDEOSERVER_URL + "/get_spot_face_coords", json={"token": VIDEOSERVER_TOKEN})
     return res.json()['coords']
+
 
 def notify_start_line():
     send_command_to_videoserver("start_line")
@@ -84,7 +87,7 @@ def calibration_movement(sc):
     }
 
     for i in range(len(yaws)):
-        sc.move_head_in_points(yaws=yaws[i:i+1], pitches=pitches[i:i+1], rolls=rolls[i:i+1])
+        sc.move_head_in_points(yaws=yaws[i:i + 1], pitches=pitches[i:i + 1], rolls=rolls[i:i + 1])
         x, y = get_spot_face_on_camera_coords()
         calibration_result["x"].append(x)
         calibration_result["y"].append(y)
@@ -99,19 +102,19 @@ def calibration_movement(sc):
         outfile.write(json_string)
 
     left_upper_x = max([calibration_result["x"][i] for i in range(len(calibration_result["x"]))
-                               if calibration_result["pitch"][i] == min(pitches)])
-    left_upper_y = max([calibration_result["x"][i] for i in range(len(calibration_result["x"]))
-                               if calibration_result["yaw"][i] == min(yaws)])
+                        if calibration_result["pitch"][i] == min(pitches)])
+    left_upper_y = max([calibration_result["y"][i] for i in range(len(calibration_result["y"]))
+                        if calibration_result["yaw"][i] == min(yaws)])
 
     right_bottom_x = min([calibration_result["x"][i] for i in range(len(calibration_result["x"]))
-                               if calibration_result["pitch"][i] == max(pitches)])
-    right_bottom_y = min([calibration_result["x"][i] for i in range(len(calibration_result["x"]))
-                               if calibration_result["yaw"][i] == min(yaws)])
+                          if calibration_result["pitch"][i] == max(pitches)])
+    right_bottom_y = min([calibration_result["y"][i] for i in range(len(calibration_result["y"]))
+                          if calibration_result["yaw"][i] == max(yaws)])
 
-    max_width = right_bottom_x-left_upper_x
-    max_height = right_bottom_y-left_upper_y
+    max_width = right_bottom_x - left_upper_x
+    max_height = right_bottom_y - left_upper_y
 
-    calibration_result["x"] = [calibration_result["x"][i]-left_upper_x for i in range(len(calibration_result["x"]))]
+    calibration_result["x"] = [calibration_result["x"][i] - left_upper_x for i in range(len(calibration_result["x"]))]
     calibration_result["y"] = [calibration_result["y"][i] - left_upper_y for i in range(len(calibration_result["y"]))]
 
     coord_nodes = calibration_result
@@ -147,10 +150,12 @@ def server(drawing_queue, robot_state):
 def spot_controller(drawing_queue, robot_state):
     def execute_drawing_command():
         segments_task = drawing_queue.get()
+        calibrate = False
+        if len(segments_task) == 0:
+            # calibrate robot
+            calibrate = True
+
         print("Got task", segments_task)
-        if not segments_task:
-            time.sleep(1)
-            return
 
         # notify videoserver to clear canvas
         send_command_to_videoserver("clear_canvas")
@@ -164,6 +169,7 @@ def spot_controller(drawing_queue, robot_state):
 
         print("Starting spot controller")
         sc = SpotController(SPOT_USERNAME, SPOT_PASSWORD, SPOT_IP, coord_nodes)
+
         print("Spot controller started")
         sc.lease_control()
         print("Lease control got")
@@ -171,17 +177,22 @@ def spot_controller(drawing_queue, robot_state):
         print("Robot powered and stand up")
 
         print("Starting movement...")
-        for i, segments in enumerate(segments_task):
-            print("Drawing segment")
 
-            time.sleep(0.1)
+        if calibrate:
+            calibration_movement(sc)
+        else:
+            for i, segments in enumerate(segments_task):
+                print("Drawing segment")
 
-            xx, yy = centralize([segment[0] for segment in segments], [segment[1] for segment in segments],
-                                all_segments)
-            sc.move_to_draw(start_drawing_trigger_handler=notify_start_line,
-                            end_drawing_trigger_handler=notify_stop_line,
-                            xx=xx, yy=yy)
-            time.sleep(0.1)
+                time.sleep(0.1)
+
+                xx, yy = centralize([segment[0] for segment in segments], [segment[1] for segment in segments],
+                                    all_segments)
+                sc.move_to_draw(start_drawing_trigger_handler=notify_start_line,
+                                end_drawing_trigger_handler=notify_stop_line,
+                                xx=xx, yy=yy)
+                time.sleep(0.1)
+
         print("Movement finished")
         print("Ready to turn off")
         sc.power_off_sit_down()
@@ -210,8 +221,8 @@ def main():
     robot_state = manager.dict()
     robot_state['state'] = "idle"
 
-    spot_controller_process = ctx.Process(target=spot_controller, args=(drawing_queue,robot_state))
-    server_process = ctx.Process(target=server, args=(drawing_queue,robot_state))
+    spot_controller_process = ctx.Process(target=spot_controller, args=(drawing_queue, robot_state))
+    server_process = ctx.Process(target=server, args=(drawing_queue, robot_state))
 
     PROCESSES.append(spot_controller_process)
     PROCESSES.append(server_process)
