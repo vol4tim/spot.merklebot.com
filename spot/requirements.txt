@@ -8,3 +8,4 @@ pinatapy-vourhey
 requests
 Flask
 Flask-Cors
+opencv-python
