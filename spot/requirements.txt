@@ -6,3 +6,5 @@ robonomics-interface
 substrate-interface
 pinatapy-vourhey
 requests
+Flask
+Flask-Cors
