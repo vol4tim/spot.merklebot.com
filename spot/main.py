@@ -1,3 +1,5 @@
+import signal
+
 from spot_controller import SpotController
 
 import multiprocessing
@@ -254,6 +256,12 @@ def spot_controller(drawing_queue, robot_state):
             session_id,
             datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S"),
         )
+        video_name = "user-{}-cps-{}-session-{}-{}.mp4".format(
+            sender,
+            recipient,
+            session_id,
+            datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S"),
+        )
         print("New launch, sender={}, recipient={}, session_id={}, bag={}".format(
             sender, recipient, session_id, bag_name))
         try:
@@ -262,9 +270,15 @@ def spot_controller(drawing_queue, robot_state):
                 ["rosbag", "record", "--duration=5m", "--output-name={}".format(bag_name), "/tf", "/tf_static"],
                 cwd="./traces/",  # directory to put files
             )
+
+            # start recording stream from videoserver
+            video_url = VIDEOSERVER_URL + "video"
+            video_recorder = subprocess.Popen(["python3", "video_recorder.py", "--video_url={}".format(video_url), "--output_file=./traces/{}".format(video_name)])
+
             execute_drawing_command()
         finally:
             recorder.terminate()
+            video_recorder.send_signal(signal.SIGINT)
         time.sleep(5)  # wait while recorder process closes the file
         pinata = PinataPy(PINATA_API_KEY, PINATA_SECRET_API_KEY)
         pinata_resp = pinata.pin_file_to_ipfs("/home/spot/davos.merklebot.com/spot/traces/{}".format(bag_name))
