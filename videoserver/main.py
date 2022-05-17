@@ -36,16 +36,17 @@ def run_server(im, state):
             return JSONResponse({"status": "error", "message": "Invalid token"})
 
         state['segments'] = []
-        state['cur_points'] = deque(maxlen=512)
+        state['cur_points'] = []
         return JSONResponse({"status": "ok"})
 
     async def start_line(request: Request):
         data = await request.json()
         if data['token'] != TOKEN:
             return JSONResponse({"status": "error", "message": "Invalid token"})
-
-        state['cur_points'] = deque(maxlen=512)
+        state['cur_points'] = []
         state['draw_line'] = True
+
+
         return JSONResponse({"status": "ok"})
 
     async def stop_line(request: Request):
@@ -53,7 +54,7 @@ def run_server(im, state):
         if data['token'] != TOKEN:
             return JSONResponse({"status": "error", "message": "Invalid token"})
         state['segments'] += [state['cur_points']]
-        state['cur_points'] = deque(maxlen=512)
+        state['cur_points'] = []
         state['draw_line'] = False
         return JSONResponse({"status": "ok"})
 
@@ -103,10 +104,8 @@ def run_camera(im, state):
 
         if obj:
             state['obj_coords'] = obj.copy()
-
         if obj and state['draw_line']:
-            state['cur_points'].appendleft(obj)
-
+            state['cur_points']=[obj.copy()] + state['cur_points']
         for segment_points in state['segments'] + [state['cur_points']]:
             for i in range(1, len(segment_points)):
                 if segment_points[i - 1] is None or segment_points[i] is None:
@@ -124,11 +123,10 @@ def main():
     lst.append(None)
     lst.append(None)
 
-    state['cur_points'] = deque(maxlen=512)
+    state['cur_points'] = []
     state['segments'] = []
     state['obj_coords'] = [0, 0]
     state['draw_line'] = False
-
     server_process = multiprocessing.Process(target=run_server, args=(lst, state))
     camera_process = multiprocessing.Process(target=run_camera, args=(lst, state))
 
