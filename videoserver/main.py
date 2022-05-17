@@ -15,10 +15,10 @@ TOKEN = os.environ.get('VIDEOSERVER_TOKEN', "token") # token to access this serv
 cur_points = deque(maxlen=512)
 segments = []
 draw_line = False
-
+obj_coords = [0, 0]
 
 async def frame_producer():
-    global cur_points, draw_line
+    global cur_points, draw_line, obj_coords
     stream = cv2.VideoCapture(0)
     stream.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
     stream.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
@@ -33,6 +33,7 @@ async def frame_producer():
         frame, obj = process_frame(frame)
         if obj and draw_line:
             cur_points.appendleft(obj)
+            obj_coords = obj.copy()
 
         for segment_points in segments + [cur_points]:
             for i in range(1, len(segment_points)):
@@ -82,6 +83,13 @@ async def stop_line(request: Request):
     cur_points = deque(maxlen=512)
     draw_line = False
     return JSONResponse({"status": "ok"})
+
+async def get_obj_coords(request: Request):
+    global obj_coords
+    data = await request.json()
+    if data['token'] != TOKEN:
+        return JSONResponse({"status": "error", "message": "Invalid token"})
+    return JSONResponse({"status": "ok", "coords": obj_coords})
 
 
 web = WebGear(logging=True)
