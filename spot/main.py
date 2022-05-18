@@ -16,7 +16,6 @@ import json
 import robonomicsinterface as RI
 from substrateinterface import SubstrateInterface
 from pinatapy import PinataPy
-import requests
 
 PROCESSES = []
 
@@ -250,38 +249,49 @@ def spot_controller(drawing_queue, robot_state):
 
         sender, recipient, _ = data
         session_id = get_account_nonce(sender)
-        bag_name = "user-{}-cps-{}-session-{}-{}.bag".format(
+        record_folder_name  = "user-{}-cps-{}-session-{}-{}".format(
             sender,
             recipient,
             session_id,
             datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S"),
         )
-        video_name = "user-{}-cps-{}-session-{}-{}.mp4".format(
-            sender,
-            recipient,
-            session_id,
-            datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S"),
-        )
+        # bag_name = "user-{}-cps-{}-session-{}-{}.bag".format(
+        #     sender,
+        #     recipient,
+        #     session_id,
+        #     datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S"),
+        # )
+        # video_name = "user-{}-cps-{}-session-{}-{}.mp4".format(
+        #     sender,
+        #     recipient,
+        #     session_id,
+        #     datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S"),
+        # )
+        bag_name = "state.bag"
+        video_name = "camera.mp4"
         print("New launch, sender={}, recipient={}, session_id={}, bag={}".format(
             sender, recipient, session_id, bag_name))
         try:
+            os.makedirs("./traces/{}".format(record_folder_name), exist_ok=True)
+
             # duration=5m limits max recoding time and prevents orphan processes keep recording forever
             recorder = subprocess.Popen(
                 ["rosbag", "record", "--duration=5m", "--output-name={}".format(bag_name), "/tf", "/tf_static"],
-                cwd="./traces/",  # directory to put files
+                cwd="./traces/{}/".format(record_folder_name),  # directory to put files
             )
 
             # start recording stream from videoserver
             video_url = VIDEOSERVER_URL + "video"
-            video_recorder = subprocess.Popen(["python3", "video_recorder.py", "--video_url={}".format(video_url), "--output_file=./traces/{}".format(video_name)])
+            video_recorder = subprocess.Popen(["python3", "video_recorder.py", "--video_url={}".format(video_url), "--output_file=./traces/{}/{}".format(record_folder_name,video_name)])
 
             execute_drawing_command()
         finally:
+            time.sleep(2) # wait for the robot to finish its movement
             recorder.terminate()
             video_recorder.send_signal(signal.SIGINT)
         time.sleep(5)  # wait while recorder process closes the file
         pinata = PinataPy(PINATA_API_KEY, PINATA_SECRET_API_KEY)
-        pinata_resp = pinata.pin_file_to_ipfs("/home/spot/davos.merklebot.com/spot/traces/{}".format(bag_name))
+        pinata_resp = pinata.pin_file_to_ipfs("/home/spot/davos.merklebot.com/spot/traces/{}".format(record_folder_name))
         ipfs_cid = pinata_resp["IpfsHash"]
         requests.post("https://api.merklebot.com/davos/traces", json={
             "user_account_address": sender,
