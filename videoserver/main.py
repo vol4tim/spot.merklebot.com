@@ -11,6 +11,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.routing import Route
 import os
+import numpy as np
 
 TOKEN = os.environ.get('VIDEOSERVER_TOKEN', "token")  # token to access this server's drawing functions
 
@@ -101,7 +102,8 @@ def run_camera(im, state):
         # frame = await reducer(frame, percentage=30, interpolation=cv2.INTER_AREA)  # reduce frame by 30%
 
         frame, obj = process_frame(frame)
-
+        blackboard = np.zeros(frame.shape, np.uint8)
+        # blackboard[:] = (255, 255, 255)
         if obj:
             state['obj_coords'] = obj.copy()
         if obj and state['draw_line']:
@@ -110,8 +112,16 @@ def run_camera(im, state):
             for i in range(1, len(segment_points)):
                 if segment_points[i - 1] is None or segment_points[i] is None:
                     continue
-                cv2.line(frame, segment_points[i - 1], segment_points[i], (0, 0, 255), 2)
-        im[0] = frame
+                cv2.line(blackboard, segment_points[i - 1], segment_points[i], (0, 0, 255), 5)
+        glow_strength = 0.6
+        glow_radius = 17
+
+        blackboard_blurred = cv2.GaussianBlur(blackboard, (glow_radius, glow_radius), 1)
+        blackboard_blended = cv2.addWeighted(frame, 1, blackboard_blurred, glow_strength, 0)
+        blackboard_blended = cv2.addWeighted(blackboard_blended, 1, blackboard, 1, 0)
+
+
+        im[0] = blackboard_blended
         im[1] = obj
 
 
