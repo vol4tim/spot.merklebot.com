@@ -88,14 +88,14 @@
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 my-4">
             <CardContainer title="Camera">
               <CameraFrame />
+
+            <CardContainer title="Launch data">
+              <ControlPanel />
+            </CardContainer>
             </CardContainer>
 
             <CardContainer title="Drawing panel">
               <DrawingPanel :canvas-id="'canvas-one'" />
-            </CardContainer>
-
-            <CardContainer title="Robonomics handlers">
-              <ControlPanel />
             </CardContainer>
           </div>
         </div>
