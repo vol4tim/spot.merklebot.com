@@ -276,7 +276,7 @@ def spot_controller(drawing_queue, robot_state):
 
             # duration=5m limits max recoding time and prevents orphan processes keep recording forever
             recorder = subprocess.Popen(
-                ["rosbag", "record", "--duration=5m", "--output-name={}".format(bag_name), "/tf", "/tf_static"],
+                ["rosbag", "record", "--duration=5m", "--output-name={}".format(bag_name), "/tf", "/tf_static", "/joint_states"],
                 cwd="./traces/{}/".format(record_folder_name),  # directory to put files
             )
 
