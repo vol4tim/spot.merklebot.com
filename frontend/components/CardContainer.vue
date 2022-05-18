@@ -4,8 +4,7 @@
       <p class="text-sm w-max text-gray-700 dark:text-white font-semibold border-b border-gray-200">
         {{ title }}
       </p>
-      <slot/>
-
+      <slot />
     </div>
   </div>
 </template>

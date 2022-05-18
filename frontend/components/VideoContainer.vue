@@ -1,22 +1,26 @@
 <template>
   <video
-    id='video'
-    autoplay='true'
-    playsinline='true'
-    muted='true'
-  ></video>
+    id="video"
+    autoplay="true"
+    playsinline="true"
+    muted="true"
+  />
 </template>
 
 <script>
 export default {
   name: 'VideoContainer',
-  data() {
+  data () {
     return {
       pc: null
     }
   },
+  mounted () {
+    this.initPc()
+    this.negotiate()
+  },
   methods: {
-    negotiate() {
+    negotiate () {
       //  creates a new RTCRtpTransceiver `video` and adds it to the
       // set of transceivers associated with the RTCPeerConnection
       this.pc.addTransceiver('video', {
@@ -76,7 +80,7 @@ export default {
           alert(e)
         })
     },
-    initPc() {
+    initPc () {
       const config = {
         sdpSemantics: 'unified-plan'
       }
@@ -92,10 +96,6 @@ export default {
         }
       })
     }
-  },
-  mounted() {
-    this.initPc()
-    this.negotiate()
   }
 }
 

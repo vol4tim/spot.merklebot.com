@@ -1,20 +1,22 @@
 <template>
   <div>
-    <canvas :id="canvasId" class="canvas-style" v-on:mousedown="mouseDown"/>
-    <button type="button"
-            class="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
-            @click="resetCanvas">
+    <canvas :id="canvasId" class="canvas-style" @mousedown="mouseDown" />
+    <button
+      type="button"
+      class="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
+      @click="resetCanvas"
+    >
       Reset
     </button>
 
-    <button type="button"
-            class="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
-            @click="sendCommand">
+    <button
+      type="button"
+      class="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
+      @click="sendCommand"
+    >
       Send Command
     </button>
-
   </div>
-
 </template>
 
 <script>
@@ -29,8 +31,12 @@ export default {
       paths: []
     }
   },
+  mounted () {
+    this.scope = new paper.PaperScope()
+    this.scope.setup(this.canvasId)
+  },
   methods: {
-    resetCanvas() {
+    resetCanvas () {
       this.scope.project.activeLayer.removeChildren()
       this.paths = []
     },
@@ -40,7 +46,7 @@ export default {
       console.log(this.paths)
 
       this.paths.forEach((path) => {
-        let segment = []
+        const segment = []
         console.log(path._segments)
         path._segments.forEach((_segment) => {
           segment.push([_segment.point.x, _segment.point.y])
@@ -55,9 +61,9 @@ export default {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          'segments': segments
+          segments
         })
-      }).then(response => response.json()).then(data => {
+      }).then(response => response.json()).then((data) => {
         alert('Sent SHEDEVR to spot')
         console.log(data)
       })
@@ -70,15 +76,15 @@ export default {
         strokeWidth: 1.5
       })
     },
-    createTool(scope) {
+    createTool (scope) {
       console.log('createTool')
       scope.activate()
       return new paper.Tool()
     },
-    mouseDown(ev) {
+    mouseDown (ev) {
       console.log('mouse down')
       // in order to access functions in nested tool
-      let self = this
+      const self = this
       // create drawing tool
       this.tool = this.createTool(this.scope)
       this.tool.onMouseDown = (event) => {
@@ -97,16 +103,10 @@ export default {
         self.path.add(event.point)
         self.path.simplify(10)
         self.path.flatten(10)
-        self.paths.push({...self.path})
+        self.paths.push({ ...self.path })
         console.log(self.paths)
-
       }
-
     }
-  },
-  mounted() {
-    this.scope = new paper.PaperScope()
-    this.scope.setup(this.canvasId)
   }
 }
 </script>
