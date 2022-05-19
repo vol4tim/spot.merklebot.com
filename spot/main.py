@@ -17,6 +17,7 @@ import robonomicsinterface as RI
 from substrateinterface import SubstrateInterface
 from pinatapy import PinataPy
 
+
 PROCESSES = []
 
 # Constants to access spot robot
@@ -35,8 +36,6 @@ ROBONOMICS_LISTEN_ROBOT_ACCOUNT = os.environ.get("ROBONOMICS_LISTEN_ROBOT_ACCOUN
                                                  "4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j")
 PINATA_API_KEY = os.environ["PINATA_API_KEY"]
 PINATA_SECRET_API_KEY = os.environ["PINATA_SECRET_API_KEY"]
-
-SPOT_MOVING = os.environ.get("SPOT_MOVING", 0)
 
 coord_nodes = json.load(open("calibration_data_final.json")) if os.path.exists("calibration_data_final.json") else {
     "x": [0, 0, 400, 400],

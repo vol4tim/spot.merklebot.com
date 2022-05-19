@@ -13,9 +13,16 @@ from starlette.routing import Route
 import os
 import numpy as np
 
+from camera_control import CameraControl
+
+
+
 TOKEN = os.environ.get('VIDEOSERVER_TOKEN', "token")  # token to access this server's drawing functions
 
 PROCESSES = []
+
+SPOT_MOVING = os.getenv("SPOT_MOVING", 0)
+FOLLOW_SPOT = os.getenv('FOLLOW_SPOT', 0)
 
 
 def run_server(im, state):
@@ -93,6 +100,8 @@ def run_camera(im, state):
     stream = cv2.VideoCapture(0)
     stream.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
     stream.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+    camera_control = CameraControl()
+
 
     while True:
         (grabbed, frame) = stream.read()
@@ -100,8 +109,38 @@ def run_camera(im, state):
             break
 
         # frame = await reducer(frame, percentage=30, interpolation=cv2.INTER_AREA)  # reduce frame by 30%
-
+        spot_coords = {}
         frame, obj = process_frame(frame)
+
+        if SPOT_MOVING:
+            spot_coords['x'] = obj[0]
+            spot_coords['y'] = obj[1]
+
+        if spot_coords:
+            print(f"Found spot = {spot_coords['x']}, {spot_coords['y']}")
+            if FOLLOW_SPOT:
+                print("Following spot")
+                vel = {
+                    'x': 0,
+                    'y': 0
+                }
+                frame_center_x = frame.shape[1] // 2
+                frame_center_y = frame.shape[0] // 2
+                x_diff = spot_coords['x'] - frame_center_x
+                y_diff = spot_coords['y'] - frame_center_y
+                if x_diff > 50:
+                    vel['x'] = 1
+                elif x_diff < -50:
+                    vel['x'] = -1
+                if y_diff > 50:
+                    vel['y'] = -1
+                elif y_diff < -50:
+                    vel['y'] = 1
+                print(f"x_diff = {x_diff}, y_diff = {y_diff}")
+                camera_control.move(vel, time_interval=0.05)
+
+
+
         blackboard = np.zeros(frame.shape, np.uint8)
         # blackboard[:] = (255, 255, 255)
         if obj:
