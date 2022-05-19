@@ -77,11 +77,10 @@ export default {
         }
       )
     }
-  },
-
-  router: {
-    base: '/',
-    middleware: 'gh-pages-dynamic-routes'
-
   }
+
+  // Support GitHub Pages URL like http://<username>.github.io/<repository-name>
+  // router: {
+  //   base: '/davos.merklebot.com/'
+  // }
 }
