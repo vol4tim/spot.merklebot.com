@@ -24,7 +24,7 @@ def start_record(video_url, output_path, last_im_file):
         print("Stop video recording...")
     finally:
         print("\nVideo recording stopped")
-        if last_frame:
+        if last_frame is not None:
             cv2.imwrite(last_im_file, last_frame)
 
         stream.release()
