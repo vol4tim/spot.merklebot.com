@@ -36,6 +36,8 @@ ROBONOMICS_LISTEN_ROBOT_ACCOUNT = os.environ.get("ROBONOMICS_LISTEN_ROBOT_ACCOUN
 PINATA_API_KEY = os.environ["PINATA_API_KEY"]
 PINATA_SECRET_API_KEY = os.environ["PINATA_SECRET_API_KEY"]
 
+SPOT_MOVING = os.getenv("SPOT_MOVING", 0)
+
 coord_nodes = json.load(open("calibration_data_final.json")) if os.path.exists("calibration_data_final.json") else {
     "x": [0, 0, 400, 400],
     "y": [0, 300, 0, 300],

@@ -8,7 +8,10 @@ from collections import deque
 
 
 def build_model(is_cuda):
-    net = cv2.dnn.readNet("data/spot-face.onnx")
+    if SPOT_MOVING:
+        net = cv2.dnn.readNet("data/yolov5s.onnx")
+    else:
+        net = cv2.dnn.readNet("data/spot-face.onnx")
     if is_cuda:
         print("Attempty to use CUDA")
         net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
@@ -29,6 +32,7 @@ CONFIDENCE_THRESHOLD = 0.4
 CAMERA_CAPTURE = os.getenv('CAMERA_CAPTURE', 0)
 SHOW_WINDOW = os.getenv('SHOW_WINDOW', 1)
 WRITE_FRAMES = os.getenv('WRITE_FRAMES', 1)
+SPOT_MOVING = os.getenv("SPOT_MOVING", 0)
 
 
 def detect(image, net):
