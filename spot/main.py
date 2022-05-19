@@ -288,7 +288,7 @@ def spot_controller(drawing_queue, robot_state):
             result_image_name = "result.jpg"
             video_recorder = subprocess.Popen(["python3", "video_recorder.py", "--video_url={}".format(video_url),
                                                "--output_file=./traces/{}/{}".format(record_folder_name, video_name),
-                                               "--output_file=./traces/{}/{}".format(record_folder_name, result_image_name)])
+                                               "--last_im_file=./traces/{}/{}".format(record_folder_name, result_image_name)])
 
             execute_drawing_command()
         finally:
