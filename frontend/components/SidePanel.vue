@@ -8,10 +8,10 @@
       </div>
       <nav class="mt-6">
         <div>
-          <a
+          <NuxtLink
             class="w-full flex items-center pl-6 p-2 my-2 transition-colors duration-200 justify-start border-l-4"
             :class="{ 'text-gray-800 dark:text-white border-purple-500': (active==='Home'), 'text-gray-400 flex items-center hover:text-gray-800 border-transparent': (active==='Records') }"
-            href="/"
+            to="/"
           >
             <span class="text-left">
               <svg
@@ -29,12 +29,12 @@
             <span class="text-sm font-normal" :class="{'mx-4': active==='Records', 'mx-2': active==='Home'}">
               Home
             </span>
-          </a>
+          </NuxtLink>
 
-          <a
+          <NuxtLink
             class="w-full flex items-center pl-6 p-2 my-2 transition-colors duration-200 justify-start border-l-4"
             :class="{ 'text-gray-800 dark:text-white border-purple-500': (active==='Records'), 'text-gray-400 flex items-center hover:text-gray-800 border-transparent': (active==='Home') }"
-            href="/records"
+            to="/records"
           >
             <span class="text-left">
               <svg
@@ -52,7 +52,7 @@
             <span class="text-sm font-normal" :class="{'mx-4': active==='Home', 'mx-2': active==='Records'}">
               Records
             </span>
-          </a>
+          </NuxtLink>
         </div>
       </nav>
     </div>

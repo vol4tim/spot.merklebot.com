@@ -77,10 +77,10 @@ export default {
         }
       )
     }
-  }
+  },
 
-  // Support GitHub Pages URL like http://<username>.github.io/<repository-name>
-  // router: {
-  //   base: '/davos.merklebot.com/'
-  // }
+  router: {
+    base: '/',
+    mode: 'hash'
+  }
 }
