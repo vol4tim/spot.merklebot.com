@@ -285,8 +285,10 @@ def spot_controller(drawing_queue, robot_state):
 
             # start recording stream from videoserver
             video_url = VIDEOSERVER_URL + "video"
+            result_image_name = "result.jpg"
             video_recorder = subprocess.Popen(["python3", "video_recorder.py", "--video_url={}".format(video_url),
-                                               "--output_file=./traces/{}/{}".format(record_folder_name, video_name)])
+                                               "--output_file=./traces/{}/{}".format(record_folder_name, video_name),
+                                               "--output_file=./traces/{}/{}".format(record_folder_name, result_image_name)])
 
             execute_drawing_command()
         finally:
@@ -301,6 +303,7 @@ def spot_controller(drawing_queue, robot_state):
         pinata = PinataPy(PINATA_API_KEY, PINATA_SECRET_API_KEY)
         pinata_resp = pinata.pin_file_to_ipfs(
             "/home/spot/davos.merklebot.com/spot/traces/{}".format(record_folder_name))
+        print("Pinata response: {}".format(pinata_resp))
         ipfs_cid = pinata_resp["IpfsHash"]
         requests.post("https://api.merklebot.com/davos/traces", json={
             "user_account_address": sender,
