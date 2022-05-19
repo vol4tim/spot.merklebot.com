@@ -238,7 +238,7 @@ def spot_controller(drawing_queue, robot_state):
         print("Robot powered off and sit down")
         time.sleep(1)
 
-    def robonomics_transaction_callback(data):
+    def robonomics_transaction_callback(data, event_id):
         """Execution sequence.
 
         1. Start robot state recording,
@@ -310,6 +310,7 @@ def spot_controller(drawing_queue, robot_state):
             "session_id": session_id,
             "created_at": created_at_str,
             "ipfs_cid": ipfs_cid,
+            "tx_hash": event_id,
         })
         robot_state['last_session_id'] = session_id
         robot_state['state'] = "idle"
