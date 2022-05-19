@@ -169,7 +169,8 @@ def server(drawing_queue, robot_state):
     def current_state():
         return {
             'queue_size': drawing_queue.qsize(),
-            'robot_state': robot_state['state']
+            'robot_state': robot_state['state'],
+            'last_session_id': robot_state['last_session_id'],
         }
 
     @app.route('/draw_figure', methods=['POST'])
@@ -307,6 +308,7 @@ def spot_controller(drawing_queue, robot_state):
             "created_at": created_at_str,
             "ipfs_cid": ipfs_cid,
         })
+        robot_state['last_session_id'] = session_id
         print("Session {} trace created with IPFS CID {}".format(session_id, ipfs_cid))
 
     if USE_ROBONOMICS:
@@ -326,7 +328,7 @@ def main():
     drawing_queue = ctx.Queue()
     robot_state = manager.dict()
     robot_state['state'] = "idle"
-
+    robot_state['last_session_id'] = None
     spot_controller_process = ctx.Process(target=spot_controller, args=(drawing_queue, robot_state))
     server_process = ctx.Process(target=server, args=(drawing_queue, robot_state))
 
