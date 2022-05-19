@@ -112,7 +112,7 @@ def run_camera(im, state):
         spot_coords = {}
         frame, obj = process_frame(frame)
 
-        if SPOT_MOVING:
+        if SPOT_MOVING and obj:
             spot_coords['x'] = obj[0]
             spot_coords['y'] = obj[1]
 
