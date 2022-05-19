@@ -128,13 +128,13 @@ def run_camera(im, state):
                 frame_center_y = frame.shape[0] // 2
                 x_diff = spot_coords['x'] - frame_center_x
                 y_diff = spot_coords['y'] - frame_center_y
-                if x_diff > 50:
+                if x_diff > 200:
                     vel['x'] = 1
-                elif x_diff < -50:
+                elif x_diff < -200:
                     vel['x'] = -1
-                if y_diff > 50:
+                if y_diff > 100:
                     vel['y'] = -1
-                elif y_diff < -50:
+                elif y_diff < -100:
                     vel['y'] = 1
                 print(f"x_diff = {x_diff}, y_diff = {y_diff}")
                 camera_control.move(vel, time_interval=0.05)
