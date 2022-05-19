@@ -15,6 +15,7 @@ def start_record(video_url, output_path, last_im_file):
     try:
         while (True):
             ret, frame = stream.read()
+            last_frame = frame.copy()
             if ret==True:
                 out.write(frame)
             else:

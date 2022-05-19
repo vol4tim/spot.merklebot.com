@@ -3,6 +3,8 @@
     <span>
       <p>Queued: {{ queueSize }}</p>
       <p>Robot state: {{ robotState }}</p>
+      <p v-if="lastSessionId && robotState==='idle'">Last session: <NuxtLink :to="`/records/${lastSessionId}`">{{ lastSessionId }}</NuxtLink></p>
+
       <button :disabled="false" @click="launchCps">
         Launch
       </button>
@@ -39,6 +41,7 @@ export default {
     return {
       queueSize: null,
       robotState: null,
+      lastSessionId: null,
       selectedAccount: {
         account: null,
         balanceRaw: null,
@@ -78,6 +81,7 @@ export default {
 
       this.robotState = json.robot_state
       this.queueSize = json.queue_size
+      this.lastSessionId = json.last_session_id
       return true
     },
     async doRobotStatePolling () {

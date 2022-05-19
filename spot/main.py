@@ -234,7 +234,7 @@ def spot_controller(drawing_queue, robot_state):
         print("Movement finished")
         print("Ready to turn off")
         sc.power_off_sit_down()
-        robot_state['state'] = "idle"
+        robot_state['state'] = "saving_data"
         print("Robot powered off and sit down")
         time.sleep(1)
 
@@ -312,6 +312,8 @@ def spot_controller(drawing_queue, robot_state):
             "ipfs_cid": ipfs_cid,
         })
         robot_state['last_session_id'] = session_id
+        robot_state['state'] = "idle"
+
         print("Session {} trace created with IPFS CID {}".format(session_id, ipfs_cid))
 
     if USE_ROBONOMICS:
