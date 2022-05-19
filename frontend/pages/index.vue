@@ -1,7 +1,7 @@
 <template>
   <main class="bg-gray-100 dark:bg-gray-800 h-screen overflow-hidden relative">
     <div class="flex items-start justify-between">
-      <SidePanel />
+      <SidePanel active="Home" />
       <div class="flex flex-col w-full md:space-y-4">
         <HeaderPanel />
         <div class="overflow-auto h-screen pb-24 px-4 md:px-6">

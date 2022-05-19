@@ -9,8 +9,9 @@
       <nav class="mt-6">
         <div>
           <a
-            class="w-full text-gray-800 dark:text-white flex items-center pl-6 p-2 my-2 transition-colors duration-200 justify-start border-l-4 border-purple-500"
-            href="#"
+            class="w-full flex items-center pl-6 p-2 my-2 transition-colors duration-200 justify-start border-l-4"
+            :class="{ 'text-gray-800 dark:text-white border-purple-500': (active==='Home'), 'text-gray-400 flex items-center hover:text-gray-800 border-transparent': (active==='Records') }"
+            href="/"
           >
             <span class="text-left">
               <svg
@@ -25,13 +26,15 @@
                 />
               </svg>
             </span>
-            <span class="mx-2 text-sm font-normal">
+            <span class="text-sm font-normal" :class="{'mx-4': active==='Records', 'mx-2': active==='Home'}">
               Home
             </span>
           </a>
+
           <a
-            class="w-full text-gray-400 flex items-center pl-6 p-2 my-2 transition-colors duration-200 justify-start hover:text-gray-800 border-l-4 border-transparent"
-            href="#"
+            class="w-full flex items-center pl-6 p-2 my-2 transition-colors duration-200 justify-start border-l-4"
+            :class="{ 'text-gray-800 dark:text-white border-purple-500': (active==='Records'), 'text-gray-400 flex items-center hover:text-gray-800 border-transparent': (active==='Home') }"
+            href="/records"
           >
             <span class="text-left">
               <svg
@@ -46,7 +49,7 @@
                 />
               </svg>
             </span>
-            <span class="mx-4 text-sm font-normal">
+            <span class="text-sm font-normal" :class="{'mx-4': active==='Home', 'mx-2': active==='Records'}">
               Records
             </span>
           </a>
@@ -58,6 +61,7 @@
 
 <script>
 export default {
-  name: 'SidePanel'
+  name: 'SidePanel',
+  props: ['active']
 }
 </script>

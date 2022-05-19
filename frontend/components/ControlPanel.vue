@@ -3,7 +3,7 @@
     <span>
       <p>Queued: {{ queueSize }}</p>
       <p>Robot state: {{ robotState }}</p>
-      <p v-if="lastSessionId && robotState==='idle'">Last session: <NuxtLink :to="`/records/${lastSessionId}`">{{ lastSessionId }}</NuxtLink></p>
+      <p v-if="lastSessionId && robotState==='idle'" class="text-purple-500"> <NuxtLink :to="`/records/${lastSessionId}`">Last session: {{ lastSessionId }}</NuxtLink></p>
 
       <button :disabled="false" @click="launchCps">
         Launch
