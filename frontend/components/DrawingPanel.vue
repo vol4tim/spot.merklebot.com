@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div class="w-2/3 ">
+    <div class="w-full mb-8">
       <canvas :id="canvasId" class="canvas-style" @mousedown="mouseDown" />
     </div>
     <button
       type="button"
-      class="py-2 px-4 mt-2 bg-indigo-500 hover:bg-indigo-600 focus:ring-indigo-400 focus:ring-offset-indigo-200 text-white w-1/2 transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
+      class="py-2 px-4 mt-2 bg-indigo-500 hover:bg-indigo-600 focus:ring-indigo-400 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
       @click="resetCanvas"
     >
       Reset

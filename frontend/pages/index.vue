@@ -11,8 +11,8 @@
           <h2 class="text-md text-gray-400">
             Here&#x27;s spot controlling demo.
           </h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 my-4">
-            <CardContainer title="Camera">
+          <div class="grid grid-cols-3 grid-rows-1 md:grid-cols-3 lg:grid-cols-3 gap-4 my-4">
+            <CardContainer title="Camera" class="col-span-2">
               <CameraFrame />
 
               <CardContainer title="Launch data">
