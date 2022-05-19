@@ -4,6 +4,8 @@ from bosdyn.client.robot_command import RobotCommandClient, RobotCommandBuilder,
 from bosdyn.geometry import EulerZXY
 from bosdyn.api.spot import robot_command_pb2 as spot_command_pb2
 from scipy.interpolate import Rbf
+from bosdyn.client.frame_helpers import ODOM_FRAME_NAME
+from bosdyn.api.basic_command_pb2 import RobotCommandFeedbackStatus
 
 
 class SpotController:
@@ -32,7 +34,6 @@ class SpotController:
         self.yaw_interpolate = Rbf(coord_nodes["x"], coord_nodes["y"], coord_nodes["yaw"], function="linear")
         self.pitch_interpolate = Rbf(coord_nodes["x"], coord_nodes["y"], coord_nodes["pitch"], function="linear")
 
-
     def move_head_in_points(self, yaws, pitches, rolls, body_height=-0.3, sleep_after_point_reached=0, timeout=3):
         for i in range(len(yaws)):
             footprint_r_body = EulerZXY(yaw=yaws[i], roll=rolls[i], pitch=pitches[i])
@@ -40,6 +41,29 @@ class SpotController:
             blocking_stand(self.command_client, timeout_sec=timeout, update_frequency=0.02, params=params)
             self.robot.logger.info("Moved to yaw={} rolls={} pitch={}".format(yaws[i], rolls[i], pitches[i]))
 
+    def wait_until_action_complete(self, cmd_id, timeout=15):
+        start_time = time.time()
+        while time.time() - start_time < timeout:
+            feedback = self.command_client.robot_command_feedback(cmd_id)
+            mobility_feedback = feedback.feedback.synchronized_feedback.mobility_command_feedback
+            if mobility_feedback.status != RobotCommandFeedbackStatus.STATUS_PROCESSING:
+                print("Failed to reach the goal")
+                return False
+            traj_feedback = mobility_feedback.se2_trajectory_feedback
+            if (traj_feedback.status == traj_feedback.STATUS_AT_GOAL and
+                    traj_feedback.body_movement_status == traj_feedback.BODY_STATUS_SETTLED):
+                print("Arrived at the goal.")
+                return True
+            time.sleep(0.5)
+
+    def move_to_goal(self, goal_x, goal_y):
+        cmd = RobotCommandBuilder.synchro_se2_trajectory_point_command(goal_x=goal_x, goal_y=goal_y, goal_heading=0,
+                                                                       frame_name=ODOM_FRAME_NAME)
+        cmd_id = self.command_client.robot_command(lease=None, command=cmd,
+                                                   end_time_secs=time.time() + 10)
+        self.wait_until_action_complete(cmd_id)
+
+        self.robot.logger.info("Moved to x={} y={} pitch={}".format(goal_x, goal_y))
 
     def lease_control(self):
         lease_client = self.robot.ensure_client('lease')

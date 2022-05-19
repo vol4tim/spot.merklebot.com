@@ -102,7 +102,6 @@ def run_camera(im, state):
     stream.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
     camera_control = CameraControl()
 
-
     while True:
         (grabbed, frame) = stream.read()
         if not grabbed:

@@ -16,7 +16,7 @@ import json
 import robonomicsinterface as RI
 from substrateinterface import SubstrateInterface
 from pinatapy import PinataPy
-
+from scipy.interpolate import Rbf
 
 PROCESSES = []
 
@@ -24,6 +24,8 @@ PROCESSES = []
 SPOT_USERNAME = os.environ.get("SPOT_USERNAME", "admin")
 SPOT_PASSWORD = os.environ.get("SPOT_PASSWORD", "2zqa8dgw7lor")
 SPOT_IP = os.environ.get("SPOT_IP", "192.168.50.3")
+
+INTERACTION_MODE = os.environ.get("INTERACTION_MODE", "movement")
 
 # Videoserver url
 VIDEOSERVER_URL = os.environ.get("VIDEOSERVER_IP", "http://10.200.0.8:8000/")
@@ -36,6 +38,8 @@ ROBONOMICS_LISTEN_ROBOT_ACCOUNT = os.environ.get("ROBONOMICS_LISTEN_ROBOT_ACCOUN
                                                  "4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j")
 PINATA_API_KEY = os.environ["PINATA_API_KEY"]
 PINATA_SECRET_API_KEY = os.environ["PINATA_SECRET_API_KEY"]
+
+MOVEMENT_SESSION_DURATION_TIME = 120
 
 coord_nodes = json.load(open("calibration_data_final.json")) if os.path.exists("calibration_data_final.json") else {
     "x": [0, 0, 400, 400],
@@ -162,7 +166,7 @@ def calibration_movement(sc):
     sc.update_interpolator(coord_nodes)
 
 
-def server(drawing_queue, robot_state):
+def server(movement_queue, drawing_queue, robot_state):
     app = Flask(__name__)
     CORS(app, resources={r"/*": {"origins": "*"}})
 
@@ -183,10 +187,26 @@ def server(drawing_queue, robot_state):
             drawing_queue.put(segments)
         return {'status': 'started'}
 
+    @app.route('go_to_point', methods=["POST"])
+    def go_to_point():
+        print("GOT MOVEMENT REQUEST")
+        data = request.get_json()
+        nodes = data['calibration_nodes']
+        coord_nodes = {k: [dic[k] for dic in nodes] for k in nodes[0]}
+        robot_x_interpolate = Rbf(coord_nodes["camera_x"], coord_nodes["camera_y"], coord_nodes["robot_x"],
+                                  function="linear")
+        robot_y_interpolate = Rbf(coord_nodes["camera_x"], coord_nodes["camera_y"], coord_nodes["robot_y"],
+                                  function="linear")
+
+        camera_point_coords = data['camera_point_coords']
+        robot_x_aim = robot_x_interpolate(camera_point_coords[0], camera_point_coords[1])
+        robot_y_aim = robot_y_interpolate(camera_point_coords[0], camera_point_coords[1])
+        movement_queue.put([robot_x_aim, robot_y_aim])
+
     app.run(host='0.0.0.0', port=1234)
 
 
-def spot_controller(drawing_queue, robot_state):
+def spot_controller(movement_queue, drawing_queue, robot_state):
     def execute_drawing_command():
         segments_task = drawing_queue.get()
         calibrate = False
@@ -239,6 +259,43 @@ def spot_controller(drawing_queue, robot_state):
         print("Robot powered off and sit down")
         time.sleep(1)
 
+    def start_movement_sesstion():
+        print("Starting movement session")
+
+        print("Starting spot controller")
+        sc = SpotController(SPOT_USERNAME, SPOT_PASSWORD, SPOT_IP, coord_nodes)
+
+        print("Spot controller started")
+        sc.lease_control()
+        print("Lease control got")
+        sc.power_on_stand_up()
+        print("Robot powered and stand up")
+
+        robot_state['state'] = 'waiting_movement_command (left: {}s)'.format(MOVEMENT_SESSION_DURATION_TIME)
+        session_start_time = time.time()
+
+        while True:
+            current_time = time.time()
+            current_duration = current_time - session_start_time
+            robot_state['state'] = 'waiting_movement_command (left: {}s)'.format(current_duration)
+
+            if current_duration < MOVEMENT_SESSION_DURATION_TIME:
+                aim_robot_point = movement_queue.get_nowait()
+                if not aim_robot_point:
+                    continue
+
+                robot_state['state'] = 'executing_movement_command'
+                sc.move_to_goal(aim_robot_point[0], aim_robot_point[2])
+
+            else:
+                # go to 0,0
+                sc.move_to_goal(0, 0)
+                sc.power_off_sit_down()
+                robot_state['state'] = "saving_data"
+                print("Robot powered off and sit down")
+                time.sleep(1)
+                break
+
     def robonomics_transaction_callback(data, event_id):
         """Execution sequence.
 
@@ -289,9 +346,12 @@ def spot_controller(drawing_queue, robot_state):
             result_image_name = "result.jpg"
             video_recorder = subprocess.Popen(["python3", "video_recorder.py", "--video_url={}".format(video_url),
                                                "--output_file=./traces/{}/{}".format(record_folder_name, video_name),
-                                               "--last_im_file=./traces/{}/{}".format(record_folder_name, result_image_name)])
-
-            execute_drawing_command()
+                                               "--last_im_file=./traces/{}/{}".format(record_folder_name,
+                                                                                      result_image_name)])
+            if INTERACTION_MODE == 'drawing':
+                execute_drawing_command()
+            elif INTERACTION_MODE == 'movements':
+                start_movement_sesstion()
         finally:
             time.sleep(2)  # wait for the robot to finish its movement
             recorder.terminate()
@@ -333,11 +393,13 @@ def main():
 
     ctx = multiprocessing.get_context('spawn')
     drawing_queue = ctx.Queue()
+    movement_queue = ctx.Queue()
+
     robot_state = manager.dict()
     robot_state['state'] = "idle"
     robot_state['last_session_id'] = None
-    spot_controller_process = ctx.Process(target=spot_controller, args=(drawing_queue, robot_state))
-    server_process = ctx.Process(target=server, args=(drawing_queue, robot_state))
+    spot_controller_process = ctx.Process(target=spot_controller, args=(movement_queue, drawing_queue, robot_state))
+    server_process = ctx.Process(target=server, args=(movement_queue, drawing_queue, robot_state))
 
     PROCESSES.append(spot_controller_process)
     PROCESSES.append(server_process)
