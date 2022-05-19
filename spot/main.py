@@ -280,7 +280,10 @@ def spot_controller(movement_queue, drawing_queue, robot_state):
             robot_state['state'] = 'waiting_movement_command (left: {}s)'.format(current_duration)
 
             if current_duration < MOVEMENT_SESSION_DURATION_TIME:
-                aim_robot_point = movement_queue.get_nowait()
+                try:
+                    aim_robot_point = movement_queue.get(block=False)
+                except:
+                    aim_robot_point = None
                 if not aim_robot_point:
                     continue
 
