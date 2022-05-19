@@ -47,12 +47,12 @@ export default {
   },
   methods: {
     async fetchData () {
-      for (let i = 68; i <= 70; i++) {
-        const sessionData = await (await fetch(`https://api.merklebot.com/davos/traces/session/${i}`, { method: 'GET' })).json()
-        const session = { ...sessionData }
+      const sessions = await (await fetch('https://api.merklebot.com/davos/traces', { method: 'GET' })).json()
+
+      sessions.forEach((session) => {
         session.traceFolderLink = `https://merklebot.mypinata.cloud/ipfs/${session.ipfs_cid}/spot/davos.merklebot.com/spot/traces/user-${session.user_account_address}-cps-4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j-session-${session.session_id}-${session.created_at}`
         this.sessions.push(session)
-      }
+      })
     }
   }
 }

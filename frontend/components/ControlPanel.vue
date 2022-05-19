@@ -5,9 +5,6 @@
       <p>Robot state: {{ robotState }}</p>
       <p v-if="lastSessionId && robotState==='idle'" class="text-purple-500"> <NuxtLink :to="`/records/${lastSessionId}`">Last session: {{ lastSessionId }}</NuxtLink></p>
 
-      <button :disabled="false" @click="launchCps">
-        Launch
-      </button>
       <ul style="list-style: none; padding: 0">
         <li>Robot status: {{ cps.status }}</li>
         <li v-if="cps.launch.txStatus">

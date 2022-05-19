@@ -16,12 +16,12 @@
               <CameraFrame />
 
               <CardContainer title="Launch data">
-                <ControlPanel />
+                <ControlPanel ref="controlPanel" />
               </CardContainer>
             </CardContainer>
 
             <CardContainer title="Drawing panel">
-              <DrawingPanel :canvas-id="'canvas-one'" />
+              <DrawingPanel :canvas-id="'canvas-one'" @drawing_sent="drawingSent" />
             </CardContainer>
           </div>
         </div>
@@ -29,3 +29,14 @@
     </div>
   </main>
 </template>
+
+<script>
+export default {
+  name: 'MainPage',
+  methods: {
+    drawingSent () {
+      this.$refs.controlPanel.launchCps()
+    }
+  }
+}
+</script>

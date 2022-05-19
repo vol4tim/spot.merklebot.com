@@ -20,7 +20,8 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 my-4">
               <CardContainer title="Session Info">
                 <p>Ipfs Cid: {{ sessionData['ipfs_cid'] }}</p>
-                <a :href="traceFolderLink" class="text-purple-500">View record data on Ipfs</a>
+                <p><a :href="traceFolderLink" class="text-purple-500">View record data on Ipfs</a></p>
+                <p><a :href="datalogLink" class="text-purple-500">View Robonomics Datalog</a></p>
               </CardContainer>
               <CardContainer title="Video Record">
                 <video :src="`${traceFolderLink}/h264_camera.mp4`" type="video/mp4" controls />
@@ -48,7 +49,8 @@ export default {
     }
     const sessionData = await (await fetch('https://api.merklebot.com/davos/traces/session/' + sessionId, { method: 'GET' })).json()
     const traceFolderLink = `https://merklebot.mypinata.cloud/ipfs/${sessionData.ipfs_cid}/spot/davos.merklebot.com/spot/traces/user-${sessionData.user_account_address}-cps-4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j-session-${sessionId}-${sessionData.created_at}`
-    return { sessionId, sessionData, traceFolderLink }
+    const datalogLink = `https://robonomics.subscan.io/extrinsic/${sessionData.tx_hash}`
+    return { sessionId, sessionData, traceFolderLink, datalogLink }
   }
 
 }

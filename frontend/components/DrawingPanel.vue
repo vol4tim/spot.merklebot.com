@@ -1,9 +1,11 @@
 <template>
   <div>
-    <canvas :id="canvasId" class="canvas-style" @mousedown="mouseDown" />
+    <div class="w-2/3 ">
+      <canvas :id="canvasId" class="canvas-style" @mousedown="mouseDown" />
+    </div>
     <button
       type="button"
-      class="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
+      class="py-2 px-4 mt-2 bg-indigo-500 hover:bg-indigo-600 focus:ring-indigo-400 focus:ring-offset-indigo-200 text-white w-1/2 transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
       @click="resetCanvas"
     >
       Reset
@@ -11,7 +13,7 @@
 
     <button
       type="button"
-      class="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
+      class="py-2 px-4 mt-4 bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
       @click="sendCommand"
     >
       Send Command
@@ -65,6 +67,7 @@ export default {
         })
       }).then(response => response.json()).then((data) => {
         alert('Sent SHEDEVR to spot')
+        this.$emit('drawing_sent')
         console.log(data)
       })
     },
@@ -115,7 +118,7 @@ export default {
 .canvas-style {
   cursor: crosshair;
   width: 100% !important;
-  height: 500px !important;
+  height: 300px !important;
   border: 5px solid black;
   border-radius: 10px;
   display: block;
