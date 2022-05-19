@@ -202,7 +202,7 @@ def server(movement_queue, drawing_queue, robot_state):
         robot_x_aim = float(robot_x_interpolate(camera_point_coords[0], camera_point_coords[1]))
         robot_y_aim = float(robot_y_interpolate(camera_point_coords[0], camera_point_coords[1]))
         movement_queue.put([robot_x_aim, robot_y_aim])
-
+        return {'status': 'ok'}
     app.run(host='0.0.0.0', port=1234)
 
 

@@ -63,7 +63,7 @@ class SpotController:
                                                    end_time_secs=time.time() + 10)
         self.wait_until_action_complete(cmd_id)
 
-        self.robot.logger.info("Moved to x={} y={} pitch={}".format(goal_x, goal_y))
+        self.robot.logger.info("Moved to x={} y={}".format(goal_x, goal_y))
 
     def lease_control(self):
         lease_client = self.robot.ensure_client('lease')
