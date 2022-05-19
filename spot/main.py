@@ -277,7 +277,7 @@ def spot_controller(movement_queue, drawing_queue, robot_state):
         while True:
             current_time = time.time()
             current_duration = current_time - session_start_time
-            robot_state['state'] = 'waiting_movement_command (left: {}s)'.format(current_duration)
+            robot_state['state'] = 'waiting_movement_command (left: {}s)'.format(MOVEMENT_SESSION_DURATION_TIME-current_duration)
 
             if current_duration < MOVEMENT_SESSION_DURATION_TIME:
                 try:
