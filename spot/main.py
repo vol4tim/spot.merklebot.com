@@ -350,7 +350,7 @@ def spot_controller(movement_queue, drawing_queue, robot_state):
                                                                                       result_image_name)])
             if INTERACTION_MODE == 'drawing':
                 execute_drawing_command()
-            elif INTERACTION_MODE == 'movements':
+            elif INTERACTION_MODE == 'movement':
                 start_movement_sesstion()
         finally:
             time.sleep(2)  # wait for the robot to finish its movement
