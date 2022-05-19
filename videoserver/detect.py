@@ -32,7 +32,8 @@ CONFIDENCE_THRESHOLD = 0.4
 CAMERA_CAPTURE = os.getenv('CAMERA_CAPTURE', 0)
 SHOW_WINDOW = os.getenv('SHOW_WINDOW', 1)
 WRITE_FRAMES = os.getenv('WRITE_FRAMES', 1)
-SPOT_MOVING = os.getenv("SPOT_MOVING", 0)
+
+SPOT_MOVING = os.environ.get("SPOT_MOVING", 0)
 
 
 def detect(image, net):
