@@ -285,7 +285,7 @@ def spot_controller(movement_queue, drawing_queue, robot_state):
                     continue
 
                 robot_state['state'] = 'executing_movement_command'
-                sc.move_to_goal(aim_robot_point[0], aim_robot_point[2])
+                sc.move_to_goal(aim_robot_point[0], aim_robot_point[1])
 
             else:
                 # go to 0,0
