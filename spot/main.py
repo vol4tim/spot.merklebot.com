@@ -249,11 +249,12 @@ def spot_controller(drawing_queue, robot_state):
 
         sender, recipient, _ = data
         session_id = get_account_nonce(sender)
+        created_at_str = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
         record_folder_name = "user-{}-cps-{}-session-{}-{}".format(
             sender,
             recipient,
             session_id,
-            datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S"),
+            created_at_str
         )
         # bag_name = "user-{}-cps-{}-session-{}-{}.bag".format(
         #     sender,
@@ -268,7 +269,7 @@ def spot_controller(drawing_queue, robot_state):
         #     datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S"),
         # )
         bag_name = "state.bag"
-        video_name = "raw_camera.mp4"
+        video_name = "camera.mp4"
         print("New launch, sender={}, recipient={}, session_id={}, bag={}".format(
             sender, recipient, session_id, bag_name))
         try:
@@ -303,6 +304,7 @@ def spot_controller(drawing_queue, robot_state):
         requests.post("https://api.merklebot.com/davos/traces", json={
             "user_account_address": sender,
             "session_id": session_id,
+            "created_at": created_at_str,
             "ipfs_cid": ipfs_cid,
         })
         print("Session {} trace created with IPFS CID {}".format(session_id, ipfs_cid))
