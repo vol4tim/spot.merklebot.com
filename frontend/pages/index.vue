@@ -46,8 +46,9 @@
 export default {
   name: 'MainPage',
   methods: {
-    drawingSent () {
-      this.$refs.controlPanel.launchCps()
+    async drawingSent (sendCommand) {
+      await this.$refs.controlPanel.launchCps()
+      sendCommand()
     }
   }
 }

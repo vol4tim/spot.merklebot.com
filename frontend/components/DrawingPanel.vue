@@ -61,17 +61,18 @@ export default {
       this.$store.commit('setCodeSampleParameter', true)
 
       // fetch('http://10.200.0.3:1234/draw_figure', {
-      fetch('https://api.merklebot.com/strelka/draw_figure', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          segments
+      this.$emit('drawing_sent', () => {
+        fetch('https://api.merklebot.com/strelka/draw_figure', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            segments
+          })
+        }).then(response => response.json()).then((data) => {
+          console.log(data)
         })
-      }).then(response => response.json()).then((data) => {
-        this.$emit('drawing_sent')
-        console.log(data)
       })
     },
     pathCreate (scope) {

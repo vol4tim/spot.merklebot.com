@@ -67,6 +67,7 @@ export default {
       this.cps.launch.txInfo = await signAndSendTxWithActiveAccount(launchTx)
       this.cps.launch.txStatus = 'accepted'
       this.cps.status = 'activated'
+      return true
     },
     addressShort (address) {
       return address.slice(0, 6) + '...' + address.slice(-4)
