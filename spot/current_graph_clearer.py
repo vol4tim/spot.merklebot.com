@@ -15,4 +15,5 @@ lease = lease_client.take()
 lease_keep_alive = bosdyn.client.lease.LeaseKeepAlive(lease_client, must_acquire=True)
 
 graph_nav_client = robot.ensure_client(GraphNavClient.default_service_name)
+graph_nav_client.stop_recording()
 graph_nav_client.clear_graph()
