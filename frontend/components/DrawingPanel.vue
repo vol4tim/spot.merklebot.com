@@ -41,6 +41,7 @@ export default {
     resetCanvas () {
       this.scope.project.activeLayer.removeChildren()
       this.paths = []
+      this.$store.commit('setCodeSampleParameter', false)
     },
     sendCommand () {
       const segments = []
@@ -56,6 +57,9 @@ export default {
         segments.push(segment)
       })
       console.log(segments)
+
+      this.$store.commit('setCodeSampleParameter', true)
+
       // fetch('http://10.200.0.3:1234/draw_figure', {
       fetch('https://api.merklebot.com/strelka/draw_figure', {
         method: 'POST',

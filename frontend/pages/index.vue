@@ -23,6 +23,10 @@
             <CardContainer title="Drawing panel">
               <DrawingPanel :canvas-id="'canvas-one'" @drawing_sent="drawingSent" />
             </CardContainer>
+
+            <CardContainer title="Code example" class="col-span-3">
+              <CodeSample />
+            </CardContainer>
           </div>
         </div>
       </div>
