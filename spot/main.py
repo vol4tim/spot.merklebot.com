@@ -299,7 +299,7 @@ def spot_controller(movement_queue, drawing_queue, robot_state):
                 time.sleep(1)
                 break
 
-    def robonomics_transaction_callback(data, event_id):
+    def robonomics_transaction_callback(data, launch_event_id):
         """Execution sequence.
 
         1. Start robot state recording,
@@ -369,12 +369,15 @@ def spot_controller(movement_queue, drawing_queue, robot_state):
             "/home/spot/davos.merklebot.com/spot/traces/{}".format(record_folder_name))
         print("Pinata response: {}".format(pinata_resp))
         ipfs_cid = pinata_resp["IpfsHash"]
+        robonomics = RI.RobonomicsInterface(seed=os.environ["MNENOMIC"])
+        datalog_extrinsic_hash = robonomics.record_datalog(ipfs_cid)
         requests.post("https://api.merklebot.com/davos/traces", json={
             "user_account_address": sender,
             "session_id": session_id,
             "created_at": created_at_str,
             "ipfs_cid": ipfs_cid,
-            "tx_hash": event_id,
+            "launch_tx_id": launch_event_id,
+            "datalog_tx_id": datalog_extrinsic_hash,
         })
         robot_state['last_session_id'] = session_id
         robot_state['state'] = "idle"
