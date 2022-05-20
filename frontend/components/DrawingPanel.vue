@@ -66,7 +66,6 @@ export default {
           segments
         })
       }).then(response => response.json()).then((data) => {
-        alert('Sent SHEDEVR to spot')
         this.$emit('drawing_sent')
         console.log(data)
       })
