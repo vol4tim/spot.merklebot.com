@@ -22,7 +22,7 @@
                 <p>IPFS Content ID: {{ sessionData['ipfs_cid'] }}</p>
                 <p>View Robonomics Launch Tx: <a :href="datalogLink" class="text-purple-500" target="_blank" rel="noopener noreferrer">{{ launchLink }}</a></p>
                 <p>View record data on IPFS: <a :href="traceFolderLink" class="text-purple-500" target="_blank" rel="noopener noreferrer">{{ traceFolderLink.slice(0, 50) + '...' }}</a></p>
-                <p>View Robonomics Datalog Tx: <a :href="datalogLink" class="text-purple-500" target="_blank" rel="noopener noreferrer">{{ datalogLink }}</a></p>
+                <p>View Robonomics Datalog Tx: <a :href="datalogLink" class="text-purple-500" target="_blank" rel="noopener noreferrer">{{ datalogLink.slice(0, 50) + '...' }}</a></p>
               </CardContainer>
               <CardContainer title="Video Record">
                 <video :src="`${traceFolderLink}/h264_camera.mp4`" type="video/mp4" controls />
