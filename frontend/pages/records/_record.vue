@@ -19,9 +19,10 @@
             </h1>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 my-4">
               <CardContainer title="Session Info">
-                <p>Ipfs Cid: {{ sessionData['ipfs_cid'] }}</p>
-                <p><a :href="traceFolderLink" class="text-purple-500">View record data on Ipfs</a></p>
-                <p><a :href="datalogLink" class="text-purple-500">View Robonomics Datalog</a></p>
+                <p>IPFS Content ID: {{ sessionData['ipfs_cid'] }}</p>
+                <p>View Robonomics Launch Tx: <a :href="datalogLink" class="text-purple-500" target="_blank" rel="noopener noreferrer">{{ launchLink }}</a></p>
+                <p>View record data on IPFS: <a :href="traceFolderLink" class="text-purple-500" target="_blank" rel="noopener noreferrer">{{ traceFolderLink.slice(0, 50) + '...' }}</a></p>
+                <p>View Robonomics Datalog Tx: <a :href="datalogLink" class="text-purple-500" target="_blank" rel="noopener noreferrer">{{ datalogLink }}</a></p>
               </CardContainer>
               <CardContainer title="Video Record">
                 <video :src="`${traceFolderLink}/h264_camera.mp4`" type="video/mp4" controls />
@@ -49,8 +50,9 @@ export default {
     }
     const sessionData = await (await fetch('https://api.merklebot.com/davos/traces/session/' + sessionId, { method: 'GET' })).json()
     const traceFolderLink = `https://merklebot.mypinata.cloud/ipfs/${sessionData.ipfs_cid}/spot/davos.merklebot.com/spot/traces/user-${sessionData.user_account_address}-cps-4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j-session-${sessionId}-${sessionData.created_at}`
-    const datalogLink = `https://robonomics.subscan.io/extrinsic/${sessionData.tx_hash}`
-    return { sessionId, sessionData, traceFolderLink, datalogLink }
+    const launchLink = `https://robonomics.subscan.io/extrinsic/${sessionData.launch_tx_id}`
+    const datalogLink = `https://robonomics.subscan.io/extrinsic/${sessionData.datalog_tx_id}`
+    return { sessionId, sessionData, traceFolderLink, launchLink, datalogLink }
   }
 
 }
