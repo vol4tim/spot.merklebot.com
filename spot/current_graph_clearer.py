@@ -1,6 +1,7 @@
 import bosdyn.client
 from bosdyn.client.graph_nav import GraphNavClient
 from bosdyn.client.recording import GraphNavRecordingServiceClient
+from bosdyn.api.graph_nav import nav_pb2
 
 robot_ip = "192.168.50.3"
 username = "admin"
@@ -19,4 +20,5 @@ recording_client = robot.ensure_client(GraphNavRecordingServiceClient.default_se
 graph_nav_client = robot.ensure_client(GraphNavClient.default_service_name)
 
 recording_client.stop_recording()
-graph_nav_client.clear_graph()
+# graph_nav_client.clear_graph()
+graph_nav_client.set_localization(nav_pb2.Localization())
