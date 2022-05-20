@@ -183,7 +183,7 @@ def server(movement_queue, drawing_queue, robot_state):
         }
 
     @app.route("/odom", methods=["GET"])
-    def current_state():
+    def odom():
 
         sdk = bosdyn.client.create_standard_sdk('ControllingSDK')
         robot = sdk.create_robot(SPOT_IP)
