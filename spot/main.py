@@ -18,6 +18,10 @@ from substrateinterface import SubstrateInterface
 from pinatapy import PinataPy
 from scipy.interpolate import Rbf
 
+import bosdyn.client
+from bosdyn.client.robot_state import RobotStateClient
+
+
 PROCESSES = []
 
 # Constants to access spot robot
@@ -176,6 +180,25 @@ def server(movement_queue, drawing_queue, robot_state):
             'queue_size': drawing_queue.qsize(),
             'robot_state': robot_state['state'],
             'last_session_id': robot_state['last_session_id'],
+        }
+
+    @app.route("/odom", methods=["GET"])
+    def current_state():
+
+        sdk = bosdyn.client.create_standard_sdk('ControllingSDK')
+        robot = sdk.create_robot(SPOT_IP)
+        robot.authenticate(SPOT_USERNAME, SPOT_PASSWORD)
+
+        state_client = robot.ensure_client(RobotStateClient.default_service_name)
+
+        position = state_client.get_robot_state().kinematic_state.transforms_snapshot.child_to_parent_edge_map[
+            "gpe"].parent_tform_child.position
+
+        return {
+            'position': {
+                'x': position.x,
+                'y': position.y
+            }
         }
 
     @app.route('/draw_figure', methods=['POST'])
