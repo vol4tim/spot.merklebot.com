@@ -23,7 +23,7 @@ PROCESSES = []
 
 SPOT_MOVING = os.getenv("SPOT_MOVING", 0)
 FOLLOW_SPOT = os.getenv('FOLLOW_SPOT', 0)
-
+DETECT_SPOT = os.getenv('DETECT_SPOT', 1)
 
 def run_server(im, state):
     async def frame_producer():
@@ -109,7 +109,9 @@ def run_camera(im, state):
 
         # frame = await reducer(frame, percentage=30, interpolation=cv2.INTER_AREA)  # reduce frame by 30%
         spot_coords = {}
-        frame, obj = process_frame(frame)
+        obj = None
+        if DETECT_SPOT:
+            frame, obj = process_frame(frame)
 
         if SPOT_MOVING and obj:
             spot_coords['x'] = obj[0]

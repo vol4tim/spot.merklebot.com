@@ -119,8 +119,6 @@ net = build_model(is_cuda)
 
 
 def process_frame(frame):
-
-
     inputImage = format_yolov5(frame)
     outs = detect(inputImage, net)
 
