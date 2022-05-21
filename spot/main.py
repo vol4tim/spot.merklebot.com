@@ -200,6 +200,13 @@ def server(movement_queue, drawing_queue, robot_state):
                 'y': position.y
             }
         }
+    @app.route('/set_movement_calibration_nodes', methods=['POST'])
+    def set_movement_calibration_nodes():
+        data = request.get_json()
+        robot_state['calibration_nodes'] = data['calibration_nodes']
+        return {
+            'status': 'ok'
+        }
 
     @app.route('/draw_figure', methods=['POST'])
     def draw_figure():
