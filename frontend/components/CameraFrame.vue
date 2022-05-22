@@ -93,7 +93,7 @@ export default {
         this.calibrationNodes.push(_node)
 
         this.curCalibrationNodeIndex += 1
-        if (this.curCalibrationNodeIndex >= 8) {
+        if (this.curCalibrationNodeIndex >= 16) {
           this.calibrationProcess = false
           fetch('https://api.merklebot.com/strelka/set_movement_calibration_nodes', {
             method: 'POST',
