@@ -204,6 +204,9 @@ def server(movement_queue, drawing_queue, robot_state):
     def set_movement_calibration_nodes():
         data = request.get_json()
         robot_state['calibration_nodes'] = data['calibration_nodes']
+        with open('movement_calibration_nodes.json', 'w') as f:
+            json.dump(data['calibration_nodes'], f)
+
         return {
             'status': 'ok'
         }
@@ -221,7 +224,8 @@ def server(movement_queue, drawing_queue, robot_state):
     def go_to_point():
         print("GOT MOVEMENT REQUEST")
         data = request.get_json()
-        nodes = data['calibration_nodes']
+        nodes = robot_state['calibration_nodes']
+
         coord_nodes = {k: [dic[k] for dic in nodes] for k in nodes[0]}
         robot_x_interpolate = Rbf(coord_nodes["camera_x"], coord_nodes["camera_y"], coord_nodes["robot_x"],
                                   function="linear")
@@ -434,6 +438,7 @@ def main():
     robot_state = manager.dict()
     robot_state['state'] = "idle"
     robot_state['last_session_id'] = None
+    robot_state['calibration_nodes'] = json.load(open("movement_calibration_nodes.json")) if os.path.exists("movement_calibration_nodes.json") else []
     spot_controller_process = ctx.Process(target=spot_controller, args=(movement_queue, drawing_queue, robot_state))
     server_process = ctx.Process(target=server, args=(movement_queue, drawing_queue, robot_state))
 
