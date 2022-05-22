@@ -83,7 +83,11 @@ export default {
       return true
     },
     async doRobotStatePolling () {
-      await this.updateRobotState()
+      try {
+        await this.updateRobotState()
+      } catch (e) {
+        console.log('Spot state unavailable, retrying')
+      }
       setTimeout(this.doRobotStatePolling, 1000)
     }
   }

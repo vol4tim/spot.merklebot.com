@@ -31,7 +31,7 @@ def run_server(im, state):
         while True:
             frame, obj = im[0], im[1]
 
-            frame = await reducer(frame, percentage=30, interpolation=cv2.INTER_AREA)  # reduce frame by 30%
+            frame = await reducer(frame, percentage=50, interpolation=cv2.INTER_AREA)  # reduce frame by 30%
 
             encodedImage = cv2.imencode(".jpg", frame)[1].tobytes()
             yield (b"--frame\r\nContent-Type:image/jpeg\r\n\r\n" + encodedImage + b"\r\n")
@@ -98,8 +98,8 @@ def run_server(im, state):
 
 def run_camera(im, state):
     stream = cv2.VideoCapture(0)
-    stream.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
-    stream.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+    stream.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+    stream.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
     camera_control = CameraControl()
 
     while True:
