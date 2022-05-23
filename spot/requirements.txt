@@ -2,7 +2,7 @@ bosdyn-client
 bosdyn-mission
 bosdyn-choreography-client
 scipy
-robonomics-interface @ git+https://github.com/khssnv/robonomics-interface.git@0.10.0-presumably-patch1
+robonomics-interface @ git+https://github.com/khssnv/robonomics-interface.git@0.10.0-presumably-patch2
 substrate-interface
 pinatapy-vourhey
 requests
