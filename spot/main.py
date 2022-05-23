@@ -244,6 +244,38 @@ def server(movement_queue, drawing_queue, robot_state):
     app.run(host='0.0.0.0', port=1234)
 
 
+def after_session_complete(
+    record_folder_name,
+    video_name,
+    sender,
+    session_id,
+    created_at_str,
+    launch_event_id,
+):
+    print("After session procedure for session {} started".format(session_id))
+    video_path = "./traces/{}/{}".format(record_folder_name, video_name)
+    h264_path = "./traces/{}/h264_{}".format(record_folder_name, video_name)
+    os.system("ffmpeg -i {} -vcodec h264 {} ".format(video_path, h264_path))
+
+    pinata = PinataPy(PINATA_API_KEY, PINATA_SECRET_API_KEY)
+    pinata_resp = pinata.pin_file_to_ipfs(
+        "/home/spot/davos.merklebot.com/spot/traces/{}".format(record_folder_name))
+    print("Pinata response: {}".format(pinata_resp))
+
+    robonomics = RI.RobonomicsInterface(seed=os.environ["MNENOMIC"])
+    ipfs_cid = pinata_resp["IpfsHash"]
+    datalog_extrinsic_hash = robonomics.record_datalog(ipfs_cid)
+    requests.post("https://api.merklebot.com/davos/traces", json={
+        "user_account_address": sender,
+        "session_id": session_id,
+        "created_at": created_at_str,
+        "ipfs_cid": ipfs_cid,
+        "launch_tx_id": launch_event_id,
+        "datalog_tx_id": datalog_extrinsic_hash,
+    })
+    print("Session {} trace created with IPFS CID {}".format(session_id, ipfs_cid))
+
+
 def spot_controller(movement_queue, drawing_queue, robot_state):
     def execute_drawing_command():
         segments_task = drawing_queue.get()
@@ -343,8 +375,7 @@ def spot_controller(movement_queue, drawing_queue, robot_state):
         1. Start robot state recording,
         2. Move the robot,
         3. Stop recording,
-        4. Upload recording to Pinata,
-        5. Create trace on the backend.
+        4. Launch after session procedures in background.
         """
 
         sender, recipient, _ = data
@@ -398,29 +429,22 @@ def spot_controller(movement_queue, drawing_queue, robot_state):
             recorder.terminate()
             video_recorder.send_signal(signal.SIGINT)
         time.sleep(5)  # wait while recorder process closes the file
-        video_path = "./traces/{}/{}".format(record_folder_name, video_name)
-        h264_path = "./traces/{}/h264_{}".format(record_folder_name, video_name)
-        os.system("ffmpeg -i {} -vcodec h264 {} ".format(video_path, h264_path))
 
-        pinata = PinataPy(PINATA_API_KEY, PINATA_SECRET_API_KEY)
-        pinata_resp = pinata.pin_file_to_ipfs(
-            "/home/spot/davos.merklebot.com/spot/traces/{}".format(record_folder_name))
-        print("Pinata response: {}".format(pinata_resp))
-        ipfs_cid = pinata_resp["IpfsHash"]
-        robonomics = RI.RobonomicsInterface(seed=os.environ["MNENOMIC"])
-        datalog_extrinsic_hash = robonomics.record_datalog(ipfs_cid)
-        requests.post("https://api.merklebot.com/davos/traces", json={
-            "user_account_address": sender,
-            "session_id": session_id,
-            "created_at": created_at_str,
-            "ipfs_cid": ipfs_cid,
-            "launch_tx_id": launch_event_id,
-            "datalog_tx_id": datalog_extrinsic_hash,
-        })
+        multiprocessing.Process(
+            target=after_session_complete,
+            args=(
+                record_folder_name,
+                video_name,
+                sender,
+                session_id,
+                created_at_str,
+                launch_event_id,
+                robot_state,
+            )
+        ).start()
         robot_state['last_session_id'] = session_id
         robot_state['state'] = "idle"
-
-        print("Session {} trace created with IPFS CID {}".format(session_id, ipfs_cid))
+        print("Session {} complete, creating a trace".format(session_id))
 
     if USE_ROBONOMICS:
         interface = RI.RobonomicsInterface()
