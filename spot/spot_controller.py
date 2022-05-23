@@ -24,10 +24,13 @@ class SpotController:
         self.robot.authenticate(username, password)
 
         self.command_client = self.robot.ensure_client(RobotCommandClient.default_service_name)
+        self.lease_client = self.robot.ensure_client('lease')
+
         self.yaw_interpolate = Rbf(coord_nodes["x"], coord_nodes["y"], coord_nodes["yaw"], function="linear")
         self.pitch_interpolate = Rbf(coord_nodes["x"], coord_nodes["y"], coord_nodes["pitch"], function="linear")
 
         self.robot.logger.info("Authenticated")
+        self.lease = None
 
     def update_interpolator(self, coord_nodes):
         self.coord_nodes = coord_nodes
@@ -66,9 +69,8 @@ class SpotController:
         self.robot.logger.info("Moved to x={} y={}".format(goal_x, goal_y))
 
     def lease_control(self):
-        lease_client = self.robot.ensure_client('lease')
-        lease = lease_client.take()
-        lease_keep_alive = bosdyn.client.lease.LeaseKeepAlive(lease_client, must_acquire=True)
+        self.lease = self.lease_client.take()
+        lease_keep_alive = bosdyn.client.lease.LeaseKeepAlive(self.lease_client, must_acquire=True)
         self.robot.logger.info("Lease acquired")
 
     def power_on_stand_up(self):
@@ -78,6 +80,7 @@ class SpotController:
         blocking_stand(self.command_client, timeout_sec=10)
 
     def power_off_sit_down(self):
+        self.lease_client.return_lease(self.lease)
         self.move_head_in_points(yaws=[0], pitches=[0], rolls=[0])
         self.robot.power_off(cut_immediately=False)
 
