@@ -7,7 +7,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'davos-frontend',
+    title: 'Play with Spot',
     htmlAttrs: {
       lang: 'en'
     },
