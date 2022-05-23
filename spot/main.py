@@ -220,6 +220,10 @@ def server(movement_queue, drawing_queue, robot_state):
             drawing_queue.put(segments)
         return {'status': 'started'}
 
+    @app.route('/interaction_mode', methods=['GET'])
+    def get_interaction_mode():
+        return {'interaction_mode': INTERACTION_MODE}
+
     @app.route('/go_to_point', methods=["POST"])
     def go_to_point():
         print("GOT MOVEMENT REQUEST")

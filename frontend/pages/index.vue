@@ -9,7 +9,10 @@
             MerkleBot Spot SDK Education
           </h1>
           <h2 class="text-md text-gray-400 my-2">
-            Become a certified Boston Dynamics Spot developer at <a href="https://spot-sdk.education/" rel="noopener noreferrer">https://spot-sdk.education/</a>
+            Become a certified Boston Dynamics Spot developer at <a
+              href="https://spot-sdk.education/"
+              rel="noopener noreferrer"
+            >https://spot-sdk.education/</a>
           </h2>
           <p>
             Here you can control Boston Dynamics Spot like a student at MerkleBot Spot SDK Basics course.
@@ -19,7 +22,8 @@
               <li>3. Verify your session on Robonomics blockchain and IPFS.</li>
             </ol>
           </p>
-          <div class="grid grid-cols-3 grid-rows-1 md:grid-cols-3 lg:grid-cols-3 gap-4 my-4">
+
+          <div v-if="interactionMode==='drawing'" class="grid grid-cols-3 grid-rows-1 md:grid-cols-3 lg:grid-cols-3 gap-4 my-4">
             <CardContainer title="Camera" class="col-span-2">
               <CameraFrame />
 
@@ -36,6 +40,22 @@
               <CodeSample />
             </CardContainer>
           </div>
+          <div v-if="interactionMode==='movement'" class="grid grid-cols-3 grid-rows-1 md:grid-cols-3 lg:grid-cols-3 gap-4 my-4">
+            <CardContainer title="Camera" class="col-span-2">
+              <CameraFrame />
+            </CardContainer>
+
+            <CardContainer title="Launch data">
+              <ControlPanel ref="controlPanel" />
+              <button
+                type="button"
+                class="py-2 px-4 mt-4 bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
+                @click="()=>drawingSent(()=>{})"
+              >
+                Send Command
+              </button>
+            </CardContainer>
+          </div>
         </div>
       </div>
     </div>
@@ -45,10 +65,23 @@
 <script>
 export default {
   name: 'MainPage',
+  data: () => {
+    return {
+      interactionMode: 'drawing'
+    }
+  },
+  mounted () {
+    this.updateInteractionMode()
+  },
   methods: {
     async drawingSent (sendCommand) {
       await this.$refs.controlPanel.launchCps()
       sendCommand()
+    },
+    updateInteractionMode () {
+      fetch('https://api.merklebot.com/strelka/interaction_mode').then(response => response.json()).then((data) => {
+        this.interactionMode = data.interaction_mode
+      })
     }
   }
 }
