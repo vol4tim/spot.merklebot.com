@@ -12,9 +12,11 @@ from starlette.responses import JSONResponse
 from starlette.routing import Route
 import os
 import numpy as np
+from dotenv import load_dotenv
 
 from camera_control import CameraControl
 
+load_dotenv()
 
 
 TOKEN = os.environ.get('VIDEOSERVER_TOKEN', "token")  # token to access this server's drawing functions

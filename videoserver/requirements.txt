@@ -3,3 +3,4 @@ websockets
 vidgear[asyncio]
 uvicorn
 imutils
+python-dotenv
