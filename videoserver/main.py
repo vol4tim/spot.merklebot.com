@@ -28,7 +28,7 @@ PROCESSES = []
 SPOT_MOVING = os.getenv("SPOT_MOVING", 0)
 FOLLOW_SPOT = os.getenv('FOLLOW_SPOT', 0)
 DETECT_SPOT = os.getenv('DETECT_SPOT', 1)
-
+FAKE_CAMERA = os.getenv('FAKE_CAMERA', '/dev/video2')
 def run_server(im, state):
     async def frame_producer():
 
@@ -106,7 +106,7 @@ def run_camera(im, state):
     stream.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
     camera_control = CameraControl()
 
-    fake_camera = pyfakewebcam.FakeWebcam('/dev/video1', 640, 480)
+    fake_camera = pyfakewebcam.FakeWebcam(FAKE_CAMERA, 640, 480)
 
     while True:
         (grabbed, frame) = stream.read()
