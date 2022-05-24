@@ -106,7 +106,7 @@ def run_camera(im, state):
     stream.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
     camera_control = CameraControl()
 
-    fake_camera = pyfakewebcam.FakeWebcam(FAKE_CAMERA, 640, 480)
+    fake_camera = pyfakewebcam.FakeWebcam(FAKE_CAMERA, 1280, 720)
 
     while True:
         (grabbed, frame) = stream.read()
