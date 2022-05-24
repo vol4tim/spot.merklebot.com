@@ -165,8 +165,9 @@ def run_camera(im, state):
         blackboard_blurred = cv2.GaussianBlur(blackboard, (glow_radius, glow_radius), 1)
         blackboard_blended = cv2.addWeighted(frame, 1, blackboard_blurred, glow_strength, 0)
         blackboard_blended = cv2.addWeighted(blackboard_blended, 1, blackboard, 1, 0)
+        im_rgb = cv2.cvtColor(blackboard_blended, cv2.COLOR_BGR2RGB)
 
-        fake_camera.schedule_frame(blackboard_blended)
+        fake_camera.schedule_frame(im_rgb)
         im[0] = blackboard_blended
         im[1] = obj
 
