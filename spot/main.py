@@ -17,9 +17,12 @@ import robonomicsinterface as RI
 from substrateinterface import SubstrateInterface
 from pinatapy import PinataPy
 from scipy.interpolate import Rbf
+from dotenv import load_dotenv
 
 import bosdyn.client
 from bosdyn.client.robot_state import RobotStateClient
+
+load_dotenv()
 
 
 PROCESSES = []
