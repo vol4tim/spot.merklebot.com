@@ -439,7 +439,6 @@ def spot_controller(movement_queue, drawing_queue, robot_state):
                 session_id,
                 created_at_str,
                 launch_event_id,
-                robot_state,
             )
         ).start()
         robot_state['last_session_id'] = session_id
