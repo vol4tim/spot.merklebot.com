@@ -3,4 +3,5 @@ websockets
 vidgear[asyncio]
 uvicorn
 imutils
+pyfakewebcam
 python-dotenv

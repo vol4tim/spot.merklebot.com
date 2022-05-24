@@ -13,6 +13,8 @@ from starlette.routing import Route
 import os
 import numpy as np
 from dotenv import load_dotenv
+import pyfakewebcam
+
 
 from camera_control import CameraControl
 
@@ -104,6 +106,8 @@ def run_camera(im, state):
     stream.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
     camera_control = CameraControl()
 
+    fake_camera = pyfakewebcam.FakeWebcam('/dev/video1', 640, 480)
+
     while True:
         (grabbed, frame) = stream.read()
         if not grabbed:
@@ -162,7 +166,7 @@ def run_camera(im, state):
         blackboard_blended = cv2.addWeighted(frame, 1, blackboard_blurred, glow_strength, 0)
         blackboard_blended = cv2.addWeighted(blackboard_blended, 1, blackboard, 1, 0)
 
-
+        fake_camera.schedule_frame(blackboard_blended)
         im[0] = blackboard_blended
         im[1] = obj
 
