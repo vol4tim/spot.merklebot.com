@@ -106,7 +106,7 @@ def run_camera(im, state):
     stream.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
     camera_control = CameraControl()
 
-    fake_camera = pyfakewebcam.FakeWebcam(FAKE_CAMERA, 1280, 720)
+    # fake_camera = pyfakewebcam.FakeWebcam(FAKE_CAMERA, 1280, 720)
 
     while True:
         (grabbed, frame) = stream.read()
@@ -167,7 +167,7 @@ def run_camera(im, state):
         blackboard_blended = cv2.addWeighted(blackboard_blended, 1, blackboard, 1, 0)
         im_rgb = cv2.cvtColor(blackboard_blended, cv2.COLOR_BGR2RGB)
 
-        fake_camera.schedule_frame(im_rgb)
+        # fake_camera.schedule_frame(im_rgb)
         im[0] = blackboard_blended
         im[1] = obj
 
