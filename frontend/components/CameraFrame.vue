@@ -3,20 +3,7 @@
     <!--    <VideoContainer/>-->
     <!-- <img style="display: block;-webkit-user-select: none;margin: auto;background-color: hsl(0, 0%, 25%);" src="http://10.200.0.8:8000/video"> -->
 
-    <div
-      ref="image"
-      @click="onClickImage"
-    >
-      <iframe
-
-        class="w-full"
-        src="https://player.twitch.tv/?channel=trinityflynn&amp;parent=localhost"
-
-        width="800"
-        height="400"
-        style="pointer-events: none;"
-      />
-    </div>
+    <img ref="image" class="w-full" style="display: block;-webkit-user-select: none;margin: auto;background-color: hsl(0, 0%, 25%);" src="https://api.merklebot.com/videoserver/video" @click="onClickImage">
     <div v-for="(pointer, index) in pointers" :key="index" class="clickEffect" :style="{'left': `${pointer[0]}px`, 'top': `${pointer[1]}px`}" />
     <div @click="startCalibration">
       Calibrate
@@ -76,7 +63,6 @@ export default {
       this.curCalibrationNodeIndex = 0
     },
     onClickImage (event) {
-      console.log(event.offsetX, event.offsetY)
       const x = Math.floor(event.offsetX * (1280 / this.$refs.image.width))
       const y = Math.floor(event.offsetY * (720 / this.$refs.image.height))
       console.log(x, y)
