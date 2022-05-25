@@ -39,7 +39,7 @@ def run_server(im, state):
 
             encodedImage = cv2.imencode(".jpg", frame)[1].tobytes()
             yield (b"--frame\r\nContent-Type:image/jpeg\r\n\r\n" + encodedImage + b"\r\n")
-            await asyncio.sleep(0)
+            await asyncio.sleep(0.033)
         stream.release()
 
     async def clear_canvas(request: Request):
