@@ -109,7 +109,7 @@ export default {
         // line completed
         self.path.add(event.point)
         self.path.simplify(10)
-        self.path.flatten(10)
+        self.path.flatten(3)
         self.paths.push({ ...self.path })
         console.log(self.paths)
       }
