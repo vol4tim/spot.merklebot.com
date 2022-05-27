@@ -25,7 +25,7 @@
 
           <div v-if="interactionMode==='drawing'" class="grid grid-cols-3 grid-rows-1 md:grid-cols-3 lg:grid-cols-3 gap-4 my-4">
             <CardContainer title="Camera" class="col-span-2">
-              <CameraFrame />
+              <CameraFrame :interaction-mode="interactionMode" />
 
               <CardContainer title="Launch data">
                 <ControlPanel ref="controlPanel" />

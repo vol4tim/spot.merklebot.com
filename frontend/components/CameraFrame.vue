@@ -3,7 +3,14 @@
     <!--    <VideoContainer/>-->
     <!-- <img style="display: block;-webkit-user-select: none;margin: auto;background-color: hsl(0, 0%, 25%);" src="http://10.200.0.8:8000/video"> -->
 
-    <img ref="image" class="w-full" style="display: block;-webkit-user-select: none;margin: auto;background-color: hsl(0, 0%, 25%);" src="https://api.merklebot.com/videoserver/video" @click="onClickImage">
+    <img
+      ref="image"
+      class="w-full"
+      style="display: block;-webkit-user-select: none;margin: auto;background-color: hsl(0, 0%, 25%);"
+      src="https://api.merklebot.com/videoserver/video"
+      :style="interactionMode==='drawing'?{'aspect-ratio': '4/3', 'object-fit': 'cover'}:{}"
+      @click="onClickImage"
+    >
     <div v-for="(pointer, index) in pointers" :key="index" class="clickEffect" :style="{'left': `${pointer[0]}px`, 'top': `${pointer[1]}px`}" />
     <div @click="startCalibration">
       Calibrate
@@ -15,6 +22,7 @@
 
 export default {
   name: 'CameraFrame',
+  props: ['interactionMode'],
   data: () => {
     return {
       pointers: [],
