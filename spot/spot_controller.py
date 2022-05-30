@@ -6,6 +6,8 @@ from bosdyn.api.spot import robot_command_pb2 as spot_command_pb2
 from scipy.interpolate import Rbf
 from bosdyn.client.frame_helpers import ODOM_FRAME_NAME
 from bosdyn.api.basic_command_pb2 import RobotCommandFeedbackStatus
+from bosdyn.client.estop import EstopClient, EstopEndpoint, EstopKeepAlive
+import traceback
 
 
 class SpotController:
@@ -28,6 +30,54 @@ class SpotController:
         self.pitch_interpolate = Rbf(coord_nodes["x"], coord_nodes["y"], coord_nodes["pitch"], function="linear")
 
         self.robot.logger.info("Authenticated")
+
+        self._lease_client = None
+        self._lease = None
+        self._lease_keepalive = None
+
+        self._estop_client = self.robot.ensure_client(EstopClient.default_service_name)
+        self._estop_endpoint = EstopEndpoint(self._estop_client, 'GNClient', 9.0)
+        self._estop_keepalive = None
+
+    def release_estop(self):
+        self._estop_endpoint.force_simple_setup()
+        self._estop_keepalive = EstopKeepAlive(self._estop_endpoint)
+
+    def set_estop(self):
+        if self._estop_keepalive:
+            try:
+                self._estop_keepalive.stop()
+            except:
+                self.robot.logger.error("Failed to set estop")
+                traceback.print_exc()
+            self._estop_keepalive.shutdown()
+            self._estop_keepalive = None
+
+    def lease_control(self):
+        self._lease_client =  self.robot.ensure_client('lease')
+        self._lease = self._lease_client.take()
+        self._lease_keepalive = bosdyn.client.lease.LeaseKeepAlive(self._lease_client, must_acquire=True)
+        self.robot.logger.info("Lease acquired")
+
+    def return_lease(self):
+        self._lease_client.return_lease(self._lease)
+        self._lease_keepalive.shutdown()
+        self._lease_keepalive = None
+
+    def __enter__(self):
+        self.lease_control()
+        self.release_estop()
+        self.power_on_stand_up()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type:
+            self.robot.logger.error("Spot powered off with "+exc_val + " exception")
+        self.power_off_sit_down()
+        self.return_lease()
+        self.set_estop()
+
+        return True if exc_type else False
 
     def update_interpolator(self, coord_nodes):
         self.coord_nodes = coord_nodes
@@ -64,12 +114,6 @@ class SpotController:
         self.wait_until_action_complete(cmd_id)
 
         self.robot.logger.info("Moved to x={} y={}".format(goal_x, goal_y))
-
-    def lease_control(self):
-        lease_client = self.robot.ensure_client('lease')
-        lease = lease_client.take()
-        lease_keep_alive = bosdyn.client.lease.LeaseKeepAlive(lease_client, must_acquire=True)
-        self.robot.logger.info("Lease acquired")
 
     def power_on_stand_up(self):
         self.robot.power_on(timeout_sec=20)
