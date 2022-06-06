@@ -56,9 +56,9 @@ def after_session_complete(
     robonomics = RI.RobonomicsInterface(seed=os.environ["MNENOMIC"])
     ipfs_cid = pinata_resp["IpfsHash"]
     datalog_extrinsic_hash = robonomics.record_datalog(ipfs_cid)
-    requests.post("https://api.merklebot.com/davos/traces", json={
-        "user_account_address": sender,
-        "session_id": session_id,
+    requests.post("https://api.merklebot.com/robonomics-launch-traces", json={
+        "sender": sender,
+        "nonce": session_id,
         "created_at": created_at_str,
         "ipfs_cid": ipfs_cid,
         "launch_tx_id": launch_event_id,
@@ -69,8 +69,8 @@ def after_session_complete(
 
 class RobonimicsHelper:
     def __init__(self, robot_state, execute_drawing_command, start_movement_session):
-        self.execute_drawing_command = lambda _: execute_drawing_command()
-        self.start_movement_sesstion = lambda _: start_movement_session()
+        self.execute_drawing_command = execute_drawing_command
+        self.start_movement_sesstion = start_movement_session
         self.robot_state = robot_state
 
     def robonomics_transaction_callback(self, data, launch_event_id):
