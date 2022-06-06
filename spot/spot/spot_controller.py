@@ -7,7 +7,22 @@ from scipy.interpolate import Rbf
 from bosdyn.client.frame_helpers import ODOM_FRAME_NAME
 from bosdyn.api.basic_command_pb2 import RobotCommandFeedbackStatus
 from bosdyn.client.estop import EstopClient, EstopEndpoint, EstopKeepAlive
+from bosdyn.client.robot_state import RobotStateClient
+
 import traceback
+
+from settings.settings import SPOT_IP, SPOT_USERNAME, SPOT_PASSWORD
+
+def get_spot_position():
+    sdk = bosdyn.client.create_standard_sdk('ControllingSDK')
+    robot = sdk.create_robot(SPOT_IP)
+    robot.authenticate(SPOT_USERNAME, SPOT_PASSWORD)
+
+    state_client = robot.ensure_client(RobotStateClient.default_service_name)
+
+    position = state_client.get_robot_state().kinematic_state.transforms_snapshot.child_to_parent_edge_map[
+        "gpe"].parent_tform_child.position
+    return position
 
 
 class SpotController:
