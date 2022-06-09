@@ -33,3 +33,31 @@ export const createStripeXrtPurchaseSession = async (customer) => {
   })
   return resp.data.id
 }
+
+/**
+ * Read customer's tickets.
+ * @param {string} customer - Customer's account address. Robonomics parachain format expected.
+ * @param {boolean} [spent] - Returns all if not specified, otherwise returns spent or unspent tickets only.
+ * @returns {Array} - Customer's tickets.
+ */
+export const readTicketsByCustomer = async (customer, spent) => {
+  const resp = await client.get('spot-demo/tickets', {
+    params: {
+      customer,
+      spent
+    }
+  })
+  return resp.data
+}
+
+/**
+ * Spend ticket with an id specified.
+ * @param {string} ticketId - Id of the ticket to spend.
+ */
+export const createTicketSpending = async (ticketId) => {
+  await client.post('spot-demo/spendings', {
+    params: {
+      ticket_id: ticketId
+    }
+  })
+}
