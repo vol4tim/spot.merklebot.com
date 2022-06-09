@@ -28,7 +28,7 @@ export const readRobonomicsLaunchTracesBySender = async (sender, nonce) => {
  */
 export const createSpotDemoTicketStripePurchaseSession = async (customer) => {
   const resp = await client.post('spot-demo-ticket/checkout', {
-    quantity: '1',
+    quantity: '0.001',
     account: customer
   })
   return resp.data.id
