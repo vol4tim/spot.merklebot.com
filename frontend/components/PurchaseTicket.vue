@@ -23,7 +23,7 @@
 
 <script>
 import {
-  createStripeXrtPurchaseSession
+  createSpotDemoTicketStripePurchaseSession
 } from '@/plugins/merklebot'
 import { getStripe } from '@/plugins/stripe'
 
@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     async checkout () {
-      const stripeSessionId = await createStripeXrtPurchaseSession(this.address)
+      const stripeSessionId = await createSpotDemoTicketStripePurchaseSession(this.address)
       const stripe = await getStripe()
       await stripe.redirectToCheckout({ sessionId: stripeSessionId })
     }
