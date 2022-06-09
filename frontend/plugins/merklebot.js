@@ -27,7 +27,7 @@ export const readRobonomicsLaunchTracesBySender = async (sender, nonce) => {
  * @returns {string} - Stripe payment session id to use for redirection.
  */
 export const createSpotDemoTicketStripePurchaseSession = async (customer) => {
-  const resp = await client.post('ticket/checkout', {
+  const resp = await client.post('spot-demo-ticket/checkout', {
     quantity: '1',
     account: customer
   })
