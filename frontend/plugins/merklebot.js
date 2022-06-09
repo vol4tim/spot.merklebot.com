@@ -22,12 +22,12 @@ export const readRobonomicsLaunchTracesBySender = async (sender, nonce) => {
 }
 
 /**
- * Create new Stripe payment session to purchase XRT by card.
- * @param {string} customer - Customer's account address to receive purchased XRT. Robonomics parachain format expected.
+ * Create new Stripe payment session to purchase Spot demo ticket by card.
+ * @param {string} customer - Customer's account address to receive purchased ticket. Robonomics parachain format expected.
  * @returns {string} - Stripe payment session id to use for redirection.
  */
-export const createStripeXrtPurchaseSession = async (customer) => {
-  const resp = await client.post('xrt/checkout', {
+export const createSpotDemoTicketStripePurchaseSession = async (customer) => {
+  const resp = await client.post('ticket/checkout', {
     quantity: '1',
     account: customer
   })
