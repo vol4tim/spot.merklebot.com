@@ -64,6 +64,22 @@ def after_session_complete(
     robonomics = RI.RobonomicsInterface(seed=os.environ["MNENOMIC"])
     ipfs_cid = pinata_resp["IpfsHash"]
     datalog_extrinsic_hash = robonomics.record_datalog(ipfs_cid)
+
+    # Upload to Estuary Filecoin node
+    tar = "{}/{}".format(folder, record_folder_name)
+    shutil.make_archive(tar, "xztar", folder)
+    time.sleep(0.3)
+    with open("{}.tar.xz".format(tar), "rb") as fd:
+        estuary_resp = requests.post(f"{ESTUARY_URL}/content/add",
+            headers={
+                "Authorization": f"Bearer {ESTUARY_TOKEN}",
+            },
+            files={
+                "data": fd,
+            },
+        )
+        print("Estuary response: {}".format(estuary_resp.text))
+
     requests.post("https://api.merklebot.com/robonomics-launch-traces", json={
         "sender": sender,
         "nonce": session_id,
@@ -71,24 +87,8 @@ def after_session_complete(
         "ipfs_cid": ipfs_cid,
         "launch_tx_id": launch_event_id,
         "datalog_tx_id": datalog_extrinsic_hash,
+        "filecoin_cid": estuary_resp,
     })
-
-    # Upload to Estuary Filecoin node
-    tar = "{}/{}".format(folder, record_folder_name)
-    shutil.make_archive(tar, "xztar", folder)
-    time.sleep(0.3)
-    with open("{}.tar.xz".format(tar)) as fd:
-        resp = requests.post(f"{ESTUARY_URL}",
-            headers={
-                "Authorization": f"Bearer {ESTUARY_TOKEN}",
-                "Content-Type": "multipart/form-data",
-            },
-            files={
-                "data": fd,
-            },
-        )
-        print("Estuary response: {}".format(resp))
-
     print("Session {} trace created with IPFS CID {}".format(session_id, ipfs_cid))
 
 
