@@ -5,11 +5,19 @@ import subprocess
 import requests
 
 import multiprocessing
+import shutil
 
 import robonomicsinterface as RI
 from pinatapy import PinataPy
 
-from settings.settings import VIDEOSERVER_URL, INTERACTION_MODE, PINATA_API_KEY, PINATA_SECRET_API_KEY
+from settings.settings import (
+    VIDEOSERVER_URL,
+    INTERACTION_MODE,
+    PINATA_API_KEY,
+    PINATA_SECRET_API_KEY,
+    ESTUARY_TOKEN,
+    ESTUARY_URL,
+)
 import signal
 
 
@@ -49,8 +57,8 @@ def after_session_complete(
     os.system("ffmpeg -i {} -vcodec h264 {} ".format(video_path, h264_path))
 
     pinata = PinataPy(PINATA_API_KEY, PINATA_SECRET_API_KEY)
-    pinata_resp = pinata.pin_file_to_ipfs(
-        "/home/spot/davos.merklebot.com/spot/traces/{}".format(record_folder_name))
+    folder = "/home/spot/davos.merklebot.com/spot/traces/{}".format(record_folder_name)
+    pinata_resp = pinata.pin_file_to_ipfs(folder)
     print("Pinata response: {}".format(pinata_resp))
 
     robonomics = RI.RobonomicsInterface(seed=os.environ["MNENOMIC"])
@@ -64,6 +72,23 @@ def after_session_complete(
         "launch_tx_id": launch_event_id,
         "datalog_tx_id": datalog_extrinsic_hash,
     })
+
+    # Upload to Estuary Filecoin node
+    tar = "{}/{}".format(folder, record_folder_name)
+    shutil.make_archive(tar, "xztar", folder)
+    time.sleep(0.3)
+    with open("{}.tar.xz".format(tar)) as fd:
+        resp = requests.post(f"{ESTUARY_URL}",
+            headers={
+                "Authorization": f"Bearer {ESTUARY_TOKEN}",
+                "Content-Type": "multipart/form-data",
+            },
+            files={
+                "data": fd,
+            },
+        )
+        print("Estuary response: {}".format(resp))
+
     print("Session {} trace created with IPFS CID {}".format(session_id, ipfs_cid))
 
 
