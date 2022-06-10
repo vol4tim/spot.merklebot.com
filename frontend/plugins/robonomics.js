@@ -49,8 +49,30 @@ export const makeLaunchTx = async (targetAddress, enabledFlag) => {
   return tx
 }
 
+/**
+ * Transfer XRT balance from active account to recipient.
+ * @param {string} recipient - Transfer destination address in Robonomics parachain format.
+ * @param {number} value - Amount to transfer in Wn. 1 Wn = 1 XRT * 10^-9.
+ */
+export const makeTransferTx = async (recipient, value) => {
+  const robonomics = await getInstance()
+  const tx = robonomics.api.balances.transfer(recipient, value)
+  return tx
+}
+
 export const signAndSendTxWithActiveAccount = async (tx) => {
   const robonomics = await getInstance()
+  const resultTx = await robonomics.accountManager.signAndSend(tx)
+  return resultTx
+}
+
+/**
+ * Combine multiple transactions in one, sign it with an active account and send.
+ * @param {Array} txs - An array of transactions to sign and send.
+ */
+export const signAndSendTxsBatchWithActiveAccount = async (txs) => {
+  const robonomics = await getInstance()
+  const tx = await robonomics.api.tx.utility.batch(txs)
   const resultTx = await robonomics.accountManager.signAndSend(tx)
   return resultTx
 }
