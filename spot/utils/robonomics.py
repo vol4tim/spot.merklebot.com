@@ -87,7 +87,7 @@ def after_session_complete(
         "ipfs_cid": ipfs_cid,
         "launch_tx_id": launch_event_id,
         "datalog_tx_id": datalog_extrinsic_hash,
-        "filecoin_cid": estuary_resp,
+        "filecoin_cid": estuary_resp.json()["cid"],
     })
     print("Session {} trace created with IPFS CID {}".format(session_id, ipfs_cid))
 
