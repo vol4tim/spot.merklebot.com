@@ -115,6 +115,6 @@ def spot_logic_process(movement_queue, drawing_queue, robot_state):
 
     if USE_ROBONOMICS:
         robonomics_helper = RobonimicsHelper(robot_state, execute_drawing_command, start_movement_session)
-
+        robonomics_helper.start_subscriber()
     while True:
         execute_drawing_command()
