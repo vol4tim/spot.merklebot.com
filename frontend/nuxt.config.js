@@ -2,6 +2,9 @@ export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 
+  // fix to make tailwindcss work
+  devServerHandlers: [],
+
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
 
@@ -44,7 +47,9 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    'simple-code-editor/nuxt'
+    'simple-code-editor/nuxt',
+    '@nuxtjs/composition-api/module',
+    '@pinia/nuxt'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios

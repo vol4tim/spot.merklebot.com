@@ -39,11 +39,6 @@ export default {
       queueSize: null,
       robotState: null,
       lastSessionId: null,
-      selectedAccount: {
-        account: null,
-        balanceRaw: null,
-        balanceFormatted: null
-      },
       cps: {
         address: '4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j',
         status: 'unknown',

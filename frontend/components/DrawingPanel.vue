@@ -3,52 +3,60 @@
     <div class="w-full mb-8">
       <canvas :id="canvasId" class="canvas-style" @mousedown="mouseDown" />
     </div>
-    <button
-      type="button"
-      class="py-2 px-4 mt-2 bg-indigo-500 hover:bg-indigo-600 focus:ring-indigo-400 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
-      @click="resetCanvas"
-    >
-      Reset
-    </button>
+    <div class="">
+      <button
+        type="button"
+        class=" uppercase py-2 my-2 px-4  bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md"
+        @click="resetCanvas"
+      >
+        Clear canvas
+      </button>
 
-    <button
-      type="button"
-      class="py-2 px-4 mt-4 bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
-      @click="sendCommand"
-    >
-      Send Command
-    </button>
+      <button
+        type="button"
+        class=" uppercase py-2 my-2 px-4  bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md"
+        @click="sendCommand"
+      >
+        Send command
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
+import { defineComponent, onMounted } from '@nuxtjs/composition-api'
+import { useDashboardParameters } from '../store'
+import { useRobot } from '../store/robot'
+
 const paper = require('paper')
-export default {
-  name: 'DrawingPanel',
+
+export default defineComponent({
   props: ['canvasId'],
-  data: () => {
-    return {
-      path: null,
-      scope: null,
-      paths: []
+  emits: ['drawing_sent'],
+  setup (props, { emit }) {
+    const robot = useRobot()
+    let path = null
+    let scope = null
+    let paths = []
+    const dashboardParameters = useDashboardParameters()
+
+    onMounted(() => {
+      scope = new paper.PaperScope()
+      scope.setup(props.canvasId)
+    })
+
+    const resetCanvas = () => {
+      dashboardParameters.setCodeSampleParameter(false)
+
+      scope.project.activeLayer.removeChildren()
+      paths = []
     }
-  },
-  mounted () {
-    this.scope = new paper.PaperScope()
-    this.scope.setup(this.canvasId)
-  },
-  methods: {
-    resetCanvas () {
-      this.scope.project.activeLayer.removeChildren()
-      this.paths = []
-      this.$store.commit('setCodeSampleParameter', false)
-    },
-    sendCommand () {
+    const sendCommand = async () => {
       const segments = []
       console.log('Sending command')
-      console.log(this.paths)
+      console.log(paths)
 
-      this.paths.forEach((path) => {
+      paths.forEach((path) => {
         const segment = []
         console.log(path._segments)
         path._segments.forEach((_segment) => {
@@ -58,64 +66,73 @@ export default {
       })
       console.log(segments)
 
-      this.$store.commit('setCodeSampleParameter', true)
-
+      dashboardParameters.setCodeSampleParameter(true)
+      const res = await robot.launchCps()
+      if (res) {
+        robot.sendDrawing(segments)
+      }
       // fetch('http://10.200.0.3:1234/draw_figure', {
-      this.$emit('drawing_sent', () => {
-        fetch('https://api.merklebot.com/strelka/draw_figure', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            segments
-          })
-        }).then(response => response.json()).then((data) => {
-          console.log(data)
-        })
-      })
-    },
-    pathCreate (scope) {
+
+      // emit('drawing_sent', () => {
+      //   fetch('https://api.merklebot.com/strelka/draw_figure', {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json'
+      //     },
+      //     body: JSON.stringify({
+      //       segments
+      //     })
+      //   }).then(response => response.json()).then((data) => {
+      //     console.log(data)
+      //   })
+      // })
+    }
+
+    const pathCreate = (scope) => {
       scope.activate()
       return new paper.Path({
         strokeColor: '#000000',
         strokeJoin: 'round',
         strokeWidth: 1.5
       })
-    },
-    createTool (scope) {
+    }
+    const createTool = (scope) => {
       console.log('createTool')
       scope.activate()
       return new paper.Tool()
-    },
-    mouseDown (ev) {
+    }
+
+    const mouseDown = (ev) => {
       console.log('mouse down')
       // in order to access functions in nested tool
-      const self = this
       // create drawing tool
-      this.tool = this.createTool(this.scope)
-      this.tool.onMouseDown = (event) => {
+      const tool = createTool(scope)
+      tool.onMouseDown = (event) => {
         // init path
-        self.path = self.pathCreate(self.scope)
+        path = pathCreate(scope)
         // add point to path
-        self.path.add(event.point)
+        path.add(event.point)
       }
-      this.tool.onMouseDrag = (event) => {
+      tool.onMouseDrag = (event) => {
         console.log('mouse drag')
-        self.path.add(event)
+        path.add(event)
       }
-      this.tool.onMouseUp = (event) => {
+      tool.onMouseUp = (event) => {
         console.log('mouse up')
         // line completed
-        self.path.add(event.point)
-        self.path.simplify(10)
-        self.path.flatten(3)
-        self.paths.push({ ...self.path })
-        console.log(self.paths)
+        path.add(event.point)
+        path.simplify(10)
+        path.flatten(3)
+        paths.push({ ...path })
+        console.log(paths)
       }
     }
+    return {
+      mouseDown, resetCanvas, sendCommand
+    }
   }
-}
+})
+
 </script>
 
 <style scoped>
@@ -123,10 +140,9 @@ export default {
   cursor: crosshair;
   width: 100% !important;
   height: 300px !important;
-  border: 5px solid black;
-  border-radius: 10px;
+  border: 2px solid black;
+  border-radius: 0px;
   display: block;
   margin: auto;
-  box-shadow: 0 10px 8px -8px black;
 }
 </style>

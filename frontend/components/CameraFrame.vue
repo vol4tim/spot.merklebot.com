@@ -4,15 +4,20 @@
     <!-- <img style="display: block;-webkit-user-select: none;margin: auto;background-color: hsl(0, 0%, 25%);" src="http://10.200.0.8:8000/video"> -->
 
     <img
+      v-if="imageLoaded"
       ref="image"
       class="w-full"
       style="display: block;-webkit-user-select: none;margin: auto;background-color: hsl(0, 0%, 25%);"
       src="https://api.merklebot.com/videoserver/video"
       :style="interactionMode==='drawing'?{'aspect-ratio': '4/3', 'object-fit': 'cover'}:{}"
       @click="onClickImage"
+      @error="onImageError"
     >
+    <p v-if="!imageLoaded" class="text-3xl my-6 text-center text-red-600">
+      Camera isn't loaded
+    </p>
     <div v-for="(pointer, index) in pointers" :key="index" class="clickEffect" :style="{'left': `${pointer[0]}px`, 'top': `${pointer[1]}px`}" />
-    <div @click="startCalibration">
+    <div v-if="interactionMode==='movement'" @click="startCalibration">
       Calibrate
     </div>
   </div>
@@ -26,40 +31,10 @@ export default {
   data: () => {
     return {
       pointers: [],
-      calibrationNodes: [
-        {
-          robot_x: 0,
-          robot_y: 0,
-          camera_x: 406,
-          camera_y: 274
-        },
-        {
-          robot_x: 0.7,
-          robot_y: 1.5,
-          camera_x: 19,
-          camera_y: 322
-        },
-        {
-          robot_x: 3,
-          robot_y: -4.3,
-          camera_x: 515,
-          camera_y: 123
-        },
-        {
-          robot_x: -2,
-          robot_y: -5.2,
-          camera_x: 1164,
-          camera_y: 193
-        },
-        {
-          robot_x: -3.97,
-          robot_y: 1.2,
-          camera_x: 1095,
-          camera_y: 609
-        }
-      ],
+      calibrationNodes: [],
       calibrationProcess: false,
-      curCalibrationNodeIndex: 0
+      curCalibrationNodeIndex: 0,
+      imageLoaded: true
 
     }
   },
@@ -71,6 +46,9 @@ export default {
       this.curCalibrationNodeIndex = 0
     },
     onClickImage (event) {
+      if (this.interactionMode !== 'movement') {
+        return
+      }
       const x = Math.floor(event.offsetX * (1280 / this.$refs.image.width))
       const y = Math.floor(event.offsetY * (720 / this.$refs.image.height))
       console.log(x, y)
@@ -131,6 +109,10 @@ export default {
 
         })
       }
+    },
+    onImageError () {
+      this.imageLoaded = false
+      console.log('camera image error')
     }
 
   }

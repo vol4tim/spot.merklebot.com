@@ -2,7 +2,7 @@
   <div>
     <div class="relative p-1 flex items-center w-full space-x-4 justify-end">
       <div class="w-128">
-        <div v-if="selectedAccount.account" class="mt-1 relative">
+        <div v-if="wallet.selectedAccount.account" class="mt-1 relative">
           <button
             type="button"
             class="relative w-full bg-white rounded-md shadow-lg pl-3 pr-10 py-3 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -11,14 +11,14 @@
             <span class="flex items-center">
 
               <img
-                :src="`https://avatars.dicebear.com/api/identicon/${selectedAccount.account.address}.svg`"
+                :src="`https://avatars.dicebear.com/api/identicon/${wallet.selectedAccount.account.address}.svg`"
                 alt="person"
                 class="flex-shrink-0 h-6 w-6 rounded-full"
               >
               <span class="ml-3 block truncate">
-                {{ selectedAccount.account.meta.name }} - ({{
-                  selectedAccount.balanceFormatted
-                }}) - {{ addressShort(selectedAccount.account.address) }}
+                {{ wallet.selectedAccount.account.meta.name }} - ({{
+                  wallet.selectedAccount.balanceFormatted
+                }}) - {{ addressShort(wallet.selectedAccount.account.address) }}
               </span>
             </span>
             <span class="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
@@ -46,13 +46,13 @@
               class="max-h-56 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm"
             >
               <li
-                v-for="(account, idx) in accounts"
+                v-for="(account, idx) in wallet.accounts"
                 id="listbox-item-0"
                 :key="idx"
                 :value="account"
                 role="option"
                 class="text-gray-900 cursor-default hover:bg-indigo-500 hover:text-white select-none relative py-2 pl-3 pr-9"
-                @click="()=>{selectedAccount.account=account; showAccountChoose=false}"
+                @click="()=>{selectAccount(account); showAccountChoose=false}"
               >
                 <div class="flex items-center">
                   <img
@@ -65,7 +65,7 @@
                   </span>
                 </div>
                 <span
-                  v-show="selectedAccount.account.address===account.address"
+                  v-show="wallet.selectedAccount.account.address===account.address"
                   class="absolute inset-y-0 right-0 flex items-center pr-4"
                 >
                   <svg
@@ -92,54 +92,32 @@
 </template>
 
 <script>
-import { formatBalance } from '@polkadot/util'
-import {
-  getAccounts,
-  setActiveAccount,
-  subscribeToBalanceUpdates,
-  getInstance as getRobonomics
+import { defineComponent, onMounted, ref } from '@nuxtjs/composition-api'
 
-} from '@/plugins/robonomics'
+import { useWallet } from '@/store/wallet'
+export default defineComponent({
+  setup () {
+    const wallet = useWallet()
+    const showAccountChoose = ref(false)
 
-export default {
-  name: 'AccountChooser',
-  data () {
-    return {
-      showAccountChoose: false,
-      accounts: [],
-      selectedAccount: {
-        account: null,
-        balanceRaw: null,
-        balanceFormatted: null
-      }
-    }
-  },
-  watch: {
-    'selectedAccount.account' (account) {
-      setActiveAccount(account.address)
-      subscribeToBalanceUpdates(this.selectedAccount.account.address, (r) => {
-        getRobonomics().then((robonomics) => {
-          const balance = r.free.sub(r.feeFrozen)
-          this.selectedAccount.balanceRaw = balance
-          this.selectedAccount.balanceFormatted = formatBalance(balance, {
-            decimals: robonomics.api.registry.chainDecimals[0],
-            withUnit: robonomics.api.registry.chainTokens[0]
-          })
-        })
-      })
-    }
-  },
-  mounted () {
-    getAccounts().then((accounts) => {
-      console.log('accounts', accounts)
-      this.accounts = accounts
-      this.selectedAccount.account = accounts[0]
+    onMounted(() => {
+      wallet.connectWallet()
     })
-  },
-  methods: {
-    addressShort (address) {
+
+    const addressShort = (address) => {
       return address.slice(0, 6) + '...' + address.slice(-4)
     }
+
+    const selectAccount = (account) => {
+      wallet.setActiveAccount(account)
+    }
+    return {
+      showAccountChoose,
+      selectAccount,
+      addressShort,
+      wallet
+    }
   }
-}
+})
+
 </script>

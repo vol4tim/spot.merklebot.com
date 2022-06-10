@@ -10,7 +10,8 @@
 </template>
 
 <script>
-import CodeEditor from 'simple-code-editor'
+import { defineComponent, computed } from '@nuxtjs/composition-api'
+import { useDashboardParameters } from '../store'
 
 const template = `# Copyright (c) 2022 Boston Dynamics, Inc.  All rights reserved.
 
@@ -68,20 +69,16 @@ if __name__ == '__main__':
 
 `
 
-export default {
-  components: {
-    CodeEditor
-  },
-  computed: {
-    value: {
-      get () {
-        if (!this.$store.state.codeSampleParameter) { return '# Code sample will appear here' }
+export default defineComponent({
+  setup () {
+    const dashboardParameters = useDashboardParameters()
+    return {
+      value: computed(() => {
+        if (!dashboardParameters.codeSampleParameter) { return '# Code sample will appear here' }
         return template
-      },
-      set () {
-        return ''
-      }
+      })
     }
   }
-}
+})
+
 </script>

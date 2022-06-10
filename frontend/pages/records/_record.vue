@@ -9,7 +9,7 @@
             <h1 class="text-4xl font-semibold text-gray-800 dark:text-white">
               Sessions
             </h1>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 my-4">
+            <div class="grid grid-cols-1 gap-4 my-4">
               <RecordsList />
             </div>
           </div>
@@ -48,8 +48,8 @@ export default {
         sessionData: null
       }
     }
-    const sessionData = await (await fetch('https://api.merklebot.com/davos/traces/session/' + sessionId, { method: 'GET' })).json()
-    const traceFolderLink = `https://merklebot.mypinata.cloud/ipfs/${sessionData.ipfs_cid}/spot/davos.merklebot.com/spot/traces/user-${sessionData.user_account_address}-cps-4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j-session-${sessionId}-${sessionData.created_at}`
+    const sessionData = await (await fetch('https://api.merklebot.com/robonomics-launch-traces/' + sessionId, { method: 'GET' })).json()
+    const traceFolderLink = `https://merklebot.mypinata.cloud/ipfs/${sessionData.ipfs_cid}/spot/davos.merklebot.com/spot/traces/user-${sessionData.sender}-cps-4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j-session-${sessionData.nonce}-${sessionData.created_at}`
     const launchLink = `https://robonomics.subscan.io/extrinsic/${sessionData.launch_tx_id}`
     const datalogLink = `https://robonomics.subscan.io/extrinsic/${sessionData.datalog_tx_id}`
     return { sessionId, sessionData, traceFolderLink, launchLink, datalogLink }

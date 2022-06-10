@@ -1,11 +1,15 @@
 <template>
   <div>
     <div>
-      <h3>One launch requires 1 ticket or 1 XRT</h3>
-      <h3>You have:</h3>
-      <ul class="list-disc ml-8">
-        <li>{{ xrtBalance }} XRT</li>
-        <li>{{ ticketsBalance }} tickets</li>
+      <p class="text-md my-2 dark:text-white mx-6">
+        One launch requires 1 ticket or 1 XRT
+      </p>
+      <p class="text-md my-2 dark:text-white mx-6">
+        You have:
+      </p>
+      <ul class="list-disc ml-8 text-md my-2 dark:text-white mx-6">
+        <li>{{ wallet.selectedAccount.balanceFormatted }}</li>
+        <li>{{ wallet.selectedAccount.tickets.filter(ticket=>ticket.spent===false).length }} tickets</li>
       </ul>
     </div>
     <div>
@@ -22,35 +26,27 @@
 </template>
 
 <script>
-import {
-  createSpotDemoTicketStripePurchaseSession
-} from '@/plugins/merklebot'
+import { defineComponent } from '@nuxtjs/composition-api'
+import { useWallet } from '../store/wallet'
+import { createSpotDemoTicketStripePurchaseSession } from '../plugins/merklebot'
 import { getStripe } from '@/plugins/stripe'
 
-export default {
-  name: 'PurchaseTicket',
-  props: {
-    xrtBalance: {
-      type: Number,
-      default: null
-    },
-    ticketsBalance: {
-      type: Number,
-      default: null
-    },
-    address: {
-      type: String,
-      default: null
-    }
-  },
-  methods: {
-    async checkout () {
-      const stripeSessionId = await createSpotDemoTicketStripePurchaseSession(this.address)
+export default defineComponent({
+  setup () {
+    const wallet = useWallet()
+
+    const checkout = async () => {
+      const stripeSessionId = await createSpotDemoTicketStripePurchaseSession(wallet.selectedAccount.account.address)
       const stripe = await getStripe()
       await stripe.redirectToCheckout({ sessionId: stripeSessionId })
     }
+
+    return {
+      wallet, checkout
+    }
   }
-}
+})
+
 </script>
 
 <style scoped></style>
