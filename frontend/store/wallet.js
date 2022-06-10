@@ -34,8 +34,6 @@ export const useWallet = defineStore('wallet', {
       this.selectedAccount.account = account
       setActiveAccount(account.address)
 
-      readTicketsByCustomer(account.address).then((tickets) => { this.selectedAccount.tickets = tickets })
-
       subscribeToBalanceUpdates(this.selectedAccount.account.address, (r) => {
         getRobonomics().then((robonomics) => {
           const balance = r.free.sub(r.feeFrozen)
@@ -44,6 +42,7 @@ export const useWallet = defineStore('wallet', {
             decimals: robonomics.api.registry.chainDecimals[0],
             withUnit: robonomics.api.registry.chainTokens[0]
           })
+          readTicketsByCustomer(account.address).then((tickets) => { this.selectedAccount.tickets = tickets })
         })
       })
     }
