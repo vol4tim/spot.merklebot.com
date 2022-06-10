@@ -1,16 +1,28 @@
 from external_communications.videoserver import send_command_to_videoserver, get_spot_face_on_camera_coords, \
     notify_start_line, notify_stop_line
+from external_communications.tickets import get_tickets_by_customer, spend_ticket
+
 from spot.spot_controller import SpotController
 from utils.calibration import centralize, coord_nodes, calibration_movement
 from utils.robonomics import RobonimicsHelper
 from settings.settings import SPOT_USERNAME, SPOT_PASSWORD, SPOT_IP, MOVEMENT_SESSION_DURATION_TIME, USE_ROBONOMICS
 
+
 import time, json
 
 
 def spot_logic_process(movement_queue, drawing_queue, robot_state):
-    def execute_drawing_command():
+    def execute_drawing_command(address=None):
         segments_task = drawing_queue.get()
+
+        customer_tickets = get_tickets_by_customer(address=address)
+        available_tickets = [ticket for ticket in customer_tickets if ticket['spent']==False ]
+
+        if len(available_tickets)==0:
+            print("No available tickets for", address)
+            return
+        else:
+            spend_ticket(available_tickets[0]['id'])
         calibrate = False
         if len(segments_task) == 0:
             # calibrate robot

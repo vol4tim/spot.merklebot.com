@@ -114,7 +114,7 @@ class RobonimicsHelper:
                                                "--last_im_file=./traces/{}/{}".format(record_folder_name,
                                                                                       result_image_name)])
             if INTERACTION_MODE == 'drawing':
-                self.execute_drawing_command()
+                self.execute_drawing_command(address=sender)
             elif INTERACTION_MODE == 'movement':
                 self.start_movement_session()
         finally:
