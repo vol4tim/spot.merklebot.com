@@ -3,8 +3,13 @@ services:
     build: .
     ports:
       - "8000:8000"
-
+    
+    restart: unless-stopped
+    
     env_file:
       - .env
     environment:
       - SPOT_MOVING=
+    privileged: true
+    devices:
+      - '/dev:/dev'
