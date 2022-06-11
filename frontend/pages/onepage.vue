@@ -46,7 +46,7 @@
             <p class="text-md my-2 dark:text-white mx-6">
               Identity and access rights are managed using the cryptographic key from your Web3 wallet. This way we make sure that you own the data generated during your interaction with the robot. And for enterprise cases we cryptographically verify the whole chain of custody for machine data within and accross organizations.
             </p>
-            <div class="flex items-center justify-center mt-4">
+            <div class="flex items-center justify-center my-4">
               <AccountChooser />
             </div>
             <div />

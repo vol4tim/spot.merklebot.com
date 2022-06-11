@@ -5,7 +5,7 @@
         <div v-if="wallet.selectedAccount.account" class="mt-1 relative">
           <button
             type="button"
-            class="relative w-full bg-white rounded-md shadow-lg pl-3 pr-10 py-3 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            class="relative w-full bg-white dark:bg-gray-600 dark:text-white rounded-md shadow-lg pl-3 pr-10 py-3 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:focus:ring-white sm:text-sm"
             @click="()=>showAccountChoose = !showAccountChoose"
           >
             <span class="flex items-center">
@@ -37,7 +37,7 @@
               </svg>
             </span>
           </button>
-          <div v-show="showAccountChoose" class="absolute mt-1 w-full z-10 rounded-md bg-white shadow-lg">
+          <div v-show="showAccountChoose" class="absolute mt-1 w-full z-10 rounded-md bg-white dark:bg-gray-600 shadow-lg">
             <ul
               tabindex="-1"
               role="listbox"
@@ -51,7 +51,7 @@
                 :key="idx"
                 :value="account"
                 role="option"
-                class="text-gray-900 cursor-default hover:bg-indigo-500 hover:text-white select-none relative py-2 pl-3 pr-9"
+                class="text-gray-900 dark:text-white  cursor-default hover:bg-indigo-500 hover:text-white select-none relative py-2 pl-3 pr-9"
                 @click="()=>{selectAccount(account); showAccountChoose=false}"
               >
                 <div class="flex items-center">
