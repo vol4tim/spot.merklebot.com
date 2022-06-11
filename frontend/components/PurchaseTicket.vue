@@ -11,6 +11,15 @@
         <li>{{ wallet.selectedAccount.balanceFormatted }}</li>
         <li>{{ wallet.selectedAccount.tickets.filter(ticket=>ticket.spent===false).length }} tickets</li>
       </ul>
+      <span v-if="hasTicket || hasEnoughXrt" class="text-md my-2 dark:text-white mx-6">
+        It is enough to launch the robot by
+        <span v-if="hasTicket"> ticket</span>
+        <span v-if="hasTicket && hasEnoughXrt"> or</span>
+        <span v-if="hasEnoughXrt"> XRT</span>.
+      </span>
+      <span v-else class="text-md my-2 dark:text-white mx-6">
+        It is not enough to launch the robot. Purchase a ticket <em>or</em> get XRT.
+      </span>
     </div>
     <div>
       <button
@@ -26,7 +35,7 @@
 </template>
 
 <script>
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, computed } from '@nuxtjs/composition-api'
 import { useWallet } from '../store/wallet'
 import { createSpotDemoTicketStripePurchaseSession } from '../plugins/merklebot'
 import { getStripe } from '@/plugins/stripe'
@@ -41,8 +50,16 @@ export default defineComponent({
       await stripe.redirectToCheckout({ sessionId: stripeSessionId })
     }
 
+    const hasEnoughXrt = computed(() => {
+      return wallet.selectedAccount.balanceRaw * 10 ** -9 > 1
+    })
+
+    const hasTicket = computed(() => {
+      return wallet.selectedAccount.tickets.filter(ticket => ticket.spent === false).length >= 1
+    })
+
     return {
-      wallet, checkout
+      wallet, checkout, hasEnoughXrt, hasTicket
     }
   }
 })
