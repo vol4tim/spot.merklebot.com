@@ -15,9 +15,17 @@
       <button
         type="button"
         class=" uppercase py-2 my-2 px-4  bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md"
-        @click="sendCommand"
+        @click="sendCommandXrt"
       >
-        Send command
+        Send command spending 1 XRT
+      </button>
+
+      <button
+        type="button"
+        class=" uppercase py-2 my-2 px-4  bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md"
+        @click="sendCommandTicket"
+      >
+        Send command spending 1 ticket
       </button>
     </div>
   </div>
@@ -51,7 +59,8 @@ export default defineComponent({
       scope.project.activeLayer.removeChildren()
       paths = []
     }
-    const sendCommand = async () => {
+
+    const sendCommand = async (transferXrtAmount) => {
       const segments = []
       console.log('Sending command')
       console.log(paths)
@@ -67,7 +76,7 @@ export default defineComponent({
       console.log(segments)
 
       dashboardParameters.setCodeSampleParameter(true)
-      const res = await robot.launchCps()
+      const res = await robot.launchCps(transferXrtAmount)
       if (res) {
         robot.sendDrawing(segments)
       }
@@ -86,6 +95,14 @@ export default defineComponent({
       //     console.log(data)
       //   })
       // })
+    }
+
+    const sendCommandXrt = async () => {
+      await sendCommand(1 * 10 ** 9) // 1 Wn, 1 Wn = 1 * 10 ^ -9 XRT
+    }
+
+    const sendCommandTicket = async () => {
+      await sendCommand()
     }
 
     const pathCreate = (scope) => {
@@ -128,7 +145,7 @@ export default defineComponent({
       }
     }
     return {
-      mouseDown, resetCanvas, sendCommand
+      mouseDown, resetCanvas, sendCommandXrt, sendCommandTicket
     }
   }
 })

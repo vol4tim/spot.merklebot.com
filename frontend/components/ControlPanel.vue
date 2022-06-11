@@ -29,7 +29,9 @@
 
 import {
   makeLaunchTx,
-  signAndSendTxWithActiveAccount
+  makeTransferTx,
+  signAndSendTxWithActiveAccount,
+  signAndSendTxsBatchWithActiveAccount
 } from '@/plugins/robonomics'
 
 export default {
@@ -54,12 +56,17 @@ export default {
     this.doRobotStatePolling()
   },
   methods: {
-    async launchCps () {
-      this.cps.launch.txInfo = null
+    async launchCps (transferXrtAmount) {
+      this.cps.launch.txInfo = { tx: null }
       this.cps.launch.txStatus = null
       const launchTx = await makeLaunchTx(this.cps.address, true)
       this.cps.status = 'wait_tx'
-      this.cps.launch.txInfo = await signAndSendTxWithActiveAccount(launchTx)
+      if (transferXrtAmount) {
+        const transferTx = await makeTransferTx(this.cps.address, transferXrtAmount)
+        this.cps.launch.txInfo = await signAndSendTxsBatchWithActiveAccount([launchTx, transferTx])
+      } else {
+        this.cps.launch.txInfo = await signAndSendTxWithActiveAccount(launchTx)
+      }
       this.cps.launch.txStatus = 'accepted'
       this.cps.status = 'activated'
       return true
