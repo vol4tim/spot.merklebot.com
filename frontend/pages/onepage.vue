@@ -61,10 +61,6 @@
             </p>
 
             <div class="flex mt-4 mx-6">
-              <AccountChooser />
-            </div>
-
-            <div class="flex mt-4 mx-6">
               <PurchaseTicket />
             </div>
 
