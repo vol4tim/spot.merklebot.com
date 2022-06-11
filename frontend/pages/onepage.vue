@@ -50,7 +50,7 @@
               <AccountChooser />
               <div v-if="wallet.walletConnectionStatus==='error'">
                 <p class="text-xl my-6 text-center dark:text-white font-bold">
-                  ❗ Please install <a class="text-orange-600" href="https://polkadot.js.org/extension/">Polkadot.js extension</a>, create and add Web3 account. Then reload this page.
+                  ❗ Please install <a class="text-orange-600" href="https://polkadot.js.org/extension/" target="_blank">Polkadot.js extension</a>, create and add Web3 account. Then reload this page.
                 </p>
               </div>
             </div>
@@ -107,7 +107,7 @@
                 <p class="text-md my-4 mb-16 dark:text-white ">
                   Data-driven leasing model unlocks global funding sources for new robotics deployments.
                 </p>
-                <a href="https://docs.google.com/presentation/d/1iMaQJuA91D2bHG1LefyikUMNoGKSNqsXwCDAjztJ9xw/edit?usp=sharing" class="absolute bottom-0 inset-x-0  uppercase py-2 mx-4 my-2 px-4 md:mt-16 bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md text-center">
+                <a href="https://docs.google.com/presentation/d/1iMaQJuA91D2bHG1LefyikUMNoGKSNqsXwCDAjztJ9xw/edit?usp=sharing" target="_blank" class="absolute bottom-0 inset-x-0  uppercase py-2 mx-4 my-2 px-4 md:mt-16 bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md text-center">
                   Case study
                 </a>
               </div>
@@ -120,7 +120,7 @@
                   The birth of digital markets present unique opportunities to form supporting community around equipment operators.
                 </p>
 
-                <a href="https://telescope.merklebot.com/#/" class="absolute bottom-0 inset-x-0  uppercase py-2 mx-4 my-2 px-4 md:mt-16 bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md text-center">
+                <a href="https://telescope.merklebot.com/#/" target="_blank" class="absolute bottom-0 inset-x-0  uppercase py-2 mx-4 my-2 px-4 md:mt-16 bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md text-center">
                   Check dApp
                 </a>
               </div>
@@ -132,7 +132,7 @@
                   Open infrastructure and wide hardware support opens endless opportunities for data-driven partnerships and collaboration.
                 </p>
 
-                <a href="https://docs.google.com/presentation/d/1iMaQJuA91D2bHG1LefyikUMNoGKSNqsXwCDAjztJ9xw/edit?usp=sharing" class="absolute bottom-0 inset-x-0  uppercase py-2 mx-4 my-2 px-4 md:mt-16 bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md text-center">
+                <a href="https://docs.google.com/presentation/d/1iMaQJuA91D2bHG1LefyikUMNoGKSNqsXwCDAjztJ9xw/edit?usp=sharing" target="_blank" class="absolute bottom-0 inset-x-0  uppercase py-2 mx-4 my-2 px-4 md:mt-16 bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md text-center">
                   Case study
                 </a>
               </div>
