@@ -77,24 +77,10 @@ export default defineComponent({
 
       dashboardParameters.setCodeSampleParameter(true)
       const res = await robot.launchCps(transferXrtAmount)
+      const paymentMode = transferXrtAmount ? 'xrt' : 'token'
       if (res) {
-        robot.sendDrawing(segments)
+        robot.sendDrawing(segments, paymentMode)
       }
-      // fetch('http://10.200.0.3:1234/draw_figure', {
-
-      // emit('drawing_sent', () => {
-      //   fetch('https://api.merklebot.com/strelka/draw_figure', {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json'
-      //     },
-      //     body: JSON.stringify({
-      //       segments
-      //     })
-      //   }).then(response => response.json()).then((data) => {
-      //     console.log(data)
-      //   })
-      // })
     }
 
     const sendCommandXrt = async () => {

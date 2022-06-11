@@ -7,22 +7,23 @@ from utils.calibration import centralize, coord_nodes, calibration_movement
 from utils.robonomics import RobonimicsHelper
 from settings.settings import SPOT_USERNAME, SPOT_PASSWORD, SPOT_IP, MOVEMENT_SESSION_DURATION_TIME, USE_ROBONOMICS
 
-
 import time, json
 
 
 def spot_logic_process(movement_queue, drawing_queue, robot_state):
     def execute_drawing_command(address=None):
-        segments_task = drawing_queue.get()
+        task = drawing_queue.get()
+        segments_task = task['segments']
+        payment_mode = task['payment_mode']
+        if payment_mode == 'ticket':
+            customer_tickets = get_tickets_by_customer(address=address)
+            available_tickets = [ticket for ticket in customer_tickets if ticket['spent'] == False]
+            if len(available_tickets) == 0:
+                print("No available tickets for", address)
+                return
+            else:
+                spend_ticket(available_tickets[0]['id'])
 
-        customer_tickets = get_tickets_by_customer(address=address)
-        available_tickets = [ticket for ticket in customer_tickets if ticket['spent']==False ]
-
-        if len(available_tickets)==0:
-            print("No available tickets for", address)
-            return
-        else:
-            spend_ticket(available_tickets[0]['id'])
         calibrate = False
         if len(segments_task) == 0:
             # calibrate robot

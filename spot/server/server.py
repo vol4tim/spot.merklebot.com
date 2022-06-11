@@ -46,10 +46,17 @@ def server(movement_queue, drawing_queue, robot_state):
     @app.route('/draw_figure', methods=['POST'])
     def draw_figure():
         print("GOT DRWAWING REQUEST")
+
         data = request.get_json()
+
         if 'segments' in data:
             segments = data['segments']
-            drawing_queue.put(segments)
+            drawing_queue.put(
+                {
+                    'segments': segments,
+                    'payment_mode': data['payment_mode']
+                }
+            )
         return {'status': 'started'}
 
     @app.route('/interaction_mode', methods=['GET'])

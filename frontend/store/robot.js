@@ -57,14 +57,15 @@ export const useRobot = defineStore('robot', {
         return false
       }
     },
-    sendDrawing (segments) {
+    sendDrawing (segments, paymentMode = 'token') {
       fetch('https://api.merklebot.com/strelka/draw_figure', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          segments
+          segments,
+          payment_mode: paymentMode
         })
       }).then(response => response.json()).then((data) => {
         console.log(data)
