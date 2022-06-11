@@ -48,6 +48,11 @@
             </p>
             <div class="flex items-center justify-center my-4">
               <AccountChooser />
+              <div v-if="wallet.walletConnectionStatus==='error'">
+                <p class="text-xl my-6 text-center dark:text-white font-bold">
+                  ❗ Please install <a class="text-orange-600" href="https://polkadot.js.org/extension/">Polkadot.js extension</a>, create and add Web3 account. Then reload this page.
+                </p>
+              </div>
             </div>
             <div />
           </div>
@@ -142,12 +147,12 @@
 <script>
 import { defineComponent, onMounted } from '@nuxtjs/composition-api'
 import { useRobot } from '../store/robot'
-// import { useWallet } from '../store/wallet'
+import { useWallet } from '../store/wallet'
 
 export default defineComponent({
   setup () {
     const robot = useRobot()
-    // const wallet = useWallet()
+    const wallet = useWallet()
     // wallet.connectWallet()
 
     const doRobotStatePolling = async () => {
@@ -164,7 +169,7 @@ export default defineComponent({
     })
 
     return {
-      robot
+      robot, wallet
     }
   }
 })

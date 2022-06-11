@@ -13,6 +13,7 @@ export const useWallet = defineStore('wallet', {
   state: () => {
     return {
       accounts: [],
+      walletConnectionStatus: 'wait',
       selectedAccount: {
         account: null,
         balanceRaw: null,
@@ -28,6 +29,9 @@ export const useWallet = defineStore('wallet', {
         console.log('accounts', accounts)
         this.accounts = accounts
         this.setActiveAccount(accounts[0])
+        this.walletConnectionStatus = 'connected'
+      }).catch((e) => {
+        this.walletConnectionStatus = 'error'
       })
     },
     setActiveAccount (account) {
@@ -38,6 +42,9 @@ export const useWallet = defineStore('wallet', {
         getRobonomics().then((robonomics) => {
           const balance = r.free.sub(r.feeFrozen)
           this.selectedAccount.balanceRaw = balance
+          if (balance === 0) {
+            this.selectedAccount.balanceFormatted = '0 XRT'
+          }
           this.selectedAccount.balanceFormatted = formatBalance(balance, {
             decimals: robonomics.api.registry.chainDecimals[0],
             withUnit: robonomics.api.registry.chainTokens[0]
