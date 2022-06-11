@@ -5,7 +5,7 @@ from external_communications.tickets import get_tickets_by_customer, spend_ticke
 from spot.spot_controller import SpotController
 from utils.calibration import centralize, coord_nodes, calibration_movement
 from utils.robonomics import RobonimicsHelper
-from settings.settings import SPOT_USERNAME, SPOT_PASSWORD, SPOT_IP, MOVEMENT_SESSION_DURATION_TIME, USE_ROBONOMICS
+from settings.settings import SPOT_USERNAME, SPOT_PASSWORD, SPOT_IP, MOVEMENT_SESSION_DURATION_TIME, USE_ROBONOMICS, ADMIN_ACCOUNTS
 
 import time, json
 
@@ -26,8 +26,11 @@ def spot_logic_process(movement_queue, drawing_queue, robot_state):
 
         calibrate = False
         if len(segments_task) == 0:
-            # calibrate robot
-            calibrate = True
+            if address in ADMIN_ACCOUNTS:
+                # calibrate robot
+                calibrate = True
+            else:
+                return
 
         print("Got task", segments_task)
 
