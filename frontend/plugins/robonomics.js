@@ -56,7 +56,7 @@ export const makeLaunchTx = async (targetAddress, enabledFlag) => {
  */
 export const makeTransferTx = async (recipient, value) => {
   const robonomics = await getInstance()
-  const tx = robonomics.api.balances.transfer(recipient, value)
+  const tx = robonomics.api.tx.balances.transfer(recipient, value)
   return tx
 }
 
