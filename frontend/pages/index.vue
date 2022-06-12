@@ -37,7 +37,7 @@
         <div class="overflow-y-auto h-screen">
           <div class="dark:bg-gray-700 border-2 border-gray-800  dark:border-white m-6 mt-12 p-6 pt-8">
             <h3 class="max-w-md text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
-              1 User Ownership of Data
+              1. User Ownership of Data
             </h3>
 
             <p class="text-md my-2 dark:text-white mx-6">
@@ -56,7 +56,7 @@
 
           <div class="dark:bg-gray-700 border-2 border-gray-800  dark:border-white m-6 mt-12 p-6 pt-8">
             <h3 class="max-w-md text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
-              2 Robots Transfer Value
+              2. Robots Transfer Value
             </h3>
             <p class="text-md my-2 dark:text-white mx-6">
               Billing for robot’s work can happen in both US dollars and cryptocurrencies - money for robots. While robots today can already navigate our complex world, perform inspections and even interact with people - they still couldn’t participate in our economy directly. From fun demos like this one to data-driven equipment leasing: now robots can transact in fully autonomous supply chains.
@@ -71,7 +71,7 @@
 
           <div class="dark:bg-gray-700 border-2 border-gray-800  dark:border-white m-6 mt-12 p-6 pt-8">
             <h3 class="max-w-md text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
-              3 Secure Access to Machines
+              3. Secure Access to Machines
             </h3>
             <p class="text-md my-2 dark:text-white mx-6">
               Teleoperation session is authorized by the key in your wallet and the data can be encrypted with it too. You will now send a transaction directly to the robot and it will be recorded in Robonomics blockchain within Polkadot ecosystem. This way technical command and value transfer are tied together and verified to ensure resiliency of large scale cyber-physical systems.
@@ -89,7 +89,7 @@
 
           <div class="dark:bg-gray-700 border-2 border-gray-800 dark:border-white m-6 mt-12 p-6 pt-8">
             <h3 class="max-w-md text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
-              4 Decentralized Storage and Reporting
+              4. Decentralized Storage and Reporting
             </h3>
             <p class="text-md my-2 dark:text-white mx-6">
               Most secure and affordable way to store large amounts of machine data. Large data sets that robots generate are recorded using Filecoin Network. It uses cryptographic storage proofs to verify data is being stored correctly and securely over time in decentralized network of storage providers. All with signifficantly lower storage costs compared to traditional clouds.
@@ -102,7 +102,7 @@
 
           <div class="dark:bg-gray-700 border-2 border-gray-800 dark:border-white m-6 mt-12 p-6 pt-8">
             <h3 class="max-w-md text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
-              5 Digital Economies Powering Physical World
+              5. Digital Economies Powering Physical World
             </h3>
             <p class="text-md my-2 dark:text-white mx-6">
               With the rise of cryptocurrencies adoption new digital market flourished and they present a number of opportunities to reduce costs, drive additional revenue streams and partnerships.
