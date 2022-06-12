@@ -24,7 +24,7 @@ def after_session_complete(
     print("After session procedure for session {} started".format(session_id))
     video_path = "./traces/{}/{}".format(record_folder_name, video_name)
     h264_path = "./traces/{}/h264_{}".format(record_folder_name, video_name)
-    os.system("ffmpeg -i {} -vcodec h264 {} ".format(video_path, h264_path))
+    os.system("ffmpeg -loglevel error -i {} -vcodec h264 {} ".format(video_path, h264_path))
 
     pinata = PinataPy(PINATA_API_KEY, PINATA_SECRET_API_KEY)
     folder = "/home/spot/davos.merklebot.com/spot/traces/{}".format(record_folder_name)
