@@ -79,7 +79,7 @@ class DataRecorder:
             self.sender,
             self.recipient,
             self.session_id,
-            created_at_str
+            self.created_at_str
         )
 
         bag_name = "state.bag"
