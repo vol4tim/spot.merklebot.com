@@ -77,7 +77,7 @@ export default defineComponent({
 
       dashboardParameters.setCodeSampleParameter(true)
       const res = await robot.launchCps(transferXrtAmount)
-      const paymentMode = transferXrtAmount ? 'xrt' : 'token'
+      const paymentMode = transferXrtAmount ? 'xrt' : 'ticket'
       if (res) {
         robot.sendDrawing(segments, paymentMode, `${res.txInfo.blockNumber}-${res.txInfo.txIndex}`)
       }

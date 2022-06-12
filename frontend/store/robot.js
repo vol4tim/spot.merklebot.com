@@ -57,7 +57,7 @@ export const useRobot = defineStore('robot', {
         return false
       }
     },
-    sendDrawing (segments, paymentMode = 'token', txId = '') {
+    sendDrawing (segments, paymentMode = 'ticket', txId = '') {
       fetch('https://api.merklebot.com/strelka/draw_figure', {
         method: 'POST',
         headers: {
