@@ -74,7 +74,7 @@ class DataRecorder:
         self.created_at_str = None
 
     def start_data_recording(self):
-        created_at_str = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
+        self.created_at_str = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
         self.record_folder_name = "user-{}-cps-{}-session-{}-{}".format(
             self.sender,
             self.recipient,
