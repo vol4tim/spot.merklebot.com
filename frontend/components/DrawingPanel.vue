@@ -79,7 +79,7 @@ export default defineComponent({
       const res = await robot.launchCps(transferXrtAmount)
       const paymentMode = transferXrtAmount ? 'xrt' : 'token'
       if (res) {
-        robot.sendDrawing(segments, paymentMode)
+        robot.sendDrawing(segments, paymentMode, `${res.txInfo.blockNumber}-${res.txInfo.txIndex}`)
       }
     }
 

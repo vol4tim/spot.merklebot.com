@@ -10,11 +10,24 @@ from settings.settings import SPOT_USERNAME, SPOT_PASSWORD, SPOT_IP, MOVEMENT_SE
 import time, json
 
 
+
 def spot_logic_process(movement_queue, drawing_queue, robot_state):
     def execute_drawing_command(address=None):
         task = drawing_queue.get()
         segments_task = task['segments']
         payment_mode = task['payment_mode']
+        tx_id = task['tx_id']
+        for i in range(15):
+            if tx_id in robot_state['tx_ids']:
+                tx_ids = []+robot_state['tx_ids']
+                tx_ids.remove(tx_id)
+                robot_state['tx_ids'] = tx_ids
+                break
+            time.sleep(1)
+        else:
+            print("Not found tx", tx_id)
+            return
+
         if payment_mode == 'ticket':
             customer_tickets = get_tickets_by_customer(address=address)
             available_tickets = [ticket for ticket in customer_tickets if ticket['spent'] == False]

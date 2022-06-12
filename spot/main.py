@@ -20,6 +20,7 @@ def main():
     robot_state['last_session_id'] = None
     robot_state['calibration_nodes'] = json.load(open("movement_calibration_nodes.json")) if os.path.exists(
         "movement_calibration_nodes.json") else []
+    robot_state['tx_ids'] = []  # list of transactions
     spot_controller_process = ctx.Process(target=spot_logic_process, args=(movement_queue, drawing_queue, robot_state))
     server_process = ctx.Process(target=server, args=(movement_queue, drawing_queue, robot_state))
 

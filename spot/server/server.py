@@ -54,7 +54,8 @@ def server(movement_queue, drawing_queue, robot_state):
             drawing_queue.put(
                 {
                     'segments': segments,
-                    'payment_mode': data['payment_mode']
+                    'payment_mode': data['payment_mode'],
+                    'tx_id': data['tx_id']
                 }
             )
         return {'status': 'started'}

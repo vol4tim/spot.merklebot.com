@@ -39,7 +39,7 @@ export const useRobot = defineStore('robot', {
       }
       this.cps.launch.txStatus = 'accepted'
       this.cps.status = 'activated'
-      return true
+      return this.cps.launch
     },
     async updateRobotState () {
       // const response = await fetch('http://10.200.0.3:1234/current_state', { method: 'GET' })
@@ -57,7 +57,7 @@ export const useRobot = defineStore('robot', {
         return false
       }
     },
-    sendDrawing (segments, paymentMode = 'token') {
+    sendDrawing (segments, paymentMode = 'token', txId = '') {
       fetch('https://api.merklebot.com/strelka/draw_figure', {
         method: 'POST',
         headers: {
@@ -65,7 +65,8 @@ export const useRobot = defineStore('robot', {
         },
         body: JSON.stringify({
           segments,
-          payment_mode: paymentMode
+          payment_mode: paymentMode,
+          tx_id: txId
         })
       }).then(response => response.json()).then((data) => {
         console.log(data)
