@@ -114,7 +114,7 @@
 
               <div class="basis-1/3 mx-2 px-2 dark:bg-gray-600 relative">
                 <h4 class="max-w-sm text-md md:text-xl font-bold dark:text-white text-gray-800 mt-4">
-                  DeFi pools and DAOs (NFT and data markets (revenue 📈))
+                  NFT and data markets (revenue 📈)
                 </h4>
                 <p class="text-md my-4 mb-16 dark:text-white ">
                   The birth of digital markets present unique opportunities to form supporting community around equipment operators.
