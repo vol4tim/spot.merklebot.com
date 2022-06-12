@@ -30,7 +30,7 @@
         IPFS Content ID: <span class="text-yellow-500">{{ launchData.ipfs_cid }}</span>
       </p>
       <p class="text-md mt-2 dark:text-white">
-        View Robonomics Launch Tx: <a :href="datalogLink" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ launchLink }}</a>
+        View Robonomics Launch Tx: <a :href="launchLink" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ launchLink }}</a>
       </p>
       <p class="text-md mt-2 dark:text-white">
         View record data on IPFS: <a :href="traceFolderLink" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ traceFolderLink.slice(0, 50) + '...' }}</a>
