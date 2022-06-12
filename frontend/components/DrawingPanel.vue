@@ -18,7 +18,7 @@
         :disabled="!hasEnoughXrt"
         @click="sendCommandXrt"
       >
-        Launch spending 1 XRT
+        Launch for 1 XRT
       </button>
 
       <button
@@ -27,7 +27,7 @@
         :disabled="!hasTicket"
         @click="sendCommandTicket"
       >
-        Launch spending 1 ticket
+        Launch for 1 ticket
       </button>
     </div>
   </div>
