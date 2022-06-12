@@ -42,12 +42,10 @@
       <div class="flex items-left justify-left m-4">
         <video :src="`${traceFolderLink}/h264_camera.mp4`" type="video/mp4" controls />
       </div>
-
-      <div />
     </div>
 
     <div v-else>
-      <p class="text-md mt-2 dark:text-white mx-6 my-4">
+      <p class="text-md mt-2 dark:text-white mx-6">
         Your launch data will appear here after processing drawing and saving all data
       </p>
     </div>
