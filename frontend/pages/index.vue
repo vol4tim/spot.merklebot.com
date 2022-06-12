@@ -91,6 +91,12 @@
             <h3 class="max-w-md text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
               4 Decentralized Storage and Reporting
             </h3>
+            <p class="text-md my-2 dark:text-white mx-6">
+              Most secure and affordable way to store large amounts of machine data. Large data sets that robots generate are recorded using Filecoin Network. It uses cryptographic storage proofs to verify data is being stored correctly and securely over time in decentralized network of storage providers. All with signifficantly lower storage costs compared to traditional clouds.
+            </p>
+            <p class="text-md my-2 dark:text-white mx-6">
+              Here you can see a report from your interaction with Spot:
+            </p>
             <ResultingRecordCard />
           </div>
 
