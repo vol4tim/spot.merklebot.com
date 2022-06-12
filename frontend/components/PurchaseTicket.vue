@@ -28,7 +28,7 @@
         @click="checkout"
       >
         <span>Purchase a ticket for 5 USD</span>
-        <img class="h-6 ml-2 inline-block bg-purple-600 rounded-lg" src="stripe.svg">
+        <img class="h-6 ml-2 inline-block bg-white rounded-lg" src="stripe.svg">
       </button>
     </div>
   </div>
