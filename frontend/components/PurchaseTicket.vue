@@ -1,13 +1,13 @@
 <template>
   <div>
     <div>
-      <p class="text-md my-2 dark:text-white mx-6">
+      <p class="text-md my-2 dark:text-white">
         One launch requires 1 ticket or 1 XRT.
       </p>
-      <p class="text-md my-2 dark:text-white mx-6">
+      <p class="text-md my-2 dark:text-white">
         You have:
       </p>
-      <ul class="list-disc ml-8 text-md my-2 dark:text-white mx-6">
+      <ul class="list-disc text-md mx-4 my-2 dark:text-white">
         <li>{{ wallet.selectedAccount.balanceFormatted }}</li>
         <li>{{ wallet.selectedAccount.tickets.filter(ticket=>ticket.spent===false).length }} tickets</li>
       </ul>
@@ -17,7 +17,7 @@
         <span v-if="hasTicket && hasEnoughXrt"> or</span>
         <span v-if="hasEnoughXrt"> XRT</span>.
       </span>
-      <span v-else class="text-md my-2 dark:text-white mx-6">
+      <span v-else class="text-md my-2 dark:text-white">
         It is not enough to launch the robot. Purchase a ticket <em>or</em> get XRT.
       </span>
     </div>

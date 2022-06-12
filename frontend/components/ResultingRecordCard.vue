@@ -1,19 +1,19 @@
 <template>
   <div class="m-4 min-h-200 p-2">
     <div>
-      <p class="text-md mt-2 dark:text-white mx-6">
+      <p class="text-md mt-2 dark:text-white">
         Robot state: <span class="text-yellow-500">{{ robot.robotState }}</span>
       </p>
 
-      <p class="text-md mt-2 dark:text-white mx-6">
+      <p class="text-md mt-2 dark:text-white">
         Robot status: <span class="text-yellow-500">{{ robot.cps.status }}</span>
       </p>
 
-      <p class="text-md mt-2 dark:text-white mx-6">
+      <p class="text-md mt-2 dark:text-white">
         Transaction status: <span class="text-yellow-500">{{ robot.cps.launch.txStatus }}</span>
       </p>
 
-      <p class="text-md mt-2 dark:text-white mx-6">
+      <p class="text-md mt-2 dark:text-white">
         View transaction: <a
           class="text-yellow-500"
           :href="
@@ -26,16 +26,16 @@
     </div>
 
     <div v-if="launchData!==null">
-      <p class="text-md mt-2 dark:text-white mx-6">
+      <p class="text-md mt-2 dark:text-white">
         IPFS Content ID: <span class="text-yellow-500">{{ launchData.ipfs_cid }}</span>
       </p>
-      <p class="text-md mt-2 dark:text-white mx-6">
+      <p class="text-md mt-2 dark:text-white">
         View Robonomics Launch Tx: <a :href="datalogLink" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ launchLink }}</a>
       </p>
-      <p class="text-md mt-2 dark:text-white mx-6">
+      <p class="text-md mt-2 dark:text-white">
         View record data on IPFS: <a :href="traceFolderLink" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ traceFolderLink.slice(0, 50) + '...' }}</a>
       </p>
-      <p class="text-md mt-2 dark:text-white mx-6">
+      <p class="text-md mt-2 dark:text-white">
         View Robonomics Datalog Tx:<a :href="datalogLink" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ datalogLink.slice(0, 50) + '...' }}</a>
       </p>
 
@@ -45,7 +45,7 @@
     </div>
 
     <div v-else>
-      <p class="text-md mt-2 dark:text-white mx-6">
+      <p class="text-md mt-2 dark:text-white">
         Your launch data will appear here after processing drawing and saving all data
       </p>
     </div>
