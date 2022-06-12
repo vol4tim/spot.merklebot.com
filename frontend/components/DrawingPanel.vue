@@ -15,6 +15,7 @@
       <button
         type="button"
         class=" uppercase py-2 my-2 px-4  bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md"
+        :disabled="!hasEnoughXRT"
         @click="sendCommandXrt"
       >
         Launch spending 1 XRT
@@ -23,6 +24,7 @@
       <button
         type="button"
         class=" uppercase py-2 my-2 px-4  bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md"
+        :disabled="!hasTicket"
         @click="sendCommandTicket"
       >
         Launch spending 1 ticket
@@ -32,9 +34,10 @@
 </template>
 
 <script>
-import { defineComponent, onMounted } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, computed } from '@nuxtjs/composition-api'
 import { useDashboardParameters } from '../store'
 import { useRobot } from '../store/robot'
+import { useWallet } from '../store/wallet'
 
 const paper = require('paper')
 
@@ -130,8 +133,19 @@ export default defineComponent({
         console.log(paths)
       }
     }
+
+    const wallet = useWallet()
+
+    const hasEnoughXrt = computed(() => {
+      return wallet.selectedAccount.balanceRaw * 10 ** -9 > 1
+    })
+
+    const hasTicket = computed(() => {
+      return wallet.selectedAccount.tickets.filter(ticket => ticket.spent === false).length >= 1
+    })
+
     return {
-      mouseDown, resetCanvas, sendCommandXrt, sendCommandTicket
+      mouseDown, resetCanvas, sendCommandXrt, sendCommandTicket, hasEnoughXrt, hasTicket
     }
   }
 })
