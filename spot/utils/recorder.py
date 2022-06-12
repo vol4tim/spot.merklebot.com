@@ -64,8 +64,8 @@ def after_session_complete(
 class DataRecorder:
     def __init__(self, transaction):
         self.sender = transaction['sender']
-        self.recipient = transaction['recipient'],
-        self.session_id = transaction['session_id'],
+        self.recipient = transaction['recipient']
+        self.session_id = transaction['session_id']
         self.tx_id = transaction['tx_id']
         self.recorder = None
         self.video_recorder = None
