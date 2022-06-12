@@ -1,19 +1,19 @@
 <template>
-  <div class="dark:bg-gray-700 border-2 border-gray-800  dark:border-white m-4 mt-12 min-h-200">
+  <div class="m-4 min-h-200 p-2">
     <div>
-      <p class="text-xl mt-2 dark:text-white mx-6">
+      <p class="text-md mt-2 dark:text-white mx-6">
         Robot state: <span class="text-yellow-500">{{ robot.robotState }}</span>
       </p>
 
-      <p class="text-xl mt-2 dark:text-white mx-6">
+      <p class="text-md mt-2 dark:text-white mx-6">
         Robot status: <span class="text-yellow-500">{{ robot.cps.status }}</span>
       </p>
 
-      <p class="text-xl mt-2 dark:text-white mx-6">
+      <p class="text-md mt-2 dark:text-white mx-6">
         Transaction status: <span class="text-yellow-500">{{ robot.cps.launch.txStatus }}</span>
       </p>
 
-      <p class="text-xl mt-2 dark:text-white mx-6">
+      <p class="text-md mt-2 dark:text-white mx-6">
         View transaction: <a
           class="text-yellow-500"
           :href="
