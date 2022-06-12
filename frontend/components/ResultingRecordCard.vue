@@ -1,8 +1,5 @@
 <template>
   <div class="dark:bg-gray-700 border-2 border-gray-800  dark:border-white m-4 mt-12 min-h-200">
-    <h2 class="max-w-xl text-2xl md:text-3xl font-bold mx-auto dark:text-white text-gray-800 py-2">
-      4. See your launch data
-    </h2>
     <div>
       <p class="text-xl mt-2 dark:text-white mx-6">
         Robot state: <span class="text-yellow-500">{{ robot.robotState }}</span>
