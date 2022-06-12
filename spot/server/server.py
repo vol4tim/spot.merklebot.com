@@ -9,9 +9,15 @@ from settings.settings import INTERACTION_MODE
 
 from scipy.interpolate import Rbf
 
+import logging
+
+
+
 
 def server(movement_queue, drawing_queue, robot_state):
     app = Flask(__name__)
+    log = logging.getLogger('werkzeug')
+    log.setLevel(logging.ERROR)
     CORS(app, resources={r"/*": {"origins": "*"}})
 
     @app.route("/current_state", methods=["GET"])
