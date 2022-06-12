@@ -8,6 +8,10 @@ from bosdyn.client.frame_helpers import ODOM_FRAME_NAME
 from bosdyn.api.basic_command_pb2 import RobotCommandFeedbackStatus
 from bosdyn.client.estop import EstopClient, EstopEndpoint, EstopKeepAlive
 from bosdyn.client.robot_state import RobotStateClient
+from bosdyn.client.frame_helpers import ODOM_FRAME_NAME, VISION_FRAME_NAME, BODY_FRAME_NAME,\
+    GRAV_ALIGNED_BODY_FRAME_NAME, get_se2_a_tform_b
+from bosdyn.client import math_helpers
+
 
 import traceback
 
@@ -53,6 +57,8 @@ class SpotController:
         self._estop_client = self.robot.ensure_client(EstopClient.default_service_name)
         self._estop_endpoint = EstopEndpoint(self._estop_client, 'GNClient', 9.0)
         self._estop_keepalive = None
+
+        self.state_client = self.robot.ensure_client(RobotStateClient.default_service_name)
 
     def release_estop(self):
         self._estop_endpoint.force_simple_setup()
@@ -155,3 +161,29 @@ class SpotController:
 
     def interpolate_coords(self, x, y):
         return float(self.yaw_interpolate(x, y)), float(self.pitch_interpolate(x, y)), 0
+
+
+    def make_stance(self, x_offset, y_offset):
+        state = self.state_client.get_robot_state()
+        vo_T_body = get_se2_a_tform_b(state.kinematic_state.transforms_snapshot,
+                                                    VISION_FRAME_NAME,
+                                                    GRAV_ALIGNED_BODY_FRAME_NAME)
+
+
+        pos_fl_rt_vision = vo_T_body * math_helpers.SE2Pose(x_offset, y_offset, 0)
+        pos_fr_rt_vision = vo_T_body * math_helpers.SE2Pose(x_offset, -y_offset, 0)
+        pos_hl_rt_vision = vo_T_body * math_helpers.SE2Pose(-x_offset, y_offset, 0)
+        pos_hr_rt_vision = vo_T_body * math_helpers.SE2Pose(-x_offset, -y_offset, 0)
+
+        stance_cmd = RobotCommandBuilder.stance_command(
+            VISION_FRAME_NAME, pos_fl_rt_vision.position,
+            pos_fr_rt_vision.position, pos_hl_rt_vision.position, pos_hr_rt_vision.position)
+
+        start_time = time.time()
+        while time.time() - start_time < 6:
+            # Update end time
+            stance_cmd.synchronized_command.mobility_command.stance_request.end_time.CopyFrom(
+                self.robot.time_sync.robot_timestamp_from_local_secs(time.time() + 5))
+            # Send the command
+            self.command_client.robot_command(stance_cmd)
+            time.sleep(0.1)
