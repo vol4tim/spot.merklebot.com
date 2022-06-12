@@ -62,9 +62,7 @@
               Billing for robot’s work can happen in both US dollars and cryptocurrencies - money for robots. While robots today can already navigate our complex world, perform inspections and even interact with people - they still couldn’t participate in our economy directly. From fun demos like this one to data-driven equipment leasing: now robots can transact in fully autonomous supply chains.
             </p>
 
-            <div class="flex mt-4 mx-6">
-              <PurchaseTicket />
-            </div>
+            <PurchaseTicket class="mt-4 mx-6 w-full" />
 
             <div />
           </div>

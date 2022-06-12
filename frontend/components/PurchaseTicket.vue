@@ -1,36 +1,58 @@
 <template>
-  <div>
-    <div>
-      <p class="text-md my-2 dark:text-white">
-        One launch requires 1 ticket or 1 XRT.
-      </p>
-      <p class="text-md my-2 dark:text-white">
-        You have:
-      </p>
-      <ul class="list-disc text-md mx-4 my-2 dark:text-white">
-        <li>{{ wallet.selectedAccount.balanceFormatted }}</li>
-        <li>{{ wallet.selectedAccount.tickets.filter(ticket=>ticket.spent===false).length }} tickets</li>
-      </ul>
-      <span v-if="hasTicket || hasEnoughXrt" class="text-md my-2 dark:text-white mx-6">
-        It is enough to launch the robot by
-        <span v-if="hasTicket"> ticket</span>
-        <span v-if="hasTicket && hasEnoughXrt"> or</span>
-        <span v-if="hasEnoughXrt"> XRT</span>.
-      </span>
-      <span v-else class="text-md my-2 dark:text-white">
-        It is not enough to launch the robot. Purchase a ticket <em>or</em> get XRT.
-      </span>
+  <div class="w-full">
+    <p class="text-md my-2 dark:text-white">
+      One launch requires 1 ticket <em>or</em> 1 XRT. You have:
+    </p>
+    <div class="flex flex-row mx-8 py-4">
+      <div class="basis-1/2 mx-2 px-2 dark:bg-gray-600 relative">
+        <p class="text-md my-4 mb-16 dark:text-white text-center">
+          {{
+            wallet.selectedAccount.tickets.filter(
+              (ticket) => ticket.spent === false
+            ).length
+          }}
+          tickets
+        </p>
+        <button
+          type="button"
+          class="absolute bottom-0 inset-x-0 uppercase py-2 mx-4 my-2 px-4 md:mt-16 bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md text-center"
+          @click="checkout"
+        >
+          <span>Get ticket</span>
+          <img
+            class="h-6 ml-2 inline-block bg-indigo-400 rounded-lg"
+            src="stripe.svg"
+          >
+        </button>
+      </div>
+
+      <div class="basis-1/2 mx-2 px-2 dark:bg-gray-600 relative">
+        <p class="text-md my-4 mb-16 dark:text-white text-center">
+          {{ wallet.selectedAccount.balanceFormatted }} XRT
+        </p>
+        <a
+          href="https://www.kraken.com/prices/xrt-robonomics-price-chart/usd-us-dollar?interval=1m"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="absolute bottom-0 inset-x-0 uppercase py-2 mx-4 my-2 px-4 md:mt-16 bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md text-center"
+        >
+          Get XRT
+        </a>
+      </div>
     </div>
-    <div>
-      <button
-        type="button"
-        class="h-12 w-96 py-2 px-4 my-4 items-center bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
-        @click="checkout"
-      >
-        <span>Purchase a ticket for 5 USD</span>
-        <img class="h-6 ml-2 inline-block bg-white rounded-lg" src="stripe.svg">
-      </button>
-    </div>
+    <span
+      v-if="hasTicket || hasEnoughXrt"
+      class="text-md my-2 dark:text-white"
+    >
+      It is enough to launch the robot by
+      <span v-if="hasTicket"> ticket</span>
+      <span v-if="hasTicket && hasEnoughXrt"> or</span>
+      <span v-if="hasEnoughXrt"> XRT</span>.
+    </span>
+    <span v-else class="text-md my-2 dark:text-white">
+      It is not enough to launch the robot. Purchase a ticket <em>or</em> get
+      XRT.
+    </span>
   </div>
 </template>
 
@@ -45,7 +67,9 @@ export default defineComponent({
     const wallet = useWallet()
 
     const checkout = async () => {
-      const stripeSessionId = await createSpotDemoTicketStripePurchaseSession(wallet.selectedAccount.account.address)
+      const stripeSessionId = await createSpotDemoTicketStripePurchaseSession(
+        wallet.selectedAccount.account.address
+      )
       const stripe = await getStripe()
       await stripe.redirectToCheckout({ sessionId: stripeSessionId })
     }
@@ -55,15 +79,21 @@ export default defineComponent({
     })
 
     const hasTicket = computed(() => {
-      return wallet.selectedAccount.tickets.filter(ticket => ticket.spent === false).length >= 1
+      return (
+        wallet.selectedAccount.tickets.filter(
+          ticket => ticket.spent === false
+        ).length >= 1
+      )
     })
 
     return {
-      wallet, checkout, hasEnoughXrt, hasTicket
+      wallet,
+      checkout,
+      hasEnoughXrt,
+      hasTicket
     }
   }
 })
-
 </script>
 
 <style scoped></style>
