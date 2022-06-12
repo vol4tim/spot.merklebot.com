@@ -35,18 +35,15 @@
 
       <div class="basis-7/12">
         <div class="overflow-y-auto h-screen">
-          <div class="dark:bg-gray-700 border-2 border-gray-800  dark:border-white m-4 mt-12">
-            <h3 class="max-w-md text-xl md:text-2xl font-bold mx-8 dark:text-white text-gray-800 mt-4">
+          <div class="dark:bg-gray-700 border-2 border-gray-800  dark:border-white m-6 mt-12 p-6 pt-8">
+            <h3 class="max-w-md text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
               User Ownership of Data
             </h3>
-            <p class="text-md my-1 dark:text-white mx-6">
-              To power this demo we integrated Boston Dynamics SDK, just like we did with other major robotics manufacturers like Mitsubishi Electric and Universal Robots. And we also support Robot Operating System - dominant framework for robotics development today. Robots are ready to use Web3.
-            </p>
 
             <p class="text-md my-2 dark:text-white mx-6">
               Identity and access rights are managed using the cryptographic key from your Web3 wallet. This way we make sure that you own the data generated during your interaction with the robot. And for enterprise cases we cryptographically verify the whole chain of custody for machine data within and accross organizations.
             </p>
-            <div class="flex items-center justify-center my-4">
+            <div class="flex items-center justify-center">
               <AccountChooser />
               <div v-if="wallet.walletConnectionStatus==='error'">
                 <p class="text-xl my-6 text-center dark:text-white font-bold">
@@ -57,8 +54,8 @@
             <div />
           </div>
 
-          <div class="dark:bg-gray-700 border-2 border-gray-800  dark:border-white m-4 mt-12">
-            <h3 class="max-w-md text-xl md:text-2xl font-bold mx-8 dark:text-white text-gray-800 mt-4">
+          <div class="dark:bg-gray-700 border-2 border-gray-800  dark:border-white m-6 mt-12 p-6 pt-8">
+            <h3 class="max-w-md text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
               Robots Transfer Value
             </h3>
             <p class="text-md my-2 dark:text-white mx-6">
@@ -72,8 +69,8 @@
             <div />
           </div>
 
-          <div class="dark:bg-gray-700 border-2 border-gray-800  dark:border-white m-4 mt-12">
-            <h3 class="max-w-md text-xl md:text-2xl font-bold mx-8 dark:text-white text-gray-800 mt-4">
+          <div class="dark:bg-gray-700 border-2 border-gray-800  dark:border-white m-6 mt-12 p-6 pt-8">
+            <h3 class="max-w-md text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
               Secure Access to Machines
             </h3>
             <p class="text-md my-2 dark:text-white mx-6">
@@ -92,8 +89,8 @@
 
           <ResultingRecordCard />
 
-          <div class="dark:bg-gray-700 border-2 border-gray-800 dark:border-white  m-4 mt-12">
-            <h3 class="max-w-md text-xl md:text-2xl font-bold mx-8 dark:text-white text-gray-800 mt-4">
+          <div class="dark:bg-gray-700 border-2 border-gray-800 dark:border-white m-6 mt-12 p-6 pt-8">
+            <h3 class="max-w-md text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
               Digital Economies Powering Physical World
             </h3>
             <p class="text-md my-2 dark:text-white mx-6">
