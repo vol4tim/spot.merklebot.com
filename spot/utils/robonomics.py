@@ -93,9 +93,7 @@ def after_session_complete(
 
 
 class RobonimicsHelper:
-    def __init__(self, robot_state, execute_drawing_command, start_movement_session):
-        self.execute_drawing_command = execute_drawing_command
-        self.start_movement_sesstion = start_movement_session
+    def __init__(self, robot_state):
         self.robot_state = robot_state
 
     def robonomics_transaction_callback(self, data, launch_event_id):
@@ -142,7 +140,8 @@ class RobonimicsHelper:
                 self.robot_state['tx_ids'] = self.robot_state['tx_ids'] + [launch_event_id]
                 # self.execute_drawing_command(address=sender)
             elif INTERACTION_MODE == 'movement':
-                self.start_movement_session()
+                pass
+                # self.start_movement_session()
         finally:
             time.sleep(2)  # wait for the robot to finish its movement
             recorder.terminate()

@@ -10,6 +10,10 @@ from settings.settings import SPOT_USERNAME, SPOT_PASSWORD, SPOT_IP, MOVEMENT_SE
 import time, json
 
 
+def robonomics_subscriber_process(robot_state):
+    robonomics_helper = RobonimicsHelper(robot_state)
+    robonomics_helper.start_subscriber()
+
 
 def spot_logic_process(movement_queue, drawing_queue, robot_state):
     def execute_drawing_command(address=None):
@@ -130,8 +134,5 @@ def spot_logic_process(movement_queue, drawing_queue, robot_state):
                 time.sleep(1)
                 break
 
-    if USE_ROBONOMICS:
-        robonomics_helper = RobonimicsHelper(robot_state, execute_drawing_command, start_movement_session)
-        robonomics_helper.start_subscriber()
     while True:
         execute_drawing_command()

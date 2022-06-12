@@ -1,4 +1,4 @@
-from spot.spot_logic import spot_logic_process
+from spot.spot_logic import spot_logic_process, robonomics_subscriber_process
 from server.server import server
 
 import multiprocessing
@@ -23,9 +23,11 @@ def main():
     robot_state['tx_ids'] = []  # list of transactions
     spot_controller_process = ctx.Process(target=spot_logic_process, args=(movement_queue, drawing_queue, robot_state))
     server_process = ctx.Process(target=server, args=(movement_queue, drawing_queue, robot_state))
+    robonomics_process = ctx.Process(target=robonomics_subscriber_process, args=(robot_state,))
 
     PROCESSES.append(spot_controller_process)
     PROCESSES.append(server_process)
+    PROCESSES.append(robonomics_process)
 
     for p in PROCESSES:
         p.start()
