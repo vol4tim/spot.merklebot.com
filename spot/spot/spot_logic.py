@@ -17,7 +17,7 @@ def robonomics_subscriber_process(robot_state):
 
 
 def spot_logic_process(movement_queue, drawing_queue, robot_state):
-    def execute_drawing_command(address=None):
+    def execute_drawing_command():
         task = drawing_queue.get()
         segments_task = task['segments']
         payment_mode = task['payment_mode']
@@ -34,6 +34,8 @@ def spot_logic_process(movement_queue, drawing_queue, robot_state):
                 break
         else:
             return
+
+        address = transaction['sender']
 
         if payment_mode == 'ticket':
             customer_tickets = get_tickets_by_customer(address=address)
