@@ -5,6 +5,7 @@ from external_communications.tickets import get_tickets_by_customer, spend_ticke
 from spot.spot_controller import SpotController
 from utils.calibration import centralize, coord_nodes, calibration_movement
 from utils.robonomics import RobonimicsHelper
+from utils.recorder import DataRecorder
 from settings.settings import SPOT_USERNAME, SPOT_PASSWORD, SPOT_IP, MOVEMENT_SESSION_DURATION_TIME, USE_ROBONOMICS, ADMIN_ACCOUNTS
 
 import time, json
@@ -21,15 +22,17 @@ def spot_logic_process(movement_queue, drawing_queue, robot_state):
         segments_task = task['segments']
         payment_mode = task['payment_mode']
         tx_id = task['tx_id']
+        transaction = None
         for i in range(15):
-            if tx_id in robot_state['tx_ids']:
-                tx_ids = []+robot_state['tx_ids']
-                tx_ids.remove(tx_id)
-                robot_state['tx_ids'] = tx_ids
+            for tx in robot_state['transactions']:
+                if tx['tx_id']==tx_id:
+                    transaction = tx
+                    break
+            if not transaction:
+                time.sleep(1)
+            else:
                 break
-            time.sleep(1)
         else:
-            print("Not found tx", tx_id)
             return
 
         if payment_mode == 'ticket':
@@ -50,6 +53,10 @@ def spot_logic_process(movement_queue, drawing_queue, robot_state):
                 return
 
         print("Got task", segments_task)
+
+        data_recorder = DataRecorder(transaction)
+        data_recorder.start_data_recording()
+
 
         # notify videoserver to clear canvas
         send_command_to_videoserver("clear_canvas")
@@ -92,6 +99,12 @@ def spot_logic_process(movement_queue, drawing_queue, robot_state):
         robot_state['state'] = "saving_data"
         print("Robot powered off and sit down")
         time.sleep(1)
+        data_recorder.stop_data_recording()
+        data_recorder.start_data_uploading()
+
+
+        robot_state['last_session_id'] = transaction['session_id']
+        robot_state['state'] = "idle"
 
     def start_movement_session():
         print("Starting movement session")
