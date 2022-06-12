@@ -14,10 +14,10 @@
       </p>
 
       <p class="text-md mt-2 dark:text-white">
-        View transaction: <a
+        Transaction: <a
           class="text-yellow-500"
           :href="
-            'https://robonomics.subscan.io/extrinsic/' + robot.cps.launch.txInfo.tx
+            makeSubscanLink(robot.cps.launch.txInfo.tx)
           "
           target="_blank"
           rel="noopener noreferrer"
@@ -27,20 +27,17 @@
 
     <div v-if="launchData!==null">
       <p class="text-md mt-2 dark:text-white">
-        IPFS Content ID: <span class="text-yellow-500">{{ launchData.ipfs_cid }}</span>
+        Robonomics Launch Tx: <a :href="makeSubscanLink(launchTxId)" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ addressShort(launchTxId) }}</a>
       </p>
       <p class="text-md mt-2 dark:text-white">
-        View Robonomics Launch Tx: <a :href="launchLink" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ launchLink }}</a>
+        Record data on IPFS: <a :href="makeIpfsFolderLink(traceInfo)" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ addressShort(traceInfo.ipfsCid) }}</a>
       </p>
       <p class="text-md mt-2 dark:text-white">
-        View record data on IPFS: <a :href="traceFolderLink" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ traceFolderLink.slice(0, 50) + '...' }}</a>
-      </p>
-      <p class="text-md mt-2 dark:text-white">
-        View Robonomics Datalog Tx:<a :href="datalogLink" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ datalogLink.slice(0, 50) + '...' }}</a>
+        Robonomics Datalog Tx: <a :href="makeSubscanLink(datalogTxId)" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ addressShort(datalogTxId) }}</a>
       </p>
 
       <div class="flex items-left justify-left m-4">
-        <video :src="`${traceFolderLink}/h264_camera.mp4`" type="video/mp4" controls />
+        <video :src="`${makeIpfsFolderLink(traceInfo)}/h264_camera.mp4`" type="video/mp4" controls />
       </div>
     </div>
 
@@ -60,9 +57,9 @@ export default defineComponent({
     const robot = useRobot()
 
     const launchData = ref(null)
-    const traceFolderLink = ref(null)
-    const launchLink = ref(null)
-    const datalogLink = ref(null)
+    const traceInfo = ref(null)
+    const launchTxId = ref(null)
+    const datalogTxId = ref(null)
 
     const addressShort = (address) => {
       if (!address) {
@@ -78,9 +75,15 @@ export default defineComponent({
           console.log(res)
           if (res) {
             launchData.value = res
-            traceFolderLink.value = `https://merklebot.mypinata.cloud/ipfs/${res.ipfs_cid}/spot/davos.merklebot.com/spot/traces/user-${res.sender}-cps-4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j-session-${res.nonce}-${res.created_at}`
-            launchLink.value = `https://robonomics.subscan.io/extrinsic/${res.launch_tx_id}`
-            datalogLink.value = `https://robonomics.subscan.io/extrinsic/${res.datalog_tx_id}`
+            traceInfo.value = {
+              ipfsCid: res.ipfs_cid,
+              sender: res.sender,
+              nonce: res.nonce,
+              createdAt: res.created_at
+
+            }
+            launchTxId.value = res.launch_tx_id
+            datalogTxId.value = res.datalog_tx_id
           }
         } catch (e) {
 
@@ -92,8 +95,17 @@ export default defineComponent({
     onMounted(() => {
       updateLaunchData()
     })
+
+    const makeSubscanLink = (suffix) => {
+      return `https://robonomics.subscan.io/extrinsic/${suffix}`
+    }
+
+    const makeIpfsFolderLink = ({ ipfsCid, sender, nonce, createdAt }) => {
+      return `https://merklebot.mypinata.cloud/ipfs/${ipfsCid}/spot/davos.merklebot.com/spot/traces/user-${sender}-cps-4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j-session-${nonce}-${createdAt}`
+    }
+
     return {
-      robot, launchData, traceFolderLink, launchLink, datalogLink, addressShort
+      robot, launchData, traceInfo, launchTxId, datalogTxId, addressShort, makeSubscanLink, makeIpfsFolderLink
     }
   }
 })
