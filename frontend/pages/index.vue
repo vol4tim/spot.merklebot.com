@@ -1,6 +1,6 @@
 <template>
   <main class="dark:bg-gray-800 font-mono bg-white overflow-hidden ">
-    <div class="z-20 container mx-auto flex flex-row flex-wrap justify-center place-items-center">
+    <div v-if="screenSize.w >= 1400 && screenSize.h >= 780" class="z-20 container mx-auto flex flex-row flex-wrap justify-center place-items-center">
       <div class="basis-5/12">
         <div class="self-center px-6 py-4">
           <div v-if="robot.robotState">
@@ -153,11 +153,16 @@
         </div>
       </div>
     </div>
+    <div v-else class="flex items-center justify-items-center w-full h-screen">
+      <div class="container w-full max-h-fit text-center font-bold text-orange-600">
+        Please open on a desktop computer in a window larger than 1400 x 780
+      </div>
+    </div>
   </main>
 </template>
 
 <script>
-import { defineComponent, onMounted } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, ref } from '@nuxtjs/composition-api'
 import { useRobot } from '../store/robot'
 import { useWallet } from '../store/wallet'
 
@@ -176,12 +181,18 @@ export default defineComponent({
       setTimeout(doRobotStatePolling, 1000)
     }
 
+    const screenSize = ref({ w: window.innerWidth, h: window.innerHeight })
+
     onMounted(() => {
       doRobotStatePolling()
+      window.addEventListener('resize', () => {
+        screenSize.value = { w: window.innerWidth, h: window.innerHeight }
+        console.log(screenSize.value)
+      })
     })
 
     return {
-      robot, wallet
+      robot, wallet, screenSize
     }
   }
 })
