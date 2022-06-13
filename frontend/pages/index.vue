@@ -33,8 +33,8 @@
       </div>
 
       <div class="basis-7/12 flex">
-        <div class="overflow-y-auto h-screen snap-y snap-mandatory my-10">
-          <div class="screen flex items-center snap-always snap-start scroll-my-10">
+        <div class="overflow-y-auto h-screen snap-y snap-mandatory">
+          <div class="screen flex items-center snap-always snap-center scroll-my-10">
             <div class="dark:bg-gray-700 border-2 border-gray-800 dark:border-white m-6 mt-12 p-6 pt-8 align-middle">
               <h3 class="max-w-md text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
                 1. User Ownership of Data
@@ -55,7 +55,7 @@
             </div>
           </div>
 
-          <div class="screen flex items-center snap-always snap-center my-10">
+          <div class="screen flex items-center snap-always snap-center scroll-my-10">
             <div class="dark:bg-gray-700 border-2 border-gray-800  dark:border-white m-6 mt-12 p-6 pt-8 snap-always snap-start">
               <h3 class="max-w-md text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
                 2. Robots Transfer Value
@@ -68,7 +68,7 @@
             </div>
           </div>
 
-          <div class="screen flex items-center snap-always snap-center my-10">
+          <div class="screen flex items-center snap-always snap-center scroll-my-10">
             <div class="dark:bg-gray-700 border-2 border-gray-800  dark:border-white m-6 mt-12 p-6 pt-8 snap-always snap-start">
               <h3 class="max-w-md text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
                 3. Secure Access to Machines
@@ -87,7 +87,7 @@
             </div>
           </div>
 
-          <div class="screen flex items-center snap-always snap-center my-10">
+          <div class="screen flex items-center snap-always snap-center scroll-my-10">
             <div class="dark:bg-gray-700 border-2 border-gray-800 dark:border-white m-6 mt-12 p-6 pt-8 snap-always snap-start">
               <h3 class="max-w-md text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
                 4. Decentralized Storage and Reporting
@@ -102,7 +102,7 @@
             </div>
           </div>
 
-          <div class="screen flex items-center snap-always snap-center my-10">
+          <div class="screen flex items-center snap-always snap-center scroll-my-10">
             <div class="dark:bg-gray-700 border-2 border-gray-800 dark:border-white m-6 mt-12 p-6 pt-8 snap-always snap-start">
               <h3 class="max-w-md text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
                 5. Digital Economies Powering Physical World
@@ -203,6 +203,6 @@ export default defineComponent({
 
 <style scoped>
 .screen {
-  height: 90vh;
+  height: 80vh;
 }
 </style>
