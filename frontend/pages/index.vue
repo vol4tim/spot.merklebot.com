@@ -148,6 +148,9 @@
                   </a>
                 </div>
               </div>
+              <p class="dark:text-white mx-6">
+                To learn more send us an email to v@merklebot.com.
+              </p>
             </div>
           </div>
         </div>
