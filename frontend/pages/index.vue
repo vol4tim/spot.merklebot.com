@@ -187,7 +187,6 @@ export default defineComponent({
       doRobotStatePolling()
       window.addEventListener('resize', () => {
         screenSize.value = { w: window.innerWidth, h: window.innerHeight }
-        console.log(screenSize.value)
       })
     })
 
