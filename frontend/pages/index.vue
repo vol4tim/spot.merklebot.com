@@ -89,7 +89,7 @@
 
           <div class="screen flex items-center snap-always snap-center scroll-my-10">
             <div class="dark:bg-gray-700 border-2 border-gray-800 dark:border-white mx-6 my-12 px-6 py-8 snap-always snap-start">
-              <h3 class="max-w-md text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
+              <h3 class="w-full text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
                 4. Decentralized Storage and Reporting
               </h3>
               <p class="text-md my-2 dark:text-white mx-6">
@@ -104,7 +104,7 @@
 
           <div class="screen flex items-center snap-always snap-center scroll-my-10">
             <div class="dark:bg-gray-700 border-2 border-gray-800 dark:border-white m-6 mt-12 p-6 pt-8 snap-always snap-start">
-              <h3 class="max-w-md text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
+              <h3 class="w-full text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
                 5. Digital Economies Powering Physical World
               </h3>
               <p class="text-md my-2 dark:text-white mx-6">
