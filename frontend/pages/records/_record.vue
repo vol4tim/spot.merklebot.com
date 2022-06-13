@@ -49,7 +49,7 @@ export default {
       }
     }
     const sessionData = await (await fetch('https://api.merklebot.com/robonomics-launch-traces/' + sessionId, { method: 'GET' })).json()
-    const traceFolderLink = `https://merklebot.mypinata.cloud/ipfs/${sessionData.ipfs_cid}/spot/davos.merklebot.com/spot/traces/user-${sessionData.sender}-cps-4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j-session-${sessionData.nonce}-${sessionData.created_at}`
+    const traceFolderLink = `https://merklebot.mypinata.cloud/ipfs/${sessionData.ipfs_cid}/spot/spot.merklebot.com/spot/traces/user-${sessionData.sender}-cps-4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j-session-${sessionData.nonce}-${sessionData.created_at}`
     const launchLink = `https://robonomics.subscan.io/extrinsic/${sessionData.launch_tx_id}`
     const datalogLink = `https://robonomics.subscan.io/extrinsic/${sessionData.datalog_tx_id}`
     return { sessionId, sessionData, traceFolderLink, launchLink, datalogLink }

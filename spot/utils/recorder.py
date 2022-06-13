@@ -27,7 +27,7 @@ def after_session_complete(
     os.system("ffmpeg -loglevel error -i {} -vcodec h264 {} ".format(video_path, h264_path))
 
     pinata = PinataPy(PINATA_API_KEY, PINATA_SECRET_API_KEY)
-    folder = "/home/spot/davos.merklebot.com/spot/traces/{}".format(record_folder_name)
+    folder = "/home/spot/spot.merklebot.com/spot/traces/{}".format(record_folder_name)
     pinata_resp = pinata.pin_file_to_ipfs(folder)
     print("Pinata response: {}".format(pinata_resp))
 

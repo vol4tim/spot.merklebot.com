@@ -72,7 +72,7 @@ export default defineComponent({
       const dbSessions = await (await fetch('https://api.merklebot.com/robonomics-launch-traces', { method: 'GET' })).json()
 
       dbSessions.forEach((session) => {
-        session.traceFolderLink = `https://merklebot.mypinata.cloud/ipfs/${session.ipfs_cid}/spot/davos.merklebot.com/spot/traces/user-${session.sender}-cps-4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j-session-${session.nonce}-${session.created_at}`
+        session.traceFolderLink = `https://merklebot.mypinata.cloud/ipfs/${session.ipfs_cid}/spot/spot.merklebot.com/spot/traces/user-${session.sender}-cps-4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j-session-${session.nonce}-${session.created_at}`
         sessionsList.value.push(session)
       })
       console.log(sessions.value)

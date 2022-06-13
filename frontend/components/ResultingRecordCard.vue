@@ -101,7 +101,7 @@ export default defineComponent({
     }
 
     const makeIpfsFolderLink = ({ ipfsCid, sender, nonce, createdAt }) => {
-      return `https://merklebot.mypinata.cloud/ipfs/${ipfsCid}/spot/davos.merklebot.com/spot/traces/user-${sender}-cps-4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j-session-${nonce}-${createdAt}`
+      return `https://merklebot.mypinata.cloud/ipfs/${ipfsCid}/spot/spot.merklebot.com/spot/traces/user-${sender}-cps-4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j-session-${nonce}-${createdAt}`
     }
 
     return {
