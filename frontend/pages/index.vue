@@ -1,7 +1,6 @@
-
 <template>
   <main class="dark:bg-gray-800 font-mono bg-white overflow-hidden ">
-    <div class="z-20 container mx-auto flex flex-row">
+    <div class="z-20 container mx-auto flex flex-row flex-wrap justify-center">
       <div class="basis-5/12">
         <div class="px-6 flex flex-col justify-between items-center py-4 ">
           <div v-if="robot.robotState" class="flex flex-col">
