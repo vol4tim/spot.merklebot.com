@@ -1,50 +1,60 @@
 <template>
   <div class="m-4 min-h-200 p-2">
-    <div>
-      <p class="text-md mt-2 dark:text-white">
-        Robot state: <span class="text-yellow-500">{{ robot.robotState }}</span>
-      </p>
+    <div />
+    <div class="grid grid-cols-2 gap-4">
+      <CardContainer title="Robot info">
+        <p class="text-md mt-2 dark:text-white">
+          Robot state: <span class="text-yellow-500">{{ robot.robotState }}</span>
+        </p>
+        <p class="text-md mt-2 dark:text-white">
+          Drawings in queue: <span class="text-yellow-500">{{ robot.queueSize }}</span>
+        </p>
+      </CardContainer>
+      <CardContainer title="Launch info">
+        <p class="text-md mt-2 dark:text-white">
+          launch status: <span class="text-yellow-500">{{ robot.cps.status }}</span>
+        </p>
 
-      <p class="text-md mt-2 dark:text-white">
-        Robot status: <span class="text-yellow-500">{{ robot.cps.status }}</span>
-      </p>
+        <p class="text-md mt-2 dark:text-white">
+          Tx status: <span class="text-yellow-500">{{ robot.cps.launch.txStatus }}</span>
+        </p>
 
-      <p class="text-md mt-2 dark:text-white">
-        Transaction status: <span class="text-yellow-500">{{ robot.cps.launch.txStatus }}</span>
-      </p>
-
-      <p class="text-md mt-2 dark:text-white">
-        Transaction: <a
-          class="text-yellow-500"
-          :href="
-            makeSubscanLink(robot.cps.launch.txInfo.tx)
-          "
-          target="_blank"
-          rel="noopener noreferrer"
-        >{{ addressShort(robot.cps.launch.txInfo.tx) }}</a>
-      </p>
+        <p class="text-md mt-2 dark:text-white">
+          Transaction: <a
+            class="text-yellow-500"
+            :href="
+              makeSubscanLink(robot.cps.launch.txInfo.tx)
+            "
+            target="_blank"
+            rel="noopener noreferrer"
+          >{{ addressShort(robot.cps.launch.txInfo.tx) }}</a>
+        </p>
+      </CardContainer>
     </div>
+    <div class="mt-4">
+      <CardContainer title="Saved data">
+        <div v-if="launchData!==null">
+          <p class="text-md mt-2 dark:text-white">
+            Robonomics Launch Tx: <a :href="makeSubscanLink(launchTxId)" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ addressShort(launchTxId) }}</a>
+          </p>
+          <p class="text-md mt-2 dark:text-white">
+            Record data on IPFS: <a :href="makeIpfsFolderLink(traceInfo)" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ addressShort(traceInfo.ipfsCid) }}</a>
+          </p>
+          <p class="text-md mt-2 dark:text-white">
+            Robonomics Datalog Tx: <a :href="makeSubscanLink(datalogTxId)" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ addressShort(datalogTxId) }}</a>
+          </p>
 
-    <div v-if="launchData!==null">
-      <p class="text-md mt-2 dark:text-white">
-        Robonomics Launch Tx: <a :href="makeSubscanLink(launchTxId)" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ addressShort(launchTxId) }}</a>
-      </p>
-      <p class="text-md mt-2 dark:text-white">
-        Record data on IPFS: <a :href="makeIpfsFolderLink(traceInfo)" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ addressShort(traceInfo.ipfsCid) }}</a>
-      </p>
-      <p class="text-md mt-2 dark:text-white">
-        Robonomics Datalog Tx: <a :href="makeSubscanLink(datalogTxId)" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ addressShort(datalogTxId) }}</a>
-      </p>
+          <div class="flex items-left justify-left m-4">
+            <video :src="`${makeIpfsFolderLink(traceInfo)}/h264_camera.mp4`" type="video/mp4" controls />
+          </div>
+        </div>
 
-      <div class="flex items-left justify-left m-4">
-        <video :src="`${makeIpfsFolderLink(traceInfo)}/h264_camera.mp4`" type="video/mp4" controls />
-      </div>
-    </div>
-
-    <div v-else>
-      <p class="text-md mt-2 dark:text-white">
-        Your launch data will appear here after processing drawing and saving all data
-      </p>
+        <div v-else>
+          <p class="text-md mt-2 dark:text-white">
+            Your launch data will appear here after processing drawing and saving all data
+          </p>
+        </div>
+      </CardContainer>
     </div>
   </div>
 </template>
@@ -52,6 +62,7 @@
 import { defineComponent, onMounted, ref } from '@nuxtjs/composition-api'
 import { useRobot } from '../store/robot'
 import { readRobonomicsLaunchTracesBySender } from '../plugins/merklebot'
+
 export default defineComponent({
   setup () {
     const robot = useRobot()
