@@ -31,7 +31,7 @@
         <template #XRT>
           <div class="w-full px-2 dark:bg-gray-600 relative">
             <p class="text-md my-4 mb-16 dark:text-white text-center">
-              You have {{ wallet.selectedAccount.balanceFormatted }} XRT
+              You have {{ wallet.selectedAccount.balanceFormatted }}
             </p>
             <a
               href="https://www.kraken.com/prices/xrt-robonomics-price-chart/usd-us-dollar?interval=1m"
