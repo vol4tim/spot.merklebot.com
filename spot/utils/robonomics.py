@@ -72,7 +72,11 @@ class RobonimicsHelper:
         print("Session {} complete, creating a trace".format(session_id))
 
     def start_subscriber(self):
-        interface = RI.RobonomicsInterface()
-        print("Robonomics subscriber starting...")
-        subscriber = RI.Subscriber(interface, RI.SubEvent.NewLaunch, self.robonomics_transaction_callback,
-                                   "4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j")
+        while True:
+            try:
+                interface = RI.RobonomicsInterface()
+                print("Robonomics subscriber starting...")
+                subscriber = RI.Subscriber(interface, RI.SubEvent.NewLaunch, self.robonomics_transaction_callback,
+                                           "4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j")
+            except:
+                print("Error while connecting to robonomics, restart subscriber...")
