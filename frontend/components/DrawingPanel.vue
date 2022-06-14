@@ -6,30 +6,51 @@
     <div class="">
       <button
         type="button"
-        class=" uppercase py-2 my-2 px-4  bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md"
+        class="w-full uppercase py-2 my-2 px-4  bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md"
         @click="resetCanvas"
       >
         Clear canvas
       </button>
-
-      <button
-        type="button"
-        class=" uppercase py-2 my-2 px-4  bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md"
-        :disabled="!hasEnoughXrt"
-        @click="sendCommandXrt"
-      >
-        Launch for 1 XRT
-      </button>
-
-      <button
-        type="button"
-        class=" uppercase py-2 my-2 px-4  bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md"
-        :disabled="!hasTicket"
-        @click="sendCommandTicket"
-      >
-        Launch for 1 ticket
-      </button>
     </div>
+
+    <PayWithToggle>
+      <template #ticket>
+        <div class="basis-1/2 px-2 dark:bg-gray-600 relative">
+          <p class="text-md my-4 mb-16 dark:text-white text-center">
+            {{
+              wallet.selectedAccount.tickets.filter(
+                (ticket) => ticket.spent === false
+              ).length
+            }}
+            tickets
+          </p>
+          <button
+            type="button"
+            class="absolute bottom-0 inset-x-0 uppercase py-2 mx-4 my-2 px-4 md:mt-16 bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md text-center"
+            :disabled="!hasTicket"
+            @click="sendCommandTicket"
+          >
+            Launch for 1 ticket
+          </button>
+        </div>
+      </template>
+      <template #XRT>
+        <div class="basis-1/2 px-2 dark:bg-gray-600 relative">
+          <p class="text-md my-4 mb-16 dark:text-white text-center">
+            {{ wallet.selectedAccount.balanceFormatted }} XRT
+          </p>
+
+          <button
+            type="button"
+            class="absolute bottom-0 inset-x-0 uppercase py-2 mx-4 my-2 px-4 md:mt-16 bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md text-center"
+            :disabled="!hasEnoughXrt"
+            @click="sendCommandXrt"
+          >
+            Launch for 1 XRT
+          </button>
+        </div>
+      </template>
+    </PayWithToggle>
   </div>
 </template>
 
@@ -149,7 +170,7 @@ export default defineComponent({
     })
 
     return {
-      mouseDown, resetCanvas, sendCommandXrt, sendCommandTicket, hasEnoughXrt, hasTicket
+      mouseDown, resetCanvas, sendCommandXrt, sendCommandTicket, hasEnoughXrt, hasTicket, wallet
     }
   }
 })

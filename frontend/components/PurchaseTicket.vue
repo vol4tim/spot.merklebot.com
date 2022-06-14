@@ -3,46 +3,48 @@
     <p class="text-md my-2 dark:text-white">
       One launch requires 1 ticket <em>or</em> 1 XRT. You have:
     </p>
-    <PayWithToggle>
-      <template #ticket>
-        <div class="basis-1/2 px-2 dark:bg-gray-600 relative">
-          <p class="text-md my-4 mb-16 dark:text-white text-center">
-            {{
-              wallet.selectedAccount.tickets.filter(
-                (ticket) => ticket.spent === false
-              ).length
-            }}
-            tickets
-          </p>
-          <button
-            type="button"
-            class="absolute bottom-0 inset-x-0 uppercase py-2 mx-4 my-2 px-4 md:mt-16 bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md text-center"
-            @click="checkout"
-          >
-            <span>Get ticket</span>
-            <img
-              class="h-6 ml-2 inline-block bg-indigo-400 rounded-lg"
-              src="stripe.svg"
+    <div class="">
+      <PayWithToggle>
+        <template #ticket>
+          <div class="basis-1/2 px-2 dark:bg-gray-600 relative">
+            <p class="text-md my-4 mb-16 dark:text-white text-center">
+              {{
+                wallet.selectedAccount.tickets.filter(
+                  (ticket) => ticket.spent === false
+                ).length
+              }}
+              tickets
+            </p>
+            <button
+              type="button"
+              class="absolute bottom-0 inset-x-0 uppercase py-2 mx-4 my-2 px-4 md:mt-16 bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md text-center"
+              @click="checkout"
             >
-          </button>
-        </div>
-      </template>
-      <template #XRT>
-        <div class="basis-1/2 px-2 dark:bg-gray-600 relative">
-          <p class="text-md my-4 mb-16 dark:text-white text-center">
-            {{ wallet.selectedAccount.balanceFormatted }} XRT
-          </p>
-          <a
-            href="https://www.kraken.com/prices/xrt-robonomics-price-chart/usd-us-dollar?interval=1m"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="absolute bottom-0 inset-x-0 uppercase py-2 mx-4 my-2 px-4 md:mt-16 bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md text-center"
-          >
-            Get XRT
-          </a>
-        </div>
-      </template>
-    </PayWithToggle>
+              <span>Get ticket</span>
+              <img
+                class="h-6 ml-2 inline-block bg-indigo-400 rounded-lg"
+                src="stripe.svg"
+              >
+            </button>
+          </div>
+        </template>
+        <template #XRT>
+          <div class="basis-1/2 px-2 dark:bg-gray-600 relative">
+            <p class="text-md my-4 mb-16 dark:text-white text-center">
+              {{ wallet.selectedAccount.balanceFormatted }} XRT
+            </p>
+            <a
+              href="https://www.kraken.com/prices/xrt-robonomics-price-chart/usd-us-dollar?interval=1m"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="absolute bottom-0 inset-x-0 uppercase py-2 mx-4 my-2 px-4 md:mt-16 bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md text-center"
+            >
+              Get XRT
+            </a>
+          </div>
+        </template>
+      </PayWithToggle>
+    </div>
     <span
       v-if="hasTicket || hasEnoughXrt"
       class="text-md my-2 dark:text-white"

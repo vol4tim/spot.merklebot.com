@@ -1,5 +1,5 @@
 <template>
-  <main class="dark:bg-gray-800 font-mono bg-white overflow-hidden ">
+  <main class="dark:bg-gray-800 font-mono bg-white overflow-hidden">
     <div v-if="screenSize.w >= 1400 && screenSize.h >= 780" class="z-20 container mx-auto flex flex-row flex-wrap justify-center place-items-center">
       <div class="basis-5/12">
         <div class="self-center px-6 py-4">
@@ -187,6 +187,7 @@ export default defineComponent({
     const screenSize = ref({ w: window.innerWidth, h: window.innerHeight })
 
     onMounted(() => {
+      document.documentElement.classList.add('dark')
       doRobotStatePolling()
       window.addEventListener('resize', () => {
         screenSize.value = { w: window.innerWidth, h: window.innerHeight }
