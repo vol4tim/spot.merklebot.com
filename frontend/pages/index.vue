@@ -149,7 +149,7 @@
                 </div>
               </div>
               <p class="dark:text-white mx-6">
-                To learn more send us an email to v@merklebot.com.
+                To learn more send us an email to <span class="text-orange-600 font-bold">v@merklebot.com</span>.
               </p>
             </div>
           </div>
