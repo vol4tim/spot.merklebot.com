@@ -1,14 +1,14 @@
 <template>
   <div class="w-full">
     <p class="text-md my-2 dark:text-white">
-      One launch requires 1 ticket <em>or</em> 1 XRT. You have:
+      One launch requires 1 ticket <em>or</em> 1 XRT.
     </p>
     <div class="">
       <PayWithToggle>
         <template #ticket>
-          <div class="basis-1/2 px-2 dark:bg-gray-600 relative">
+          <div class="w-full px-2 dark:bg-gray-600 relative">
             <p class="text-md my-4 mb-16 dark:text-white text-center">
-              {{
+              You have {{
                 wallet.selectedAccount.tickets.filter(
                   (ticket) => ticket.spent === false
                 ).length
@@ -29,9 +29,9 @@
           </div>
         </template>
         <template #XRT>
-          <div class="basis-1/2 px-2 dark:bg-gray-600 relative">
+          <div class="w-full px-2 dark:bg-gray-600 relative">
             <p class="text-md my-4 mb-16 dark:text-white text-center">
-              {{ wallet.selectedAccount.balanceFormatted }} XRT
+              You have {{ wallet.selectedAccount.balanceFormatted }} XRT
             </p>
             <a
               href="https://www.kraken.com/prices/xrt-robonomics-price-chart/usd-us-dollar?interval=1m"
