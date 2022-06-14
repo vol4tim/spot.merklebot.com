@@ -1,6 +1,6 @@
 <template>
   <main class="dark:bg-gray-800 font-mono bg-white overflow-hidden">
-    <div v-if="screenSize.w >= 1400 && screenSize.h >= 780" class="z-20 container mx-auto flex flex-row flex-wrap justify-center place-items-center">
+    <div v-if="screenSize.w >= minScreenSize.w && screenSize.h >= minScreenSize.h" class="z-20 container mx-auto flex flex-row flex-wrap justify-center place-items-center">
       <div class="basis-5/12">
         <div class="self-center px-6 py-4">
           <div v-if="robot.robotState">
@@ -158,7 +158,7 @@
     </div>
     <div v-else class="flex items-center justify-items-center w-full h-screen">
       <div class="container w-full max-h-fit text-center font-bold text-orange-600">
-        Please open on a desktop computer in a window larger than 1400 x 780
+        Please open on a desktop computer in a window larger than {{ minScreenSize.w }} x {{ minScreenSize.h }}
       </div>
     </div>
   </main>
@@ -194,8 +194,10 @@ export default defineComponent({
       })
     })
 
+    const minScreenSize = { w: 1000, h: 400 }
+
     return {
-      robot, wallet, screenSize
+      robot, wallet, screenSize, minScreenSize
     }
   }
 })
