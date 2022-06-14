@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import { formatBalance } from '@polkadot/util'
 import { readTicketsByCustomer } from '../plugins/merklebot'
 import {
   getAccounts,
@@ -42,13 +41,7 @@ export const useWallet = defineStore('wallet', {
         getRobonomics().then((robonomics) => {
           const balance = r.free.sub(r.feeFrozen)
           this.selectedAccount.balanceRaw = balance
-          if (balance === 0) {
-            this.selectedAccount.balanceFormatted = '0 XRT'
-          }
-          this.selectedAccount.balanceFormatted = formatBalance(balance, {
-            decimals: robonomics.api.registry.chainDecimals[0],
-            withUnit: robonomics.api.registry.chainTokens[0]
-          })
+          this.selectedAccount.balanceFormatted = (balance * 10 ** -9).toFixed(4) + ' XRT'
           readTicketsByCustomer(account.address).then((tickets) => { this.selectedAccount.tickets = tickets })
         })
       })
