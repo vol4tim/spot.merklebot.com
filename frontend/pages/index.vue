@@ -36,7 +36,7 @@
         <div class="overflow-x-hidden overflow-y-auto h-screen snap-y snap-mandatory">
           <div class="screen flex items-center snap-always snap-center scroll-my-10">
             <div class="dark:bg-gray-700 border-2 border-gray-800 dark:border-white mx-6 my-12 px-6 py-8 align-middle">
-              <h3 class="max-w-md text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
+              <h3 id="1" class="max-w-md text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
                 1. User Ownership of Data
               </h3>
 
@@ -57,7 +57,7 @@
 
           <div class="screen flex items-center snap-always snap-center scroll-my-10">
             <div class="dark:bg-gray-700 border-2 border-gray-800 dark:border-white mx-6 my-12 px-6 py-8">
-              <h3 class="max-w-md text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
+              <h3 id="2" class="max-w-md text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
                 2. Robots Transfer Value
               </h3>
               <p class="text-md my-2 dark:text-white mx-6">
@@ -70,7 +70,7 @@
 
           <div class="screen flex items-center snap-always snap-center scroll-my-10">
             <div class="dark:bg-gray-700 border-2 border-gray-800 dark:border-white mx-6 my-12 px-6 py-8">
-              <h3 class="max-w-md text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
+              <h3 id="3" class="max-w-md text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
                 3. Secure Access to Machines
               </h3>
               <p class="text-md my-2 dark:text-white mx-6">
@@ -89,7 +89,7 @@
 
           <div class="screen flex items-center snap-always snap-center scroll-my-10">
             <div class="dark:bg-gray-700 border-2 border-gray-800 dark:border-white mx-6 my-12 px-6 py-8">
-              <h3 class="w-full text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
+              <h3 id="4" class="w-full text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
                 4. Decentralized Storage and Reporting
               </h3>
               <p class="text-md my-2 dark:text-white mx-6">
@@ -104,7 +104,7 @@
 
           <div class="screen flex items-center snap-always snap-center scroll-my-10 mb-32">
             <div class="dark:bg-gray-700 border-2 border-gray-800 dark:border-white mx-6 my-12 px-6 py-8">
-              <h3 class="w-full text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
+              <h3 id="5" class="w-full text-xl md:text-2xl font-bold mx-6 dark:text-white text-gray-800">
                 5. Digital Economies Powering Physical World
               </h3>
               <p class="text-md my-2 dark:text-white mx-6">
