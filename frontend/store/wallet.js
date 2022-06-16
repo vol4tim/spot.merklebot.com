@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { readTicketsByCustomer } from '../plugins/merklebot'
 import {
   getAccounts,
-  setActiveAccount,
+  setActiveAccount as setActiveRobonomicsAccount,
   subscribeToBalanceUpdates
 
 } from '@/plugins/robonomics'
@@ -39,7 +39,7 @@ export const useWallet = defineStore('wallet', {
     },
     setActiveAccount (account) {
       this.selectedAccount.account = account
-      setActiveAccount(account.address)
+      setActiveRobonomicsAccount(account.address)
       localStorage.setItem('selectedAccountAddress', account.address)
 
       subscribeToBalanceUpdates(this.selectedAccount.account.address, ({ free, feeFrozen }) => {
