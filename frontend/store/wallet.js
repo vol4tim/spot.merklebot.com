@@ -26,7 +26,12 @@ export const useWallet = defineStore('wallet', {
       getAccounts().then((accounts) => {
         console.log('accounts', accounts)
         this.accounts = accounts
-        this.setActiveAccount(accounts[0])
+
+        // Restore previously selected account if possible
+        const prevSelectedAccountAddress = localStorage.getItem('selectedAccountAddress')
+        const prevSelectedAccount = accounts.find(a => a.address === prevSelectedAccountAddress)
+        this.setActiveAccount(prevSelectedAccount ?? accounts[0])
+
         this.walletConnectionStatus = 'connected'
       }).catch((e) => {
         this.walletConnectionStatus = 'error'
@@ -35,6 +40,7 @@ export const useWallet = defineStore('wallet', {
     setActiveAccount (account) {
       this.selectedAccount.account = account
       setActiveAccount(account.address)
+      localStorage.setItem('selectedAccountAddress', account.address)
 
       subscribeToBalanceUpdates(this.selectedAccount.account.address, ({ free, feeFrozen }) => {
         const balance = free.sub(feeFrozen)
