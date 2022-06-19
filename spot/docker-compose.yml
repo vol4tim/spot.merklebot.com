@@ -13,3 +13,4 @@ services:
     privileged: true
     volumes:
       - ./traces:/home/spot/spot.merklebot.com/spot/traces
+      - ./calibrations:/home/spot/spot.merklebot.com/spot/calibrations

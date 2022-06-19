@@ -2,7 +2,7 @@ import json
 import time
 import os
 
-coord_nodes = json.load(open("calibration_data_final.json")) if os.path.exists("calibration_data_final.json") else {
+coord_nodes = json.load(open("calibrations/calibration_data_final.json")) if os.path.exists("calibrations/calibration_data_final.json") else {
     "x": [0, 0, 400, 400],
     "y": [0, 300, 0, 300],
     "yaw": [-0.4, -0.4, 0.4, 0.4],
@@ -75,7 +75,7 @@ def calibration_movement(sc, get_spot_face_on_camera_coords):
     coord_nodes["max_width"] = MAX_WIDTH
     coord_nodes["max_height"] = MAX_HEIGHT
 
-    with open('calibration_data_final.json', 'w') as outfile:
+    with open('calibrations/calibration_data_final.json', 'w') as outfile:
         json_string = json.dumps(coord_nodes)
         outfile.write(json_string)
 
