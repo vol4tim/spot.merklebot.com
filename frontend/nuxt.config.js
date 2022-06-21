@@ -1,12 +1,10 @@
 export default {
-  // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
+
+  mode: 'universal',
 
   // fix to make tailwindcss work
   devServerHandlers: [],
-
-  // Target: https://go.nuxtjs.dev/config-target
-  target: 'static',
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -86,5 +84,12 @@ export default {
 
   router: {
     base: '/'
+  },
+
+  generate: {
+    fallback: true,
+    exclude: [
+      /^\/records/
+    ]
   }
 }
