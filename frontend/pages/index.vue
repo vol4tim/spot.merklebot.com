@@ -20,10 +20,12 @@
 <script>
 import { defineComponent, onMounted, ref, useRoute } from '@nuxtjs/composition-api'
 import { useRobot } from '../store/robot'
+import { useWallet } from '~/store/wallet'
 
 export default defineComponent({
   setup () {
     const robot = useRobot()
+    const wallet = useWallet()
     // wallet.connectWallet()
 
     const doRobotStatePolling = async () => {
@@ -34,12 +36,21 @@ export default defineComponent({
       }
       setTimeout(doRobotStatePolling, 1000)
     }
+    const doTicketsListPolling = async () => {
+      try {
+        await wallet.updateTicketsList()
+      } catch (e) {
+        console.log('Can\'t update tickets list, retrying')
+      }
+      setTimeout(doTicketsListPolling, 1000)
+    }
 
     const screenSize = ref({ w: window.innerWidth, h: window.innerHeight })
 
     onMounted(() => {
       document.documentElement.classList.add('dark')
       doRobotStatePolling()
+      doTicketsListPolling()
       window.addEventListener('resize', () => {
         screenSize.value = { w: window.innerWidth, h: window.innerHeight }
       })

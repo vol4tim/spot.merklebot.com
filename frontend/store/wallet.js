@@ -4,7 +4,6 @@ import {
   getAccounts,
   setActiveAccount as setActiveRobonomicsAccount,
   subscribeToBalanceUpdates
-
 } from '@/plugins/robonomics'
 
 export const useWallet = defineStore('wallet', {
@@ -37,6 +36,11 @@ export const useWallet = defineStore('wallet', {
         this.walletConnectionStatus = 'error'
       })
     },
+    async updateTicketsList () {
+      if (this.selectedAccount.account) {
+        this.selectedAccount.tickets = await readTicketsByCustomer(this.selectedAccount.account.address)
+      }
+    },
     setActiveAccount (account) {
       this.selectedAccount.account = account
       setActiveRobonomicsAccount(account.address)
@@ -46,7 +50,6 @@ export const useWallet = defineStore('wallet', {
         const balance = free.sub(feeFrozen)
         this.selectedAccount.balanceRaw = balance
         this.selectedAccount.balanceFormatted = (balance * 10 ** -9).toFixed(4) + ' XRT'
-        readTicketsByCustomer(account.address).then((tickets) => { this.selectedAccount.tickets = tickets })
       })
     }
   }
