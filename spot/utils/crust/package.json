@@ -1,0 +1,16 @@
+{
+  "name": "crust",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@crustio/type-definitions": "^1.3.0",
+    "@polkadot/api": "^8.9.1"
+  }
+}

@@ -1,6 +1,7 @@
 import multiprocessing
 from datetime import datetime
 import os, time
+import pathlib
 import subprocess
 import signal
 import shutil
@@ -33,6 +34,23 @@ def after_session_complete(
 
     ipfs_cid = pinata_resp["IpfsHash"]
     datalog_extrinsic_hash = record_datalog(ipfs_cid)
+
+    # Pin to Crust Network
+    size = sum(f.stat().st_size for f in pathlib.Path(folder).glob('**/*') if f.is_file())  # https://stackoverflow.com/questions/1392413/calculating-a-directorys-size-using-python
+    crust_proc = subprocess.Popen(
+        ["node", "index.js", ipfs_cid, size],
+        cwd=pathlib.Path.cwd() / pathlib.Path("./utils/crust"),
+        env=os.environ.copy(),
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+    )
+    try:
+        outs, errs = crust_proc.communicate(timeout=30)
+        print(f"Crust Network place storage order: {outs=}, {errs=}")
+    except subprocess.TimeoutExpired as e:
+        print(f"Crust Network place storage order: {e}")
+        crust_proc.kill()
+        crust_proc.communicate()
 
     # Upload to Estuary Filecoin node
     tar = "{}/{}".format(folder, record_folder_name)
