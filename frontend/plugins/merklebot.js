@@ -9,14 +9,18 @@ const client = axios.create({
  * Check docs at https://api.merklebot.com/docs#/Robonomics-launch-traces/get_all_robonomics_launch_traces_get.
  * @param {string|null} [sender] - Sender's SS58 account address in Robonomics format.
  * @param {number|null} [nonce] - Launch tx nonce.
- * @param {string|null} [launchTxId] - Launch tx id
+ * @param {string|null} [launchTxId] - Launch tx id.
+ * @param {number|skip} [nonce] - Skip for getting all launches.
+ * @param {number|limit} [nonce] - Limit for getting all launches.
  * @returns {?(Object|Array)} - All traces if no argument provided, traces related to the sender if specified, or a specific trace if launch tx nonce provided.
  */
-export const readRobonomicsLaunchTracesBySender = async ({ sender = null, nonce = null, launchTxId = null }) => {
+export const readRobonomicsLaunchTracesBySender = async ({ sender = null, nonce = null, launchTxId = null, skip = null, limit = null }) => {
   const resp = await client.get('robonomics-launch-traces', {
     params: {
       sender,
       nonce,
+      skip,
+      limit,
       launch_tx_id: launchTxId
     }
   })

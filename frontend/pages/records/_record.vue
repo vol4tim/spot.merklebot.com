@@ -5,7 +5,7 @@
       <div class="flex flex-col w-full md:space-y-4">
         <HeaderPanel />
         <div class="overflow-auto h-screen pb-24 px-4 md:px-6">
-          <div v-if="!sessionId">
+          <div v-if="!txId">
             <h1 class="text-4xl font-semibold text-gray-800 dark:text-white">
               Sessions
             </h1>
@@ -13,19 +13,28 @@
               <RecordsList />
             </div>
           </div>
-          <div v-if="sessionId">
+          <div v-if="txId">
             <h1 class="text-4xl font-semibold text-gray-800 dark:text-white">
-              Session {{ sessionId }}
+              Session {{ txId }}
             </h1>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 my-4">
-              <CardContainer title="Session Info">
-                <p>IPFS Content ID: {{ sessionData['ipfs_cid'] }}</p>
-                <p>View Robonomics Launch Tx: <a :href="datalogLink" class="text-purple-500" target="_blank" rel="noopener noreferrer">{{ launchLink }}</a></p>
-                <p>View record data on IPFS: <a :href="traceFolderLink" class="text-purple-500" target="_blank" rel="noopener noreferrer">{{ traceFolderLink.slice(0, 50) + '...' }}</a></p>
-                <p>View Robonomics Datalog Tx: <a :href="datalogLink" class="text-purple-500" target="_blank" rel="noopener noreferrer">{{ datalogLink.slice(0, 50) + '...' }}</a></p>
+              <CardContainer v-if="launchData" title="Launch data">
+                <p class="text-md mt-2 dark:text-white">
+                  Robonomics Launch Tx: <a :href="makeSubscanLink(launchTxId)" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ addressShort(launchTxId) }}</a>
+                </p>
+                <p class="text-md mt-2 dark:text-white">
+                  Record data on IPFS: <a :href="makeIpfsFolderLink(traceInfo)" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ addressShort(launchData.ipfs_cid) }}</a>
+                </p>
+                <p class="text-md mt-2 dark:text-white">
+                  Robonomics Datalog Tx: <a :href="makeSubscanLink(datalogTxId)" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ addressShort(datalogTxId) }}</a>
+                </p>
               </CardContainer>
-              <CardContainer title="Video Record">
-                <video :src="`${traceFolderLink}/h264_camera.mp4`" type="video/mp4" controls />
+              <CardContainer v-if="launchData" title="Video Record">
+                <video :src="`${makeIpfsFolderLink(traceInfo)}/h264_camera.mp4`" type="video/mp4" controls />
+              </CardContainer>
+
+              <CardContainer v-if="launchData" title="Digital twin">
+                <RosbagPlayer :rosbag-url="`${makeIpfsFolderLink(traceInfo)}/state.bag`" />
               </CardContainer>
             </div>
           </div>
@@ -36,24 +45,59 @@
 </template>
 
 <script>
-import RecordsList from '../../components/RecordsList'
-export default {
-  name: 'RecordPage',
-  components: { RecordsList },
-  async asyncData ({ route }) {
-    const sessionId = route.params.record
-    if (!sessionId) {
+import { defineComponent, onMounted, useRoute, ref } from '@nuxtjs/composition-api'
+import { readRobonomicsLaunchTracesBySender } from '../../plugins/merklebot'
+
+export default defineComponent({
+  setup () {
+    const route = useRoute()
+    const txId = route.value.params.record
+
+    const launchData = ref(null)
+    const traceInfo = ref(null)
+    const launchTxId = ref(null)
+    const datalogTxId = ref(null)
+
+    if (!txId) {
       return {
-        sessionId: null,
-        sessionData: null
+        txId: null
       }
     }
-    const sessionData = await (await fetch('https://api.merklebot.com/robonomics-launch-traces/' + sessionId, { method: 'GET' })).json()
-    const traceFolderLink = `https://merklebot.mypinata.cloud/ipfs/${sessionData.ipfs_cid}/spot/spot.merklebot.com/spot/traces/user-${sessionData.sender}-cps-4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j-session-${sessionData.nonce}-${sessionData.created_at}`
-    const launchLink = `https://robonomics.subscan.io/extrinsic/${sessionData.launch_tx_id}`
-    const datalogLink = `https://robonomics.subscan.io/extrinsic/${sessionData.datalog_tx_id}`
-    return { sessionId, sessionData, traceFolderLink, launchLink, datalogLink }
-  }
 
-}
+    onMounted(async () => {
+      const res = await readRobonomicsLaunchTracesBySender({ launchTxId: txId })
+      console.log(res)
+      launchData.value = res
+      traceInfo.value = {
+        ipfsCid: res.ipfs_cid,
+        sender: res.sender,
+        nonce: res.nonce,
+        createdAt: res.created_at
+
+      }
+      launchTxId.value = res.launch_tx_id
+      datalogTxId.value = res.datalog_tx_id
+    })
+
+    const addressShort = (address) => {
+      if (!address) {
+        return ''
+      }
+      return address.slice(0, 6) + '...' + address.slice(-4)
+    }
+
+    const makeSubscanLink = (suffix) => {
+      return `https://robonomics.subscan.io/extrinsic/${suffix}`
+    }
+
+    const makeIpfsFolderLink = ({ ipfsCid, sender, nonce, createdAt }) => {
+      return `https://merklebot.mypinata.cloud/ipfs/${ipfsCid}/spot/spot.merklebot.com/spot/traces/user-${sender}-cps-4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j-session-${nonce}-${createdAt}`
+    }
+
+    return {
+      txId, launchData, traceInfo, launchTxId, datalogTxId, addressShort, makeSubscanLink, makeIpfsFolderLink
+    }
+  }
+})
+
 </script>

@@ -10,7 +10,7 @@
     </div>
     <ul class="flex flex-col">
       <li v-for="(session, index) in sessions" :key="index" class="border-gray-400 flex flex-row mb-2">
-        <NuxtLink :to="`/records/${session.id}`">
+        <NuxtLink :to="`/records/${session.launch_tx_id}`">
           <div class="transition duration-500 shadow ease-in-out transform hover:-translate-y-1 hover:shadow-lg select-none cursor-pointer bg-white dark:bg-gray-800 rounded-md flex flex-1 items-center p-4">
             <div class="flex flex-col w-100 h-100 justify-center items-center mr-4">
               <img alt="result" :src="`${session.traceFolderLink}/result.jpg`" class="mx-auto object-cover  h-100 w-100 ">
@@ -48,6 +48,7 @@
 <script>
 import { defineComponent, useFetch, ref, reactive, computed } from '@nuxtjs/composition-api'
 import { useWallet } from '../store/wallet'
+import { readRobonomicsLaunchTracesBySender } from '~/plugins/merklebot'
 
 export default defineComponent({
   setup () {
@@ -69,9 +70,8 @@ export default defineComponent({
     })
     console.log(sessions.value)
     useFetch(async () => {
-      const dbSessions = await (await fetch('https://api.merklebot.com/robonomics-launch-traces', { method: 'GET' })).json()
-
-      dbSessions.forEach((session) => {
+      const dbSessions = await readRobonomicsLaunchTracesBySender({ skip: 200 })
+      dbSessions.reverse().forEach((session) => {
         session.traceFolderLink = `https://merklebot.mypinata.cloud/ipfs/${session.ipfs_cid}/spot/spot.merklebot.com/spot/traces/user-${session.sender}-cps-4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j-session-${session.nonce}-${session.created_at}`
         sessionsList.value.push(session)
       })
