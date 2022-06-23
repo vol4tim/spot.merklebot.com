@@ -36,7 +36,7 @@ def after_session_complete(
     datalog_extrinsic_hash = record_datalog(ipfs_cid)
 
     # Pin to Crust Network
-    size = sum(f.stat().st_size for f in pathlib.Path(folder).glob('**/*') if f.is_file())  # https://stackoverflow.com/questions/1392413/calculating-a-directorys-size-using-python
+    size = sum(f.stat().st_size for f in pathlib.Path(folder).glob("**/*") if f.is_file())  # https://stackoverflow.com/questions/1392413/calculating-a-directorys-size-using-python
     crust_proc = subprocess.Popen(
         ["node", "index.js", ipfs_cid, size],
         cwd=pathlib.Path.cwd() / pathlib.Path("./utils/crust"),
@@ -46,9 +46,9 @@ def after_session_complete(
     )
     try:
         outs, errs = crust_proc.communicate(timeout=30)
-        print(f"Crust Network place storage order: {outs=}, {errs=}")
+        print("Crust Network place storage order: outs={outs}, errs={errs}".format(outs, errs))
     except subprocess.TimeoutExpired as e:
-        print(f"Crust Network place storage order: {e}")
+        print("Crust Network place storage order: {e}".format(e))
         crust_proc.kill()
         crust_proc.communicate()
 
