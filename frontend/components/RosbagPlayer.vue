@@ -130,7 +130,6 @@ export default defineComponent({
         console.log(tf.rotation)
         console.log(rotation)
         robot.rotation.x = -Math.PI / 2// rotation.z - Math.PI
-        robot.rotation.x = rotation.z - Math.PI
 
         robot.rotation.y = -rotation.x
         robot.rotation.z = rotation.y
