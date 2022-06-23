@@ -4,9 +4,9 @@ bosdyn-choreography-client
 scipy
 robonomics-interface @ git+https://github.com/khssnv/robonomics-interface.git@0.10.0-presumably-patch2
 substrate-interface
-pinatapy-vourhey
 requests
 Flask
 Flask-Cors
 opencv-python
 python-dotenv
+git+https://github.com/Smehnov/pinatapy
