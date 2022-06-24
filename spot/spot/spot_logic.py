@@ -99,15 +99,15 @@ def spot_logic_process(movement_queue, drawing_queue, robot_state):
             print("Movement finished")
             # print("Ready to turn off")
             # sc.power_off_sit_down()
-            robot_state['state'] = "saving_data"
-            print("Robot powered off and sit down")
-            time.sleep(1)
-            data_recorder.stop_data_recording()
-            data_recorder.start_data_uploading()
+        robot_state['state'] = "saving_data"
+        print("Robot powered off and sit down")
+        time.sleep(1)
+        data_recorder.stop_data_recording()
+        data_recorder.start_data_uploading()
 
 
-            robot_state['last_session_id'] = transaction['session_id']
-            robot_state['state'] = "idle"
+        robot_state['last_session_id'] = transaction['session_id']
+        robot_state['state'] = "idle"
 
     def start_movement_session():
         print("Starting movement session")
