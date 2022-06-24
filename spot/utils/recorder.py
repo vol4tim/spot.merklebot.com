@@ -50,7 +50,7 @@ def after_session_complete(
         )
         try:
             outs, errs = crust_proc.communicate(timeout=30)
-            print("Crust Network place storage order: outs={outs}, errs={errs}".format(outs, errs))
+            print("Crust Network place storage order: outs={}, errs={}".format(outs, errs))
         except subprocess.TimeoutExpired as e:
             print("Crust Network place storage order: {e}".format(e))
             crust_proc.kill()
