@@ -41,6 +41,7 @@ def after_session_complete(
     try:
         size = sum(f.stat().st_size for f in pathlib.Path(folder).glob("**/*") if
                    f.is_file())  # https://stackoverflow.com/questions/1392413/calculating-a-directorys-size-using-python
+        size += 3000  # both solution above and `du` produce sizes a few KiB lower than https://apps.crust.network/#/pins
         crust_proc = subprocess.Popen(
             ["node", "index.js", str(ipfs_cid), str(size)],
             cwd=pathlib.Path.cwd() / pathlib.Path("./utils/crust"),
