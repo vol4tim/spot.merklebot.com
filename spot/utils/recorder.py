@@ -42,7 +42,7 @@ def after_session_complete(
         size = sum(f.stat().st_size for f in pathlib.Path(folder).glob("**/*") if
                    f.is_file())  # https://stackoverflow.com/questions/1392413/calculating-a-directorys-size-using-python
         crust_proc = subprocess.Popen(
-            ["node", "index.js", ipfs_cid, size],
+            ["node", "index.js", str(ipfs_cid), str(size)],
             cwd=pathlib.Path.cwd() / pathlib.Path("./utils/crust"),
             env=os.environ.copy(),
             stdin=subprocess.PIPE,
