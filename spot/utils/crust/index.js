@@ -23,23 +23,9 @@ async function placeStorageOrder(mnemonic, cid, size) {
   const krp = kr.addFromUri(mnemonic);
 
   // 3. Send transaction
-  return new Promise((resolve, reject) => {
-    tx.signAndSend(krp, ({ events = [], status }) => {
-      console.log(`💸  Tx status: ${status.type}, nonce: ${tx.nonce}`);
-      if (status.isInBlock) {
-        events.forEach(({ event: { method, section } }) => {
-          if (method === "ExtrinsicSuccess") {
-            console.log("✅  Place storage order success!");
-            resolve(true);
-          }
-        });
-      } else {
-        // Pass it
-      }
-    }).catch((e) => {
-      reject(e);
-    });
-  });
+  const txHash = await tx.signAndSend(krp)
+
+  return `${txHash}`
 }
 
 async function getOrderState(cid) {
@@ -47,7 +33,8 @@ async function getOrderState(cid) {
   return await api.query.market.filesV2(cid);
 }
 
-placeStorageOrder(process.env.MNEMONIC, args[0], args[1]).then(() => {
+placeStorageOrder(process.env.MNEMONIC, args[0], args[1]).then((txHash) => {
+  console.log(txHash)
   process.exit()
 })
 
