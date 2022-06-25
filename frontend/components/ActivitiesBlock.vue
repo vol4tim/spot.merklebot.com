@@ -29,11 +29,16 @@
             <div v-if="wallet.walletConnectionStatus === 'error'">
               <p class="text-xl my-6 text-center dark:text-white font-bold">
                 ❗ Please install
-                <a
+                <!-- <a
                   class="text-orange-600"
                   href="https://polkadot.js.org/extension/"
                   target="_blank"
-                >Polkadot.js extension</a>, create and add Web3 account. Then reload this page.
+                >Polkadot.js extension</a>, create and add Web3 account. Then reload this page. -->
+                <a
+                  class="text-orange-600"
+                  href="https://talisman.xyz/"
+                  target="_blank"
+                >Talisman web3 wallet</a> and create an account. Then reload this page.
               </p>
             </div>
           </div>
