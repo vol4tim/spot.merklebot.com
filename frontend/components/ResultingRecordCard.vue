@@ -23,7 +23,7 @@
           Transaction: <a
             class="text-yellow-500"
             :href="
-              makeSubscanLink(robot.cps.launch.txInfo.tx)
+              makeSubscanLink('robonomics', robot.cps.launch.txInfo.tx)
             "
             target="_blank"
             rel="noopener noreferrer"
@@ -35,13 +35,13 @@
       <CardContainer title="Saved data">
         <div v-if="launchData!==null">
           <p class="text-md mt-2 dark:text-white">
-            Robonomics Launch Tx: <a :href="makeSubscanLink(launchTxId)" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ addressShort(launchTxId) }}</a>
+            Robonomics Launch Tx: <a :href="makeSubscanLink('robonomics', launchTxId)" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ addressShort(launchTxId) }}</a>
           </p>
           <p class="text-md mt-2 dark:text-white">
-            Record data on IPFS: <a :href="makeIpfsFolderLink(traceInfo)" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ addressShort(traceInfo.ipfsCid) }}</a>
+            Record data on IPFS: <a :href="makeIpfsFolderLink('traceInfo')" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ addressShort(traceInfo.ipfsCid) }}</a>
           </p>
           <p class="text-md mt-2 dark:text-white">
-            Robonomics Datalog Tx: <a :href="makeSubscanLink(datalogTxId)" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ addressShort(datalogTxId) }}</a>
+            Robonomics Datalog Tx: <a :href="makeSubscanLink('robonomics', datalogTxId)" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ addressShort(datalogTxId) }}</a>
           </p>
 
           <div class="flex items-left justify-left m-4">
@@ -107,8 +107,8 @@ export default defineComponent({
       updateLaunchData()
     })
 
-    const makeSubscanLink = (suffix) => {
-      return `https://robonomics.subscan.io/extrinsic/${suffix}`
+    const makeSubscanLink = (network, suffix) => {
+      return `https://${network}.subscan.io/extrinsic/${suffix}`
     }
 
     const makeIpfsFolderLink = ({ ipfsCid, sender, nonce, createdAt }) => {
