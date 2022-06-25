@@ -43,6 +43,9 @@
           <p class="text-md mt-2 dark:text-white">
             Robonomics Datalog Tx: <a :href="makeSubscanLink('robonomics', datalogTxId)" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ addressShort(datalogTxId) }}</a>
           </p>
+          <p class="text-md mt-2 dark:text-white">
+            Crust Storage Order Tx: <a :href="makeSubscanLink('crust', crustTxId)" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ addressShort(crustTxId) }}</a>
+          </p>
 
           <div class="flex items-left justify-left m-4">
             <video :src="`${makeIpfsFolderLink(traceInfo)}/h264_camera.mp4`" type="video/mp4" controls />
@@ -71,6 +74,7 @@ export default defineComponent({
     const traceInfo = ref(null)
     const launchTxId = ref(null)
     const datalogTxId = ref(null)
+    const crustTxId = ref(null)
 
     const addressShort = (address) => {
       if (!address) {
@@ -95,6 +99,7 @@ export default defineComponent({
             }
             launchTxId.value = res.launch_tx_id
             datalogTxId.value = res.datalog_tx_id
+            crustTxId.value = res.crust_tx_id
           }
         } catch (e) {
 
@@ -116,7 +121,7 @@ export default defineComponent({
     }
 
     return {
-      robot, launchData, traceInfo, launchTxId, datalogTxId, addressShort, makeSubscanLink, makeIpfsFolderLink
+      robot, launchData, traceInfo, launchTxId, datalogTxId, crustTxId, addressShort, makeSubscanLink, makeIpfsFolderLink
     }
   }
 })
