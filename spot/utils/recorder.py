@@ -38,6 +38,7 @@ def after_session_complete(
     datalog_extrinsic_hash = record_datalog(ipfs_cid)
 
     # Pin to Crust Network
+    crust_tx_id = ""
     try:
         size = pinata_resp["PinSize"]
         crust_proc = subprocess.Popen(
@@ -50,6 +51,8 @@ def after_session_complete(
         try:
             outs, errs = crust_proc.communicate(timeout=30)
             print("Crust Network place storage order: outs={}, errs={}".format(outs, errs))
+            if not errs:
+                crust_tx_id = outs.decode("utf-8").strip()
         except subprocess.TimeoutExpired as e:
             print("Crust Network place storage order: {e}".format(e))
             crust_proc.kill()
@@ -81,6 +84,7 @@ def after_session_complete(
         "launch_tx_id": launch_event_id,
         "datalog_tx_id": datalog_extrinsic_hash,
         "filecoin_cid": estuary_resp.json()["cid"],
+        "crust_tx_id": crust_tx_id,
     })
     print("Session {} trace created with IPFS CID {}".format(session_id, ipfs_cid))
 
