@@ -6,7 +6,9 @@ import { blake2AsHex } from '@polkadot/util-crypto'
 let robonomics
 
 export const getInstance = async () => {
-  if (robonomics) { return robonomics }
+  if (robonomics) {
+    return robonomics
+  }
   robonomics = new Robonomics({
     endpoint: 'wss://kusama.rpc.robonomics.network/'
   })
@@ -35,7 +37,9 @@ export const setActiveAccount = async (address) => {
 let activeAccountBalanceUnsubscribe
 
 export const subscribeToBalanceUpdates = async (address, onBalanceUpdate) => {
-  if (activeAccountBalanceUnsubscribe) { activeAccountBalanceUnsubscribe() }
+  if (activeAccountBalanceUnsubscribe) {
+    activeAccountBalanceUnsubscribe()
+  }
   const robonomics = await getInstance()
   activeAccountBalanceUnsubscribe = await robonomics.account.getBalance(
     address,
@@ -75,4 +79,8 @@ export const signAndSendTxsBatchWithActiveAccount = async (txs) => {
   const tx = await robonomics.api.tx.utility.batch(txs)
   const resultTx = await robonomics.accountManager.signAndSend(tx)
   return resultTx
+}
+
+export const makeSubscanLink = (network, suffix) => {
+  return `https://${network}.subscan.io/extrinsic/${suffix}`
 }

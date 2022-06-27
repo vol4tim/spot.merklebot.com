@@ -20,13 +20,36 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 my-4">
               <CardContainer v-if="launchData" title="Launch data">
                 <p class="text-md mt-2 dark:text-white">
-                  Robonomics Launch Tx: <a :href="makeSubscanLink(launchTxId)" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ addressShort(launchTxId) }}</a>
+                  Robonomics Launch Tx: <a
+                    :href="makeSubscanLink(launchTxId)"
+                    class="text-yellow-500"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >{{ addressShort(launchTxId) }}</a>
                 </p>
                 <p class="text-md mt-2 dark:text-white">
-                  Record data on IPFS: <a :href="makeIpfsFolderLink(traceInfo)" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ addressShort(launchData.ipfs_cid) }}</a>
+                  Record data on IPFS: <a
+                    :href="makeIpfsFolderLink(traceInfo)"
+                    class="text-yellow-500"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >{{ addressShort(launchData.ipfs_cid) }}</a>
                 </p>
                 <p class="text-md mt-2 dark:text-white">
-                  Robonomics Datalog Tx: <a :href="makeSubscanLink(datalogTxId)" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ addressShort(datalogTxId) }}</a>
+                  Robonomics Datalog Tx: <a
+                    :href="makeSubscanLink(datalogTxId)"
+                    class="text-yellow-500"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >{{ addressShort(datalogTxId) }}</a>
+                </p>
+                <p class="text-md mt-2 dark:text-white">
+                  Crust Storage Order Tx: <a
+                    :href="makeSubscanLink('crust', crustTxId)"
+                    class="text-yellow-500"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >{{ addressShort(crustTxId) }}</a>
                 </p>
               </CardContainer>
               <CardContainer v-if="launchData" title="Video Record">
@@ -47,6 +70,7 @@
 <script>
 import { defineComponent, onMounted, useRoute, ref } from '@nuxtjs/composition-api'
 import { readRobonomicsLaunchTracesBySender } from '../../plugins/merklebot'
+import { makeSubscanLink } from '~/plugins/robonomics'
 
 export default defineComponent({
   setup () {
@@ -57,6 +81,7 @@ export default defineComponent({
     const traceInfo = ref(null)
     const launchTxId = ref(null)
     const datalogTxId = ref(null)
+    const crustTxId = ref(null)
 
     if (!txId) {
       return {
@@ -77,6 +102,7 @@ export default defineComponent({
       }
       launchTxId.value = res.launch_tx_id
       datalogTxId.value = res.datalog_tx_id
+      crustTxId.value = res.crust_tx_id
     })
 
     const addressShort = (address) => {
@@ -86,16 +112,12 @@ export default defineComponent({
       return address.slice(0, 6) + '...' + address.slice(-4)
     }
 
-    const makeSubscanLink = (suffix) => {
-      return `https://robonomics.subscan.io/extrinsic/${suffix}`
-    }
-
     const makeIpfsFolderLink = ({ ipfsCid, sender, nonce, createdAt }) => {
       return `https://merklebot.mypinata.cloud/ipfs/${ipfsCid}/spot/spot.merklebot.com/spot/traces/user-${sender}-cps-4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j-session-${nonce}-${createdAt}`
     }
 
     return {
-      txId, launchData, traceInfo, launchTxId, datalogTxId, addressShort, makeSubscanLink, makeIpfsFolderLink
+      txId, launchData, traceInfo, launchTxId, datalogTxId, crustTxId, addressShort, makeSubscanLink, makeIpfsFolderLink
     }
   }
 })

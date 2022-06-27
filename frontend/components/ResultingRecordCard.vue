@@ -35,16 +35,36 @@
       <CardContainer title="Saved data">
         <div v-if="launchData!==null">
           <p class="text-md mt-2 dark:text-white">
-            Robonomics Launch Tx: <a :href="makeSubscanLink('robonomics', launchTxId)" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ addressShort(launchTxId) }}</a>
+            Robonomics Launch Tx: <a
+              :href="makeSubscanLink('robonomics', launchTxId)"
+              class="text-yellow-500"
+              target="_blank"
+              rel="noopener noreferrer"
+            >{{ addressShort(launchTxId) }}</a>
           </p>
           <p class="text-md mt-2 dark:text-white">
-            Record data on IPFS: <a :href="makeIpfsFolderLink('traceInfo')" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ addressShort(traceInfo.ipfsCid) }}</a>
+            Record data on IPFS: <a
+              :href="makeIpfsFolderLink('traceInfo')"
+              class="text-yellow-500"
+              target="_blank"
+              rel="noopener noreferrer"
+            >{{ addressShort(traceInfo.ipfsCid) }}</a>
           </p>
           <p class="text-md mt-2 dark:text-white">
-            Robonomics Datalog Tx: <a :href="makeSubscanLink('robonomics', datalogTxId)" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ addressShort(datalogTxId) }}</a>
+            Robonomics Datalog Tx: <a
+              :href="makeSubscanLink('robonomics', datalogTxId)"
+              class="text-yellow-500"
+              target="_blank"
+              rel="noopener noreferrer"
+            >{{ addressShort(datalogTxId) }}</a>
           </p>
           <p class="text-md mt-2 dark:text-white">
-            Crust Storage Order Tx: <a :href="makeSubscanLink('crust', crustTxId)" class="text-yellow-500" target="_blank" rel="noopener noreferrer">{{ addressShort(crustTxId) }}</a>
+            Crust Storage Order Tx: <a
+              :href="makeSubscanLink('crust', crustTxId)"
+              class="text-yellow-500"
+              target="_blank"
+              rel="noopener noreferrer"
+            >{{ addressShort(crustTxId) }}</a>
           </p>
 
           <div class="flex items-left justify-left m-4">
@@ -65,6 +85,7 @@
 import { defineComponent, onMounted, ref } from '@nuxtjs/composition-api'
 import { useRobot } from '../store/robot'
 import { readRobonomicsLaunchTracesBySender } from '../plugins/merklebot'
+import { makeSubscanLink } from '~/plugins/robonomics'
 
 export default defineComponent({
   setup () {
@@ -112,16 +133,20 @@ export default defineComponent({
       updateLaunchData()
     })
 
-    const makeSubscanLink = (network, suffix) => {
-      return `https://${network}.subscan.io/extrinsic/${suffix}`
-    }
-
     const makeIpfsFolderLink = ({ ipfsCid, sender, nonce, createdAt }) => {
       return `https://merklebot.mypinata.cloud/ipfs/${ipfsCid}/spot/spot.merklebot.com/spot/traces/user-${sender}-cps-4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j-session-${nonce}-${createdAt}`
     }
 
     return {
-      robot, launchData, traceInfo, launchTxId, datalogTxId, crustTxId, addressShort, makeSubscanLink, makeIpfsFolderLink
+      robot,
+      launchData,
+      traceInfo,
+      launchTxId,
+      datalogTxId,
+      crustTxId,
+      addressShort,
+      makeSubscanLink,
+      makeIpfsFolderLink
     }
   }
 })
