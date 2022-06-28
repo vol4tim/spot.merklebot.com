@@ -125,9 +125,9 @@ def run_camera(im, state):
             spot_coords['y'] = obj[1]
 
         if spot_coords:
-            print(f"Found spot = {spot_coords['x']}, {spot_coords['y']}")
+            # print(f"Found spot = {spot_coords['x']}, {spot_coords['y']}")
             if FOLLOW_SPOT:
-                print("Following spot")
+                # print("Following spot")
                 vel = {
                     'x': 0,
                     'y': 0
@@ -144,7 +144,7 @@ def run_camera(im, state):
                     vel['y'] = -1
                 elif y_diff < -100:
                     vel['y'] = 1
-                print(f"x_diff = {x_diff}, y_diff = {y_diff}")
+                # print(f"x_diff = {x_diff}, y_diff = {y_diff}")
                 camera_control.move(vel, time_interval=0.05)
 
 
