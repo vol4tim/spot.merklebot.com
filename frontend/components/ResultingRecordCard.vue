@@ -1,36 +1,7 @@
 <template>
   <div class="m-4 min-h-200 p-2">
     <div />
-    <div class="grid grid-cols-2 gap-4">
-      <CardContainer title="Robot info">
-        <p class="text-md mt-2 text-white">
-          Robot state: <span class="text-yellow-500">{{ robot.robotState }}</span>
-        </p>
-        <p class="text-md mt-2 text-white">
-          Drawings in queue: <span class="text-yellow-500">{{ robot.queueSize }}</span>
-        </p>
-      </CardContainer>
-      <CardContainer title="Launch info">
-        <p class="text-md mt-2 text-white">
-          launch status: <span class="text-yellow-500">{{ robot.cps.status }}</span>
-        </p>
 
-        <p class="text-md mt-2 text-white">
-          Tx status: <span class="text-yellow-500">{{ robot.cps.launch.txStatus }}</span>
-        </p>
-
-        <p class="text-md mt-2 text-white">
-          Transaction: <a
-            class="text-yellow-500"
-            :href="
-              makeSubscanLink('robonomics', robot.cps.launch.txInfo.tx)
-            "
-            target="_blank"
-            rel="noopener noreferrer"
-          >{{ addressShort(robot.cps.launch.txInfo.tx) }}</a>
-        </p>
-      </CardContainer>
-    </div>
     <div class="mt-4">
       <CardContainer title="Saved data">
         <div v-if="launchData!==null">
@@ -110,6 +81,7 @@ export default defineComponent({
           const res = await readRobonomicsLaunchTracesBySender({ launchTxId: `${robot.cps.launch.txInfo.blockNumber}-${robot.cps.launch.txInfo.txIndex}` })
           console.log(res)
           if (res) {
+            robot.cps.launch.recordData = res
             launchData.value = res
             traceInfo.value = {
               ipfsCid: res.ipfs_cid,

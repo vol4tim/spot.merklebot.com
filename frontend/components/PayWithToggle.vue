@@ -3,6 +3,7 @@
     <div class="flex flex-row">
       <button
         type="button"
+        :disabled="dappParameters.payWithOption==='ticket'"
         :class="{
           'bg-orange-600 text-white border-b-0': (dappParameters.payWithOption==='ticket'),
           'bg-gray-200 text-gray-800  hover:bg-gray-800 hover:bg-gray-100 hover:text-white': (
@@ -15,6 +16,7 @@
       </button>
       <button
         type="button"
+        :disabled="dappParameters.payWithOption==='XRT'"
         :class="{
           'bg-orange-600 text-white border-b-0': (dappParameters.payWithOption==='XRT'),
           'bg-gray-200 text-gray-800 hover:bg-gray-800 hover:bg-gray-100 hover:text-white': (

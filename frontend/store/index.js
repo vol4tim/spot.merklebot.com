@@ -16,7 +16,8 @@ export const useDashboardParameters = defineStore('dashboardParameters', {
 export const useDAppParameters = defineStore('dAppParameters', {
   state: () => {
     return {
-      payWithOption: 'ticket'
+      payWithOption: 'ticket',
+      currentDrawingSegments: []
     }
   }
 })

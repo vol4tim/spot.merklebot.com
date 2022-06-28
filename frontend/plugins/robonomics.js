@@ -84,3 +84,10 @@ export const signAndSendTxsBatchWithActiveAccount = async (txs) => {
 export const makeSubscanLink = (network, suffix) => {
   return `https://${network}.subscan.io/extrinsic/${suffix}`
 }
+
+export const addressShort = (address) => {
+  if (!address) {
+    return ''
+  }
+  return address.slice(0, 6) + '...' + address.slice(-4)
+}

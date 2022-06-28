@@ -19,7 +19,8 @@ export const useRobot = defineStore('robot', {
           txInfo: {
             tx: null
           },
-          txStatus: null
+          txStatus: null,
+          recordData: null
         }
       }
 

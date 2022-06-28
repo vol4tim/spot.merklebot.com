@@ -51,6 +51,10 @@
                     rel="noopener noreferrer"
                   >{{ addressShort(crustTxId) }}</a>
                 </p>
+                <div v-if="crustFileInfo">
+                  Crust file info
+                  <StepProgressBar />
+                </div>
               </CardContainer>
               <CardContainer v-if="launchData" title="Video Record">
                 <video :src="`${makeIpfsFolderLink(traceInfo)}/h264_camera.mp4`" type="video/mp4" controls />
@@ -71,6 +75,7 @@
 import { defineComponent, onMounted, useRoute, ref } from '@nuxtjs/composition-api'
 import { readRobonomicsLaunchTracesBySender } from '../../plugins/merklebot'
 import { makeSubscanLink } from '~/plugins/robonomics'
+import { getCrustFileInfo } from '~/plugins/crust'
 
 export default defineComponent({
   setup () {
@@ -82,6 +87,7 @@ export default defineComponent({
     const launchTxId = ref(null)
     const datalogTxId = ref(null)
     const crustTxId = ref(null)
+    const crustFileInfo = ref(null)
 
     if (!txId) {
       return {
@@ -103,6 +109,10 @@ export default defineComponent({
       launchTxId.value = res.launch_tx_id
       datalogTxId.value = res.datalog_tx_id
       crustTxId.value = res.crust_tx_id
+
+      if (res.crust_tx_id) {
+        crustFileInfo.value = await getCrustFileInfo(res.ipfs_cid)
+      }
     })
 
     const addressShort = (address) => {
@@ -117,7 +127,7 @@ export default defineComponent({
     }
 
     return {
-      txId, launchData, traceInfo, launchTxId, datalogTxId, crustTxId, addressShort, makeSubscanLink, makeIpfsFolderLink
+      txId, launchData, traceInfo, launchTxId, datalogTxId, crustTxId, crustFileInfo, addressShort, makeSubscanLink, makeIpfsFolderLink
     }
   }
 })
