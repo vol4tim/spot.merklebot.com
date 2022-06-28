@@ -29,3 +29,6 @@ class CameraControl:
         time.sleep(time_interval)
         self.control('pan_speed', 0)
         self.control('tilt_speed', 0)
+
+    def set_zoom(self, zoom_absolute):
+        self.control('zoom_absolute', zoom_absolute)

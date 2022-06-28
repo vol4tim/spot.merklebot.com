@@ -105,6 +105,7 @@ def run_camera(im, state):
     stream.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
     stream.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
     camera_control = CameraControl()
+    camera_control.set_zoom(173)
 
     #fake_camera = pyfakewebcam.FakeWebcam(FAKE_CAMERA, 1280, 720)
 
