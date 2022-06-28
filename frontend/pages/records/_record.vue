@@ -1,12 +1,12 @@
 <template>
-  <main class="bg-gray-100 dark:bg-gray-800 h-screen overflow-hidden relative">
+  <main class="bg-gray-800 h-screen overflow-hidden relative">
     <div class="flex items-start justify-between">
       <SidePanel active="Records" />
       <div class="flex flex-col w-full md:space-y-4">
         <HeaderPanel />
         <div class="overflow-auto h-screen pb-24 px-4 md:px-6">
           <div v-if="!txId">
-            <h1 class="text-4xl font-semibold text-gray-800 dark:text-white">
+            <h1 class="text-4xl font-semibold text-white">
               Sessions
             </h1>
             <div class="grid grid-cols-1 gap-4 my-4">
@@ -14,12 +14,12 @@
             </div>
           </div>
           <div v-if="txId">
-            <h1 class="text-4xl font-semibold text-gray-800 dark:text-white">
+            <h1 class="text-4xl font-semibold text-white">
               Session {{ txId }}
             </h1>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 my-4">
               <CardContainer v-if="launchData" title="Launch data">
-                <p class="text-md mt-2 dark:text-white">
+                <p class="text-md mt-2 text-white">
                   Robonomics Launch Tx: <a
                     :href="makeSubscanLink(launchTxId)"
                     class="text-yellow-500"
@@ -27,7 +27,7 @@
                     rel="noopener noreferrer"
                   >{{ addressShort(launchTxId) }}</a>
                 </p>
-                <p class="text-md mt-2 dark:text-white">
+                <p class="text-md mt-2 text-white">
                   Record data on IPFS: <a
                     :href="makeIpfsFolderLink(traceInfo)"
                     class="text-yellow-500"
@@ -35,7 +35,7 @@
                     rel="noopener noreferrer"
                   >{{ addressShort(launchData.ipfs_cid) }}</a>
                 </p>
-                <p class="text-md mt-2 dark:text-white">
+                <p class="text-md mt-2 text-white">
                   Robonomics Datalog Tx: <a
                     :href="makeSubscanLink(datalogTxId)"
                     class="text-yellow-500"
@@ -43,7 +43,7 @@
                     rel="noopener noreferrer"
                   >{{ addressShort(datalogTxId) }}</a>
                 </p>
-                <p class="text-md mt-2 dark:text-white">
+                <p class="text-md mt-2 text-white">
                   Crust Storage Order Tx: <a
                     :href="makeSubscanLink('crust', crustTxId)"
                     class="text-yellow-500"

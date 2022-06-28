@@ -1,8 +1,8 @@
 <template>
   <div class="h-screen hidden lg:block shadow-lg relative w-80">
-    <div class="bg-white h-full dark:bg-gray-700">
+    <div class="bg-gray-200 h-full bg-gray-700">
       <div class="flex items-center justify-start pt-6 ml-8">
-        <p class="font-bold dark:text-white text-xl">
+        <p class="font-bold text-white text-xl">
           Merklebot
         </p>
       </div>
@@ -10,7 +10,7 @@
         <div>
           <NuxtLink
             class="w-full flex items-center pl-6 p-2 my-2 transition-colors duration-200 justify-start border-l-4"
-            :class="{ 'text-gray-800 dark:text-white border-purple-500': (active==='Home'), 'text-gray-400 flex items-center hover:text-gray-800 border-transparent': (active==='Records') }"
+            :class="{ 'text-gray-800 text-white border-purple-500': (active==='Home'), 'text-gray-400 flex items-center hover:text-gray-800 border-transparent': (active==='Records') }"
             to="/"
           >
             <span class="text-left">
@@ -33,7 +33,7 @@
 
           <NuxtLink
             class="w-full flex items-center pl-6 p-2 my-2 transition-colors duration-200 justify-start border-l-4"
-            :class="{ 'text-gray-800 dark:text-white border-purple-500': (active==='Records'), 'text-gray-400 flex items-center hover:text-gray-800 border-transparent': (active==='Home') }"
+            :class="{ 'text-white border-purple-500': (active==='Records'), 'text-gray-400 flex items-center hover:text-gray-800 border-transparent': (active==='Home') }"
             to="/records"
           >
             <span class="text-left">

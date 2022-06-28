@@ -1,7 +1,7 @@
 <template>
   <div class="container flex flex-col mx-auto w-full items-center justify-center">
-    <div class="px-4 py-5 sm:px-6 w-full border dark:bg-gray-800 bg-white shadow mb-2 rounded-md">
-      <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white">
+    <div class="px-4 py-5 sm:px-6 w-full border bg-gray-800 shadow mb-2 rounded-md">
+      <h3 class="text-lg leading-6 font-medium text-white">
         Recorded sessions
       </h3>
       <div class="mt-1 max-w-2xl">
@@ -11,19 +11,19 @@
     <ul class="flex flex-col">
       <li v-for="(session, index) in sessions" :key="index" class="border-gray-400 flex flex-row mb-2">
         <NuxtLink :to="`/records/${session.launch_tx_id}`">
-          <div class="transition duration-500 shadow ease-in-out transform hover:-translate-y-1 hover:shadow-lg select-none cursor-pointer bg-white dark:bg-gray-800 rounded-md flex flex-1 items-center p-4">
+          <div class="transition duration-500 shadow ease-in-out transform hover:-translate-y-1 hover:shadow-lg select-none cursor-pointer bg-gray-800 rounded-md flex flex-1 items-center p-4">
             <div class="flex flex-col w-100 h-100 justify-center items-center mr-4">
               <img alt="result" :src="`${session.traceFolderLink}/result.jpg`" class="mx-auto object-cover  h-100 w-100 ">
             </div>
             <div class="flex-1 pl-1 md:mr-16">
-              <div class="font-medium dark:text-white">
+              <div class="font-medium text-white">
                 Session {{ session.id }}
               </div>
-              <div class="text-gray-600 dark:text-gray-200 text-sm">
+              <div class="text-gray-600 text-gray-200 text-sm">
                 From {{ session.sender }}
               </div>
             </div>
-            <div class="text-gray-600 dark:text-gray-200 text-xs">
+            <div class="text-gray-200 text-xs">
               {{ session.created_at }}
             </div>
             <button class="w-24 text-right flex justify-end">
@@ -31,7 +31,7 @@
                 width="12"
                 fill="currentColor"
                 height="12"
-                class="hover:text-gray-800 dark:hover:text-white dark:text-gray-200 text-gray-500"
+                class="hover:text-white text-gray-200 text-gray-500"
                 viewBox="0 0 1792 1792"
                 xmlns="http://www.w3.org/2000/svg"
               >

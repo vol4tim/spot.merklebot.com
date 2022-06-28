@@ -3,7 +3,7 @@
     <div ref="stage" class="stage" />
     <button
       type="button"
-      class="uppercase py-2 my-2 px-4  bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md"
+      class="uppercase py-2 my-2 px-4  bg-transparent text-gray-800 bg-gray-200 hover:bg-gray-100 border-2 border-gray-800 text-gray-800 text-white hover:bg-gray-800 hover:text-white text-md"
       @click="playBag"
     >
       Play bag

@@ -1,5 +1,5 @@
 <template>
-  <main class="dark:bg-gray-800 font-mono bg-white overflow-hidden">
+  <main class="bg-gray-800 font-mono overflow-hidden">
     <div v-if="screenSize.w >= minScreenSize.w && screenSize.h >= minScreenSize.h" class="z-20 container mx-auto flex flex-row flex-wrap justify-center place-items-center">
       <div class="basis-5/12">
         <AlwaysVisibleBlock />

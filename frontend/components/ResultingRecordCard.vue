@@ -3,23 +3,23 @@
     <div />
     <div class="grid grid-cols-2 gap-4">
       <CardContainer title="Robot info">
-        <p class="text-md mt-2 dark:text-white">
+        <p class="text-md mt-2 text-white">
           Robot state: <span class="text-yellow-500">{{ robot.robotState }}</span>
         </p>
-        <p class="text-md mt-2 dark:text-white">
+        <p class="text-md mt-2 text-white">
           Drawings in queue: <span class="text-yellow-500">{{ robot.queueSize }}</span>
         </p>
       </CardContainer>
       <CardContainer title="Launch info">
-        <p class="text-md mt-2 dark:text-white">
+        <p class="text-md mt-2 text-white">
           launch status: <span class="text-yellow-500">{{ robot.cps.status }}</span>
         </p>
 
-        <p class="text-md mt-2 dark:text-white">
+        <p class="text-md mt-2 text-white">
           Tx status: <span class="text-yellow-500">{{ robot.cps.launch.txStatus }}</span>
         </p>
 
-        <p class="text-md mt-2 dark:text-white">
+        <p class="text-md mt-2 text-white">
           Transaction: <a
             class="text-yellow-500"
             :href="
@@ -34,7 +34,7 @@
     <div class="mt-4">
       <CardContainer title="Saved data">
         <div v-if="launchData!==null">
-          <p class="text-md mt-2 dark:text-white">
+          <p class="text-md mt-2 text-white">
             Robonomics Launch Tx: <a
               :href="makeSubscanLink('robonomics', launchTxId)"
               class="text-yellow-500"
@@ -42,7 +42,7 @@
               rel="noopener noreferrer"
             >{{ addressShort(launchTxId) }}</a>
           </p>
-          <p class="text-md mt-2 dark:text-white">
+          <p class="text-md mt-2 text-white">
             Record data on IPFS: <a
               :href="makeIpfsFolderLink('traceInfo')"
               class="text-yellow-500"
@@ -50,7 +50,7 @@
               rel="noopener noreferrer"
             >{{ addressShort(traceInfo.ipfsCid) }}</a>
           </p>
-          <p class="text-md mt-2 dark:text-white">
+          <p class="text-md mt-2 text-white">
             Robonomics Datalog Tx: <a
               :href="makeSubscanLink('robonomics', datalogTxId)"
               class="text-yellow-500"
@@ -58,7 +58,7 @@
               rel="noopener noreferrer"
             >{{ addressShort(datalogTxId) }}</a>
           </p>
-          <p class="text-md mt-2 dark:text-white">
+          <p class="text-md mt-2 text-white">
             Crust Storage Order Tx: <a
               :href="makeSubscanLink('crust', crustTxId)"
               class="text-yellow-500"
@@ -73,7 +73,7 @@
         </div>
 
         <div v-else>
-          <p class="text-md mt-2 dark:text-white">
+          <p class="text-md mt-2 text-white">
             Your launch data will appear here after processing drawing and saving all data
           </p>
         </div>

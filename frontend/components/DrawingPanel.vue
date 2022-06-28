@@ -3,20 +3,21 @@
     <div class="w-full mb-8">
       <canvas :id="canvasId" class="canvas-style" @mousedown="mouseDown" />
     </div>
-    <div class="">
-      <button
-        type="button"
-        class="w-full uppercase py-2 my-2 px-4  bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md"
-        @click="resetCanvas"
-      >
-        Clear canvas
-      </button>
-    </div>
+    <button
+      type="button"
+      class="
+        uppercase text-md w-full py-2 my-2 px-4
+        bg-gray-200 hover:bg-gray-300 hover:text-white
+      "
+      @click="resetCanvas"
+    >
+      Clear canvas
+    </button>
 
     <PayWithToggle>
       <template #ticket>
-        <div class="w-full px-2 dark:bg-gray-600 relative">
-          <p class="text-md my-4 mb-16 dark:text-white text-center">
+        <div class="w-full px-2 bg-gray-600 relative">
+          <p class="text-md my-4 mb-16 text-white text-center">
             You have {{
               wallet.selectedAccount.tickets.filter(
                 (ticket) => ticket.spent === false
@@ -26,7 +27,12 @@
           </p>
           <button
             type="button"
-            class="absolute bottom-0 inset-x-0 uppercase py-2 mx-4 my-2 px-4 md:mt-16 bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md text-center"
+            class="
+              absolute bottom-0 inset-x-0 uppercase py-2 mx-4 my-2 px-4 md:mt-16
+              text-md text-center
+              text-gray-800 bg-gray-200 border-2
+              hover:bg-gray-100 hover:bg-gray-800 hover:text-white
+            "
             :disabled="!hasTicket"
             @click="sendCommandTicket"
           >
@@ -35,14 +41,19 @@
         </div>
       </template>
       <template #XRT>
-        <div class="w-full px-2 dark:bg-gray-600 relative">
-          <p class="text-md my-4 mb-16 dark:text-white text-center">
+        <div class="w-full px-2 bg-gray-600 relative">
+          <p class="text-md my-4 mb-16 text-white text-center">
             You have {{ wallet.selectedAccount.balanceFormatted }}
           </p>
 
           <button
             type="button"
-            class="absolute bottom-0 inset-x-0 uppercase py-2 mx-4 my-2 px-4 md:mt-16 bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md text-center"
+            class="
+              absolute bottom-0 inset-x-0 uppercase py-2 mx-4 my-2 px-4 md:mt-16
+              text-md text-center
+              text-gray-800 bg-gray-200 border-2
+              hover:bg-gray-100 hover:bg-gray-800 hover:text-white
+            "
             :disabled="!hasEnoughXrt"
             @click="sendCommandXrt"
           >
@@ -182,9 +193,8 @@ export default defineComponent({
   cursor: crosshair;
   width: 100% !important;
   height: 300px !important;
-  border: 2px solid black;
-  border-radius: 0px;
   display: block;
   margin: auto;
+  background-color: rgb(255 237 213); /* tailwindcss orange-100 */
 }
 </style>

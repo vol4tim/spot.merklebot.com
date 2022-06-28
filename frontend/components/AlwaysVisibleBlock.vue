@@ -1,19 +1,19 @@
 <template>
   <div class="px-6 py-4">
     <div v-if="robot.robotState">
-      <p class="text-3xl my-6 text-center dark:text-white">
+      <p class="text-3xl my-6 text-center text-white">
         Hi, I’m Spot 🦾🐶
       </p>
       <div>
         <CameraFrame interaction-mode="drawing" />
       </div>
-      <p class="text-2xl my-6 text-center dark:text-white">
+      <p class="text-2xl my-6 text-center text-white">
         And we are a team of builders who share the vision of
         <br>
         <span class="text-orange-600 font-bold">machine economy with no single point of failure.</span>
       </p>
 
-      <p class="text-2xl mt-2 text-center dark:text-white">
+      <p class="text-2xl mt-2 text-center text-white">
         With this demo we aim to demonstrate the benefits of using Web3 software
         stack in robotics deployments.
         <br>

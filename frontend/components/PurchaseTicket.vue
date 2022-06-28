@@ -1,13 +1,13 @@
 <template>
   <div class="w-full">
-    <p class="text-md my-2 dark:text-white">
+    <p class="text-md my-2 text-white">
       One launch requires 1 ticket <em>or</em> 1 XRT.
     </p>
     <div class="">
       <PayWithToggle>
         <template #ticket>
-          <div class="w-full px-2 dark:bg-gray-600 relative">
-            <p class="text-md my-4 mb-16 dark:text-white text-center">
+          <div class="w-full px-2 bg-gray-600 relative">
+            <p class="text-md my-4 mb-16 text-white text-center">
               You have {{
                 wallet.selectedAccount.tickets.filter(
                   (ticket) => ticket.spent === false
@@ -17,7 +17,8 @@
             </p>
             <button
               type="button"
-              class="absolute bottom-0 inset-x-0 uppercase py-2 mx-4 my-2 px-4 md:mt-16 bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md text-center"
+              class="absolute bottom-0 inset-x-0 uppercase py-2 mx-4 my-2 px-4 md:mt-16 bg-gray-200 border-2
+                     hover:bg-gray-300 hover:bg-gray-800 hover:text-white text-md text-center"
               @click="checkout"
             >
               <span>Get ticket</span>
@@ -29,15 +30,16 @@
           </div>
         </template>
         <template #XRT>
-          <div class="w-full px-2 dark:bg-gray-600 relative">
-            <p class="text-md my-4 mb-16 dark:text-white text-center">
+          <div class="w-full px-2 bg-gray-600 relative">
+            <p class="text-md my-4 mb-16 text-white text-center">
               You have {{ wallet.selectedAccount.balanceFormatted }}
             </p>
             <a
               href="https://www.kraken.com/prices/xrt-robonomics-price-chart/usd-us-dollar?interval=1m"
               target="_blank"
               rel="noopener noreferrer"
-              class="absolute bottom-0 inset-x-0 uppercase py-2 mx-4 my-2 px-4 md:mt-16 bg-transparent dark:text-gray-800 dark:bg-white hover:dark:bg-gray-100 border-2 border-gray-800 text-gray-800 dark:text-white hover:bg-gray-800 hover:text-white text-md text-center"
+              class="absolute bottom-0 inset-x-0 uppercase py-2 mx-4 my-2 px-4 md:mt-16 bg-white border-2
+                     hover:bg-gray-300 hover:bg-gray-800 hover:text-white text-md text-center"
             >
               Get XRT
             </a>
@@ -47,14 +49,14 @@
     </div>
     <span
       v-if="hasTicket || hasEnoughXrt"
-      class="text-md my-2 dark:text-white"
+      class="text-md my-2 text-white"
     >
       It is enough to launch the robot by
       <span v-if="hasTicket"> ticket</span>
       <span v-if="hasTicket && hasEnoughXrt"> or</span>
       <span v-if="hasEnoughXrt"> XRT</span>.
     </span>
-    <span v-else class="text-md my-2 dark:text-white">
+    <span v-else class="text-md my-2 text-white">
       It is not enough to launch the robot. Purchase a ticket <em>or</em> get
       XRT.
     </span>
