@@ -6,7 +6,7 @@
       </div>
 
       <div class="basis-7/12 flex">
-        <ActivitiesBlockTest />
+        <ActivitiesBlock />
       </div>
     </div>
     <div v-else class="flex items-center justify-items-center w-full h-screen">
