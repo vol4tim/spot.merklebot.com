@@ -110,70 +110,63 @@
         <ProgressContainerElement title="Learn more" status="wait">
           <StepContentContainer>
             <Anchor anchor-id="anchor-to-8" href-id="#8" title="" />
-            <p class="text-md my-2 text-white mx-6">
-              Digital economies will soon power our physical world and they present a number of opportunities for robotics developers and operators to reduce costs, drive additional revenue streams and partnerships.
-              <h4
-                  class="max-w-sm mt-4 text-md md:text-xl font-bold text-white"
-                >
-                  Equipment financing with DeFi pools (costs📉)
-              </h4>
-              <p class="text-md my-4 mb-16 text-white">
-                Data-driven leasing model derisks equipment financing and we unlock new funding source for robotics deployments.
-              </p>
-              <a
-                href="https://medium.com/merklebot/southie-autonomy-case-study-1633a07dbf2c"
-                target="_blank"
-                class="
-                absolute bottom-0 inset-x-0 uppercase py-2 mx-4 my-2 px-4 md:mt-16
-                text-md text-center
-                text-gray-800 bg-gray-200 border-2
-                hover:bg-gray-100 hover:bg-gray-800 hover:text-white
-              "
-              >
-                Case study
-              </a>
-              <h4
-                  class="max-w-sm text-md md:text-xl font-bold text-white mt-4"
-                >
-                  New revenue via NFTs (revenue📈)
-              </h4>
-              <p class="text-md my-4 mb-16 text-white">
-                By connecting an autonomous telescope in Chile and allowing it to mint NFTs we support local astronomers community.
-              </p>
-
-              <a
-                href="https://telescope.merklebot.com/#/"
-                target="_blank"
-                class="
-                absolute bottom-0 inset-x-0 uppercase py-2 mx-4 my-2 px-4 md:mt-16
-                text-md text-center
-                text-gray-800 bg-gray-200 border-2
-                hover:bg-gray-100 hover:bg-gray-800 hover:text-white
-              "
-              >
-                Visit dApp
-              </a>
-              <h4
-                class="max-w-sm text-md md:text-xl font-bold text-white mt-4"
-              >
-                Partnerships (optimization📊)
-              </h4>
-              <p class="text-md my-4 mb-16 text-white">
-                Easy plug-and-play integrations with parachains in Polkadot ecosystem create endless opportunities for improving internal processes in robotics and equipment operations via Robonomics.
-              </p>
-              <a
-                href="https://robonomics.network/blog/release-2-0-and-xcm-support/"
-                target="_blank"
-                class="
-                absolute bottom-0 inset-x-0 uppercase py-2 mx-4 my-2 px-4 md:mt-16
-                text-md text-center
-                text-gray-800 bg-gray-200 border-2
-                hover:bg-gray-100 hover:bg-gray-800 hover:text-white
-              "
-              >
-                Case study
-              </a>
+            <p class="mx-6 text-white text-md">
+              Digital economies will soon power our physical world and they present a number of
+              opportunities for robotics developers and operators to reduce costs, drive additional
+              revenue streams and partnerships.
             </p>
+            <div class="mx-6">
+              <div class="w-full my-8">
+                <h4 class="w-full text-md md:text-xl font-bold text-white">
+                  Equipment financing with DeFi pools (costs📉)
+                </h4>
+                <p class="my-4 text-md text-white">
+                  Data-driven leasing model derisks equipment financing and we unlock new funding
+                  source for robotics deployments.
+                </p>
+                <a
+                  href="https://medium.com/merklebot/southie-autonomy-case-study-1633a07dbf2c"
+                  target="_blank"
+                  class="w-full py-2 my-2 px-4 md:mt-16 uppercase text-md text-center text-gray-800 bg-gray-200 border-2
+                    hover:bg-gray-100 hover:bg-gray-800 hover:text-white"
+                >
+                  Case study
+                </a>
+              </div>
+              <div class="w-full my-8">
+                <h4 class="w-full text-md md:text-xl font-bold text-white">
+                  New revenue via NFTs (revenue📈)
+                </h4>
+                <p class="my-4 text-md text-white">
+                  By connecting an autonomous telescope in Chile and allowing it to mint NFTs we
+                  support local astronomers community.
+                </p>
+                <a
+                  href="https://telescope.merklebot.com/#/"
+                  target="_blank"
+                  class="w-full py-2 my-2 px-4 md:mt-16 uppercase text-md text-center text-gray-800 bg-gray-200 border-2
+                    hover:bg-gray-100 hover:bg-gray-800 hover:text-white"
+                >
+                  Visit dApp
+                </a>
+              </div>
+              <div class="w-full my-8">
+                <h4 class="w-full text-md md:text-xl font-bold text-white">
+                  Partnerships (optimization📊)
+                </h4>
+                <p class="my-4 text-md text-white">
+                  Easy plug-and-play integrations with parachains in Polkadot ecosystem create endless opportunities for improving internal processes in robotics and equipment operations via Robonomics.
+                </p>
+                <a
+                  href="https://robonomics.network/blog/release-2-0-and-xcm-support/"
+                  target="_blank"
+                  class="w-full py-2 my-2 px-4 md:mt-16 uppercase text-md text-center text-gray-800 bg-gray-200 border-2
+                    hover:bg-gray-100 hover:bg-gray-800 hover:text-white"
+                >
+                  Case study
+                </a>
+              </div>
+            </div>
             <p class="text-white mx-6">
               To learn more send us an email to
               <span class="text-orange-600 font-bold">v@merklebot.com</span>.

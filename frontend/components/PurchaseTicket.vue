@@ -3,11 +3,11 @@
     <p class="text-md my-2 text-white">
       One launch requires 1 ticket <em>or</em> 1 XRT.
     </p>
-    <div class="">
+    <div>
       <PayWithToggle>
         <template #ticket>
           <div class="w-full px-2 bg-gray-600 relative">
-            <p class="text-md my-4 mb-16 text-white text-center">
+            <p class="text-md my-4 mb-2 text-white text-center">
               You have {{
                 wallet.selectedAccount.tickets.filter(
                   (ticket) => ticket.spent === false
@@ -17,8 +17,8 @@
             </p>
             <button
               type="button"
-              class="absolute bottom-0 inset-x-0 uppercase py-2 mx-4 my-2 px-4 md:mt-16 bg-gray-200 border-2
-                     hover:bg-gray-300 hover:bg-gray-800 hover:text-white text-md text-center"
+              class="uppercase text-md w-full py-2 my-2 px-4 bg-gray-200 text-gray-800
+                hover:bg-gray-800 hover:bg-gray-100 hover:text-white"
               @click="checkout"
             >
               <span>Get ticket</span>
@@ -38,10 +38,10 @@
               href="https://www.kraken.com/prices/xrt-robonomics-price-chart/usd-us-dollar?interval=1m"
               target="_blank"
               rel="noopener noreferrer"
-              class="absolute bottom-0 inset-x-0 uppercase py-2 mx-4 my-2 px-4 md:mt-16 bg-white border-2
-                     hover:bg-gray-300 hover:bg-gray-800 hover:text-white text-md text-center"
+              class="absolute bottom-0 inset-x-0 uppercase py-2 my-2 mx-2 px-2 bg-gray-200 text-gray-800
+                text-md text-center hover:bg-gray-800 hover:bg-gray-100 hover:text-white"
             >
-              Get XRT
+              <span>Get XRT</span>
             </a>
           </div>
         </template>

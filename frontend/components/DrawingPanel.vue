@@ -5,10 +5,8 @@
     </div>
     <button
       type="button"
-      class="
-      uppercase text-md w-full py-2 my-2 px-4
-        bg-gray-200 text-gray-800 hover:bg-gray-800 hover:bg-gray-100 hover:text-white
-      "
+      class="uppercase text-md w-full py-2 my-2 px-4 bg-gray-200 text-gray-800
+        hover:bg-gray-800 hover:bg-gray-100 hover:text-white"
       @click="resetCanvas"
     >
       Clear canvas
