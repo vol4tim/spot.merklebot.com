@@ -4,7 +4,7 @@
       class="overflow-x-hidden overflow-y-auto h-screen snap-y snap-mandatory"
     >
       <ProgressContainer>
-        <ProgressContainerElement title="Connect you wallet" :status="progressElementStatuses['connectWallet']">
+        <ProgressContainerElement title="Connect your wallet" :status="progressElementStatuses['connectWallet']">
           <StepContentContainer>
             <Anchor anchor-id="anchor-to-1" href-id="#1" title="" />
 
@@ -34,13 +34,12 @@
           </StepContentContainer>
         </ProgressContainerElement>
 
-        <ProgressContainerElement title="Get robot's transfer value" :status="progressElementStatuses['transferValue']">
+        <ProgressContainerElement title="Acquire launch rights" :status="progressElementStatuses['transferValue']">
           <StepContentContainer>
             <Anchor anchor-id="anchor-to-2" href-id="#2" title="" />
 
             <p class="text-md my-2 text-white mx-6">
-              Billing for robot’s work can happen in both US dollars and
-              cryptocurrencies - money for robots.
+              To make onboarding easier for our clients billing can be done in both US dollars and cryptocurrencies - money for robots.
             </p>
             <img src="/pictures/Frame3.png">
 
@@ -52,8 +51,7 @@
           <StepContentContainer>
             <Anchor anchor-id="anchor-to-3" href-id="#3" title="" />
             <p class="text-md my-2 text-white mx-6">
-              Now you can collaborate with Spot, draw anything in the box and ask
-              her to repeat it:
+              Now you can collaborate with Spot, draw anything in the box and our robodog will trace your art in the air:
             </p>
 
             <div class="flex items-center justify-center mt-4">
@@ -66,8 +64,7 @@
           <StepContentContainer>
             <Anchor anchor-id="anchor-to-4" href-id="#4" title="" />
             <p class="text-md my-2 text-white mx-6">
-              Teleoperation session is authorized by the key in your wallet and
-              the data can be encrypted with it too.
+              Teleoperation is authorized by sending transactions directly to the robot’s address using your wallet.
             </p>
             <img src="/pictures/Frame4.png">
 
@@ -77,7 +74,7 @@
           </StepContentContainer>
         </ProgressContainerElement>
 
-        <ProgressContainerElement title="Wait your transaction processing" :status="progressElementStatuses['waitTx']">
+        <ProgressContainerElement title="Wait for your transaction to process" :status="progressElementStatuses['waitTx']">
           <Anchor anchor-id="anchor-to-5" href-id="#5" title="" />
           <StepContentContainer>
             <DashboardLikeContainer>
@@ -86,7 +83,7 @@
           </StepContentContainer>
         </ProgressContainerElement>
 
-        <ProgressContainerElement title="Follow command execution" :status="progressElementStatuses['robotExecution']">
+        <ProgressContainerElement title="Watch Spot draw in the air" :status="progressElementStatuses['robotExecution']">
           <Anchor anchor-id="anchor-to-4" href-id="#6" title="" />
           <StepContentContainer>
             <DashboardLikeContainer>
@@ -96,100 +93,87 @@
           </StepContentContainer>
         </ProgressContainerElement>
 
-        <ProgressContainerElement title="See recorded data" :status="progressElementStatuses['recordedData']">
+        <ProgressContainerElement title="Review recorded data" :status="progressElementStatuses['recordedData']">
           <StepContentContainer>
             <Anchor anchor-id="anchor-to-7" href-id="#7" title="" />
-
+            <p class="text-md my-2 text-white mx-6">
+              The data is recorded using IPFS and stored with multiple replicas using decentralized Crust Network to guarantee availability and resiliency.
+            </p>
             <img src="/pictures/Frame5.png">
             <p class="text-md my-2 text-white mx-6">
-              Here is a report from your interaction with Spot:
+              Here is the report from your interaction with Spot:
             </p>
             <ResultingRecordCard />
           </StepContentContainer>
         </ProgressContainerElement>
 
-        <ProgressContainerElement title="Read more" status="wait">
+        <ProgressContainerElement title="Learn more" status="wait">
           <StepContentContainer>
-            <Anchor anchor-id="anchor-to-8" href-id="#8" title="Digital Economies Powering Physical World" />
+            <Anchor anchor-id="anchor-to-8" href-id="#8" title="" />
             <p class="text-md my-2 text-white mx-6">
-              With the rise of cryptocurrencies adoption new digital market
-              flourished and they present a number of opportunities to reduce
-              costs, drive additional revenue streams and partnerships.
-            </p>
-            <div class="flex flex-row mx-8 py-4">
-              <div class="basis-1/3 mx-2 px-2 bg-gray-600 relative">
-                <h4
+              Digital economies will soon power our physical world and they present a number of opportunities for robotics developers and operators to reduce costs, drive additional revenue streams and partnerships.
+              <h4
                   class="max-w-sm mt-4 text-md md:text-xl font-bold text-white"
                 >
-                  DeFi pools and DAOs (costs 📉)
-                </h4>
-                <p class="text-md my-4 mb-16 text-white">
-                  Data-driven leasing model unlocks global funding sources for new
-                  robotics deployments.
-                </p>
-                <a
-                  href="https://docs.google.com/presentation/d/1iMaQJuA91D2bHG1LefyikUMNoGKSNqsXwCDAjztJ9xw/edit?usp=sharing"
-                  target="_blank"
-                  class="
-                  absolute bottom-0 inset-x-0 uppercase py-2 mx-4 my-2 px-4 md:mt-16
-                  text-md text-center
-                  text-gray-800 bg-gray-200 border-2
-                  hover:bg-gray-100 hover:bg-gray-800 hover:text-white
-                "
-                >
-                  Case study
-                </a>
-              </div>
-
-              <div class="basis-1/3 mx-2 px-2 bg-gray-600 relative">
-                <h4
+                  Equipment financing with DeFi pools (costs📉)
+              </h4>
+              <p class="text-md my-4 mb-16 text-white">
+                Data-driven leasing model derisks equipment financing and we unlock new funding source for robotics deployments.
+              </p>
+              <a
+                href="https://medium.com/merklebot/southie-autonomy-case-study-1633a07dbf2c"
+                target="_blank"
+                class="
+                absolute bottom-0 inset-x-0 uppercase py-2 mx-4 my-2 px-4 md:mt-16
+                text-md text-center
+                text-gray-800 bg-gray-200 border-2
+                hover:bg-gray-100 hover:bg-gray-800 hover:text-white
+              "
+              >
+                Case study
+              </a>
+              <h4
                   class="max-w-sm text-md md:text-xl font-bold text-white mt-4"
                 >
-                  NFT and data markets (revenue 📈)
-                </h4>
-                <p class="text-md my-4 mb-16 text-white">
-                  The birth of digital markets present unique opportunities to
-                  form supporting community around equipment operators.
-                </p>
+                  New revenue via NFTs (revenue📈)
+              </h4>
+              <p class="text-md my-4 mb-16 text-white">
+                By connecting an autonomous telescope in Chile and allowing it to mint NFTs we support local astronomers community.
+              </p>
 
-                <a
-                  href="https://telescope.merklebot.com/#/"
-                  target="_blank"
-                  class="
-                  absolute bottom-0 inset-x-0 uppercase py-2 mx-4 my-2 px-4 md:mt-16
-                  text-md text-center
-                  text-gray-800 bg-gray-200 border-2
-                  hover:bg-gray-100 hover:bg-gray-800 hover:text-white
-                "
-                >
-                  Check dApp
-                </a>
-              </div>
-              <div class="basis-1/3 mx-2 px-2 bg-gray-600 relative">
-                <h4
-                  class="max-w-sm text-md md:text-xl font-bold text-white mt-4"
-                >
-                  Plug-and-play integrations (optimization 📊)
-                </h4>
-                <p class="text-md my-4 mb-16 text-white">
-                  Open infrastructure and wide hardware support opens endless
-                  opportunities for data-driven partnerships and collaboration.
-                </p>
-
-                <a
-                  href="https://docs.google.com/presentation/d/1iMaQJuA91D2bHG1LefyikUMNoGKSNqsXwCDAjztJ9xw/edit?usp=sharing"
-                  target="_blank"
-                  class="
-                  absolute bottom-0 inset-x-0 uppercase py-2 mx-4 my-2 px-4 md:mt-16
-                  text-md text-center
-                  text-gray-800 bg-gray-200 border-2
-                  hover:bg-gray-100 hover:bg-gray-800 hover:text-white
-                "
-                >
-                  Case study
-                </a>
-              </div>
-            </div>
+              <a
+                href="https://telescope.merklebot.com/#/"
+                target="_blank"
+                class="
+                absolute bottom-0 inset-x-0 uppercase py-2 mx-4 my-2 px-4 md:mt-16
+                text-md text-center
+                text-gray-800 bg-gray-200 border-2
+                hover:bg-gray-100 hover:bg-gray-800 hover:text-white
+              "
+              >
+                Visit dApp
+              </a>
+              <h4
+                class="max-w-sm text-md md:text-xl font-bold text-white mt-4"
+              >
+                Partnerships (optimization📊)
+              </h4>
+              <p class="text-md my-4 mb-16 text-white">
+                Easy plug-and-play integrations with parachains in Polkadot ecosystem create endless opportunities for improving internal processes in robotics and equipment operations via Robonomics.
+              </p>
+              <a
+                href="https://robonomics.network/blog/release-2-0-and-xcm-support/"
+                target="_blank"
+                class="
+                absolute bottom-0 inset-x-0 uppercase py-2 mx-4 my-2 px-4 md:mt-16
+                text-md text-center
+                text-gray-800 bg-gray-200 border-2
+                hover:bg-gray-100 hover:bg-gray-800 hover:text-white
+              "
+              >
+                Case study
+              </a>
+            </p>
             <p class="text-white mx-6">
               To learn more send us an email to
               <span class="text-orange-600 font-bold">v@merklebot.com</span>.
