@@ -168,8 +168,16 @@
               </div>
             </div>
             <p class="text-white mx-6">
-              To learn more send us an email to
-              <span class="text-orange-600 font-bold">v@merklebot.com</span>.
+              <a
+                href="https://discord.gg/7u8MdtuaX2"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img class="max-w-[30px] inline" src="~/assets/discord.png">
+                <div class="inline text-orange-500 underline">
+                  Join our Discord to learn more.
+                </div>
+              </a>
             </p>
           </StepContentContainer>
         </ProgressContainerElement>
