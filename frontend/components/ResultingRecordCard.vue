@@ -15,27 +15,33 @@
           </p>
           <p class="text-md mt-2 text-white">
             Record data on IPFS: <a
+              v-if="traceInfo.ipfsCid"
               :href="makeIpfsFolderLink('traceInfo')"
               class="text-yellow-500"
               target="_blank"
               rel="noopener noreferrer"
             >{{ addressShort(traceInfo.ipfsCid) }}</a>
+            <Spinner v-else />
           </p>
           <p class="text-md mt-2 text-white">
             Robonomics Datalog Tx: <a
+              v-if="datalogTxId"
               :href="makeSubscanLink('robonomics', datalogTxId)"
               class="text-yellow-500"
               target="_blank"
               rel="noopener noreferrer"
             >{{ addressShort(datalogTxId) }}</a>
+            <Spinner v-else />
           </p>
           <p class="text-md mt-2 text-white">
             Crust Storage Order Tx: <a
+              v-if="crustTxId"
               :href="makeSubscanLink('crust', crustTxId)"
               class="text-yellow-500"
               target="_blank"
               rel="noopener noreferrer"
             >{{ addressShort(crustTxId) }}</a>
+            <Spinner v-else />
           </p>
 
           <div class="flex items-left justify-left m-4">
@@ -57,8 +63,10 @@ import { defineComponent, onMounted, ref } from '@nuxtjs/composition-api'
 import { useRobot } from '../store/robot'
 import { readRobonomicsLaunchTracesBySender } from '../plugins/merklebot'
 import { makeSubscanLink } from '~/plugins/robonomics'
+import Spinner from '~/components/Spinner'
 
 export default defineComponent({
+  components: { Spinner },
   setup () {
     const robot = useRobot()
 

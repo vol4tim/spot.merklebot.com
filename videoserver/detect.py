@@ -125,7 +125,7 @@ def process_frame(frame):
     class_ids, confidences, boxes = wrap_detection(inputImage, outs[0])
     obj_x, obj_y = None, None
     for (classid, confidence, box) in zip(class_ids, confidences, boxes):
-        print(box)
+        # print(box)
         obj_x = box[0] + box[2] // 2
         obj_y = box[1] + box[3] // 2
 

@@ -12,6 +12,8 @@ from pinatapy import PinataPy
 
 from utils.robonomics import record_datalog
 
+from external_communications.merklebot import create_launch_trace, update_launch_trace
+
 from settings.settings import VIDEOSERVER_URL, PINATA_API_KEY, PINATA_SECRET_API_KEY, ESTUARY_URL, ESTUARY_TOKEN
 
 
@@ -23,6 +25,8 @@ def after_session_complete(
         created_at_str,
         launch_event_id,
 ):
+    res_record_create = create_launch_trace(sender, session_id, created_at_str, launch_event_id)
+    record_id = res_record_create['id']
     print("After session procedure for session {} started".format(session_id))
     video_path = "./traces/{}/{}".format(record_folder_name, video_name)
     h264_path = "./traces/{}/h264_{}".format(record_folder_name, video_name)
@@ -35,7 +39,9 @@ def after_session_complete(
     print("Pinata response: {}".format(pinata_resp))
 
     ipfs_cid = pinata_resp["IpfsHash"]
+    update_launch_trace(record_id, {'ipfs_cid': ipfs_cid})
     datalog_extrinsic_hash = record_datalog(ipfs_cid)
+    update_launch_trace(record_id, {'datalog_tx_id': datalog_extrinsic_hash})
 
     # Pin to Crust Network
     crust_tx_id = ""
@@ -60,6 +66,7 @@ def after_session_complete(
     except:
         traceback.print_exc()
         print("Crust init error")
+    update_launch_trace(record_id, {'crust_tx_id': crust_tx_id})
 
     # Upload to Estuary Filecoin node
     tar = "{}/{}".format(folder, record_folder_name)
@@ -75,17 +82,8 @@ def after_session_complete(
                                      },
                                      )
         print("Estuary response: {}".format(estuary_resp.text))
+    update_launch_trace(record_id, {'filecoin_cid': estuary_resp.json()["cid"]})
 
-    requests.post("https://api.merklebot.com/robonomics-launch-traces", json={
-        "sender": sender,
-        "nonce": session_id,
-        "created_at": created_at_str,
-        "ipfs_cid": ipfs_cid,
-        "launch_tx_id": launch_event_id,
-        "datalog_tx_id": datalog_extrinsic_hash,
-        "filecoin_cid": estuary_resp.json()["cid"],
-        "crust_tx_id": crust_tx_id,
-    })
     print("Session {} trace created with IPFS CID {}".format(session_id, ipfs_cid))
 
 
