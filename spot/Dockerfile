@@ -1,7 +1,10 @@
 FROM ros:melodic-ros-base-bionic
 
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+RUN DEBIAN_FRONTEND=noninteractive apt-get -yqq update && \
+    apt-get install -yqq software-properties-common && \
+    add-apt-repository ppa:deadsnakes/ppa && \
+    apt-get -yqq update && \
+    apt-get install -yqq --no-install-recommends \
         build-essential \
         ca-certificates \
         curl \
@@ -9,14 +12,14 @@ RUN apt-get update && \
         ssh \
         libssl-dev \
         pkg-config \
-        python3-pip \
-        python3-dev \
-        python3-setuptools \
+        python3.8-full \
+        python3.8-dev \
         ffmpeg  \
         libsm6 \
         libxext6 && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    python3.8 -m ensurepip --upgrade
 
 ENV RUSTUP_HOME=/rust
 ENV CARGO_HOME=/cargo
@@ -26,17 +29,19 @@ RUN echo "(curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nigh
 RUN /install-rust.sh
 
 # Install NodeJS for Crust Network
-RUN sudo apt-get install gcc g++ make && \
+RUN DEBIAN_FRONTEND=noninteractive sudo apt-get install -yqq gcc g++ make && \
     curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash - && \
-    sudo apt-get install -y nodejs
+    apt-get install -yqq nodejs && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /home/spot/spot.merklebot.com/spot
 
 ENV PATH="/root/.cargo/bin:${PATH}"
 
 COPY requirements.txt requirements.txt
-RUN python3 -m pip install --upgrade pip
-RUN python3 -m pip install -r requirements.txt
+RUN python3.8 -m pip install --upgrade pip
+RUN python3.8 -m pip install -r requirements.txt
 COPY . .
 
 # Get dependencies for Crust Network script
@@ -45,7 +50,4 @@ RUN npm install
 
 WORKDIR /home/spot/spot.merklebot.com/spot
 
-#CMD ["python3", "--version"]
-##CMD ["rostopic", "list"]
-
-CMD ["python3", "main.py"]
+CMD ["python3.8", "main.py"]
