@@ -29,8 +29,9 @@ def get_account_nonce(address) -> int:
 
 
 def record_datalog(ipfs_cid):
-    robonomics = robonomicsinterface.RobonomicsInterface(seed=os.environ["MNEMONIC"])
-    datalog_extrinsic_hash = robonomics.record_datalog(ipfs_cid)
+    account = robonomicsinterface.Account(os.environ["MNEMONIC"])
+    datalog = robonomicsinterface.Datalog(account)
+    datalog_extrinsic_hash = datalog.record(ipfs_cid)
     return datalog_extrinsic_hash
 
 
