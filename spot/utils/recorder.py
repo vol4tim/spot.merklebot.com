@@ -125,7 +125,7 @@ class DataRecorder:
         # start recording stream from videoserver
         video_url = VIDEOSERVER_URL + "video"
         result_image_name = "result.jpg"
-        self.video_recorder = subprocess.Popen(["python3", "video_recorder.py", "--video_url={}".format(video_url),
+        self.video_recorder = subprocess.Popen(["python3.8", "video_recorder.py", "--video_url={}".format(video_url),
                                                 "--output_file=./traces/{}/{}".format(self.record_folder_name,
                                                                                       self.video_name),
                                                 "--last_im_file=./traces/{}/{}".format(self.record_folder_name,
