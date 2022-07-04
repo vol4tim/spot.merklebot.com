@@ -6,7 +6,7 @@ import requests
 
 import multiprocessing
 
-import robonomicsinterface as RI
+import robonomicsinterface
 
 from settings.settings import (
     VIDEOSERVER_URL,
@@ -42,7 +42,7 @@ def get_account_nonce(address) -> int:
 
 
 def record_datalog(ipfs_cid):
-    robonomics = RI.RobonomicsInterface(seed=os.environ["MNEMONIC"])
+    robonomics = robonomicsinterface.RobonomicsInterface(seed=os.environ["MNEMONIC"])
     datalog_extrinsic_hash = robonomics.record_datalog(ipfs_cid)
     return datalog_extrinsic_hash
 
@@ -74,9 +74,14 @@ class RobonimicsHelper:
     def start_subscriber(self):
         while True:
             try:
-                interface = RI.RobonomicsInterface()
                 print("Robonomics subscriber starting...")
-                subscriber = RI.Subscriber(interface, RI.SubEvent.NewLaunch, self.robonomics_transaction_callback,
-                                           "4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j")
+                account = robonomicsinterface.Account()
+                robonomicsinterface.Subscriber(
+                    account,
+                    robonomicsinterface.SubEvent.NewLaunch,
+                    self.robonomics_transaction_callback,
+                    pass_event_id=True,
+                    addr="4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j",
+                )
             except:
                 print("Error while connecting to robonomics, restart subscriber...")
