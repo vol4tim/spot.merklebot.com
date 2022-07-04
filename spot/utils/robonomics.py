@@ -1,22 +1,9 @@
+import os
+
 from substrateinterface import SubstrateInterface
-from datetime import datetime
-import os, time
-import subprocess
-import requests
-
-import multiprocessing
-
 import robonomicsinterface
 
-from settings.settings import (
-    VIDEOSERVER_URL,
-    INTERACTION_MODE,
-    PINATA_API_KEY,
-    PINATA_SECRET_API_KEY,
-    ESTUARY_TOKEN,
-    ESTUARY_URL,
-)
-import signal
+from settings.settings import INTERACTION_MODE
 
 
 def get_account_nonce(address) -> int:
