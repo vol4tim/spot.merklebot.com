@@ -3,7 +3,7 @@ bosdyn-mission
 bosdyn-choreography-client
 scipy
 robonomics-interface==1.0.5
-substrate-interface
+substrate-interface>=1.2.5,<2
 requests
 Flask
 Flask-Cors

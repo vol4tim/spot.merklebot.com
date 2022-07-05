@@ -31,3 +31,5 @@ MOVEMENT_SESSION_DURATION_TIME = 120
 DEMO_API_URL = os.environ.get('DEMO_API_URL', 'https://api.merklebot.com/spot-demo')
 
 ADMIN_ACCOUNTS = os.environ.get('ADMIN_ACCOUNTS', '4HVVtYPQ8hu7XGKQPmwjhTTHK5crSsiitJpLsA4B4PQV1PNr,4G1SKuxjYkm7AtbMzjpZZnXdt3sShj7nrvEB9dxLcVYJe87P,4HY2Mb4fpsyz6vyWHd3xGPgnHC983junioxhT2Cnfa5Kok5b').split(',')
+
+MNEMONIC = os.environ["MNEMONIC"]

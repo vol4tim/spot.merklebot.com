@@ -9,12 +9,20 @@ import shutil
 import requests
 
 from pinatapy import PinataPy
+from substrateinterface import SubstrateInterface, Keypair
 
 from utils.robonomics import record_datalog
 
 from external_communications.merklebot import create_launch_trace, update_launch_trace
 
-from settings.settings import VIDEOSERVER_URL, PINATA_API_KEY, PINATA_SECRET_API_KEY, ESTUARY_URL, ESTUARY_TOKEN
+from settings.settings import (
+    VIDEOSERVER_URL,
+    PINATA_API_KEY,
+    PINATA_SECRET_API_KEY,
+    ESTUARY_URL,
+    ESTUARY_TOKEN,
+    MNEMONIC,
+)
 
 
 def after_session_complete(
@@ -44,29 +52,32 @@ def after_session_complete(
     update_launch_trace(record_id, {'datalog_tx_id': datalog_extrinsic_hash})
 
     # Pin to Crust Network
-    crust_tx_id = ""
     try:
         size = pinata_resp["PinSize"]
-        crust_proc = subprocess.Popen(
-            ["node", "index.js", str(ipfs_cid), str(size)],
-            cwd=pathlib.Path.cwd() / pathlib.Path("./utils/crust"),
-            env=os.environ.copy(),
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
+        crust = SubstrateInterface(
+            url="wss://rpc.crust.network",
+            ss58_format=66,
+            type_registry_preset="crust",
         )
-        try:
-            outs, errs = crust_proc.communicate(timeout=30)
-            print("Crust Network place storage order: outs={}, errs={}".format(outs, errs))
-            if not errs:
-                crust_tx_id = outs.decode("utf-8").strip()
-        except subprocess.TimeoutExpired as e:
-            print("Crust Network place storage order: {e}".format(e))
-            crust_proc.kill()
-            crust_proc.communicate()
-    except:
-        traceback.print_exc()
-        print("Crust init error")
-    update_launch_trace(record_id, {'crust_tx_id': crust_tx_id})
+        call = crust.compose_call(
+            call_module="Market",
+            call_function="place_storage_order",
+            call_params=dict(
+                cid=ipfs_cid,
+                reported_file_size=size,
+                tips=0,
+                _memo="",
+            )
+        )
+        keypair = Keypair.create_from_mnemonic(MNEMONIC)
+        extrinsic = crust.create_signed_extrinsic(
+            call=call,
+            keypair=keypair,
+        )
+        receipt = crust.submit_extrinsic(extrinsic, wait_for_finalization=True)
+        update_launch_trace(record_id, {'crust_tx_id': receipt.extrinsic_hash})
+    except Exception as e:
+        print(f"Crust Network exception: {e=}")
 
     # Upload to Estuary Filecoin node
     tar = "{}/{}".format(folder, record_folder_name)
