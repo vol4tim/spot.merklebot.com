@@ -29,11 +29,11 @@ RUN echo "(curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nigh
 RUN /install-rust.sh
 ENV PATH="/root/.cargo/bin:${PATH}"
 
+WORKDIR /home/spot/spot.merklebot.com/spot
+
 COPY requirements.txt requirements.txt
 RUN python3.8 -m pip install --upgrade pip
 RUN python3.8 -m pip install -r requirements.txt
 COPY . .
-
-WORKDIR /home/spot/spot.merklebot.com/spot
 
 CMD ["python3.8", "main.py"]
