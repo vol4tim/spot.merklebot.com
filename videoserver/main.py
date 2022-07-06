@@ -14,12 +14,13 @@ import os
 import numpy as np
 from dotenv import load_dotenv
 import pyfakewebcam
-
+import hashlib
+import datetime
+from substrateinterface import Keypair, KeypairType
 
 from camera_control import CameraControl
 
 load_dotenv()
-
 
 TOKEN = os.environ.get('VIDEOSERVER_TOKEN', "token")  # token to access this server's drawing functions
 
@@ -29,6 +30,23 @@ SPOT_MOVING = os.getenv("SPOT_MOVING", 0)
 FOLLOW_SPOT = os.getenv('FOLLOW_SPOT', 0)
 DETECT_SPOT = os.getenv('DETECT_SPOT', 1)
 FAKE_CAMERA = os.getenv('FAKE_CAMERA', '/dev/video2')
+AUTH_SECRET = os.getenv('AUTH_SECRET', 'abcdefg')
+ADMIN_WALLETS = os.getenv('ADMIN_WALLETS', '4HY2Mb4fpsyz6vyWHd3xGPgnHC983junioxhT2Cnfa5Kok5b').split(',')
+
+
+def generate_auth_token(account):
+    today = datetime.datetime.now().date()
+    token = hashlib.sha1((AUTH_SECRET + str(today) + account).encode()).hexdigest()
+    return token
+
+
+def verify_token_sign(address, token, signed_token):
+    keypair_public = Keypair(ss58_address=address,
+                             crypto_type=KeypairType.SR25519)
+    is_verified = keypair_public.verify(token, signed_token)
+    return is_verified
+
+
 def run_server(im, state):
     async def frame_producer():
 
@@ -58,7 +76,6 @@ def run_server(im, state):
         state['cur_points'] = []
         state['draw_line'] = True
 
-
         return JSONResponse({"status": "ok"})
 
     async def stop_line(request: Request):
@@ -75,6 +92,32 @@ def run_server(im, state):
         if data['token'] != TOKEN:
             return JSONResponse({"status": "error", "message": "Invalid token"})
         return JSONResponse({"status": "ok", "coords": state['obj_coords']})
+
+    async def get_auth_token(request: Request):
+        data = await request.json()
+        account = data['account']
+        token = generate_auth_token(account)
+
+        return JSONResponse({"status": "ok", "token": token})
+
+    async def control_camera(request: Request):
+        data = await request.json()
+        account = data['account']
+        signed_token = data['signed_token']
+        token = generate_auth_token(account)
+        is_verified = verify_token_sign(account, token, signed_token)
+        if not is_verified:
+            return JSONResponse({"status": "wrong signature"})
+        if account not in ADMIN_WALLETS:
+            return JSONResponse({"status": "no access"})
+
+        camera_control = CameraControl()
+        if data['control_name'] == 'move':
+            camera_control.move(data['velocity'])
+        elif data['control_name'] == 'zoom':
+            camera_control.set_zoom(data['zoom_absolute'])
+
+        return JSONResponse({"status": "ok"})
 
     web = WebGear(logging=True)
 
@@ -94,6 +137,8 @@ def run_server(im, state):
     web.routes.append(Route("/start_line", endpoint=start_line, methods=["POST"]))
     web.routes.append(Route("/stop_line", endpoint=stop_line, methods=["POST"]))
     web.routes.append(Route("/get_spot_face_coords", endpoint=get_obj_coords, methods=["GET"]))
+    web.routes.append(Route("/token", endpoint=get_auth_token, methods=["GET", "POST"]))
+    web.routes.append(Route("/control", endpoint=control_camera, methods=["POST"]))
 
     uvicorn.run(web(), host="0.0.0.0", port=8000)
 
@@ -107,7 +152,7 @@ def run_camera(im, state):
     camera_control = CameraControl()
     camera_control.set_zoom(173)
 
-    #fake_camera = pyfakewebcam.FakeWebcam(FAKE_CAMERA, 1280, 720)
+    # fake_camera = pyfakewebcam.FakeWebcam(FAKE_CAMERA, 1280, 720)
 
     while True:
         (grabbed, frame) = stream.read()
@@ -147,14 +192,12 @@ def run_camera(im, state):
                 # print(f"x_diff = {x_diff}, y_diff = {y_diff}")
                 camera_control.move(vel, time_interval=0.05)
 
-
-
         blackboard = np.zeros(frame.shape, np.uint8)
         # blackboard[:] = (255, 255, 255)
         if obj:
             state['obj_coords'] = obj.copy()
         if obj and state['draw_line']:
-            state['cur_points']=[obj.copy()] + state['cur_points']
+            state['cur_points'] = [obj.copy()] + state['cur_points']
         for segment_points in state['segments'] + [state['cur_points']]:
             for i in range(1, len(segment_points)):
                 if segment_points[i - 1] is None or segment_points[i] is None:
@@ -168,7 +211,7 @@ def run_camera(im, state):
         blackboard_blended = cv2.addWeighted(blackboard_blended, 1, blackboard, 1, 0)
         im_rgb = cv2.cvtColor(blackboard_blended, cv2.COLOR_BGR2RGB)
 
-        #fake_camera.schedule_frame(im_rgb)
+        # fake_camera.schedule_frame(im_rgb)
         im[0] = blackboard_blended
         im[1] = obj
 

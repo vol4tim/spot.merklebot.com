@@ -5,3 +5,5 @@ uvicorn
 imutils
 pyfakewebcam
 python-dotenv
+robonomics-interface==1.0.5
+substrate-interface
