@@ -2,6 +2,8 @@ import { Robonomics } from 'robonomics-interface'
 import AccountManager from 'robonomics-interface/dist/accountManagerUi'
 import keyring from '@polkadot/ui-keyring'
 import { blake2AsHex } from '@polkadot/util-crypto'
+import { web3FromSource } from '@polkadot/extension-dapp'
+import { stringToHex } from '@polkadot/util'
 
 let robonomics
 
@@ -62,6 +64,24 @@ export const makeTransferTx = async (recipient, value) => {
   const robonomics = await getInstance()
   const tx = robonomics.api.tx.balances.transfer(recipient, value)
   return tx
+}
+
+export const signMessage = async (message) => {
+  const robonomics = await getInstance()
+  const injector = await web3FromSource(robonomics.accountManager.account.meta.source)
+
+  const signRaw = injector?.signer?.signRaw
+
+  if (signRaw) {
+    const { signature } = await signRaw({
+      address: robonomics.accountManager.account.address,
+      data: stringToHex(message),
+      type: 'bytes'
+    })
+
+    return signature
+  }
+  return null
 }
 
 export const signAndSendTxWithActiveAccount = async (tx) => {
