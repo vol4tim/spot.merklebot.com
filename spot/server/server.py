@@ -4,14 +4,12 @@ from flask_cors import CORS, cross_origin
 import json
 
 from spot.spot_controller import get_spot_position
-
+from utils.auth import check_if_admin, verify_token_sign
 from settings.settings import INTERACTION_MODE
 
 from scipy.interpolate import Rbf
 
 import logging
-
-
 
 
 def server(movement_queue, drawing_queue, robot_state):
@@ -65,6 +63,27 @@ def server(movement_queue, drawing_queue, robot_state):
                 }
             )
         return {'status': 'started'}
+
+    @app.route('/start_calibration', methods=['POST'])
+    def start_calibration():
+        print("GOT CALIBRATION REQUEST")
+
+        data = request.get_json()
+        account = data['account']
+
+        signed_token = data['signed_token']
+        if not verify_token_sign(account, signed_token):
+            return {"status": "wrong signature"}
+        if not check_if_admin(account):
+            return {"status": "no access"}
+
+        drawing_queue.put(
+            {
+                'segments': [],
+                'admin_action': True,
+            }
+        )
+        return {'status': 'ok'}
 
     @app.route('/interaction_mode', methods=['GET'])
     def get_interaction_mode():

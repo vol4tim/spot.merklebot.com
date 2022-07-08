@@ -19,23 +19,25 @@ def robonomics_subscriber_process(robot_state):
 def spot_logic_process(movement_queue, drawing_queue, robot_state):
     def execute_drawing_command():
         task = drawing_queue.get()
+        admin_action = task.get('admin_action', False)
         segments_task = task['segments']
-        payment_mode = task['payment_mode']
-        tx_id = task['tx_id']
+        payment_mode = task.get('payment_mode')
+        tx_id = task.get('tx_id')
         transaction = None
-        for i in range(15):
-            for tx in robot_state['transactions']:
-                if tx['tx_id']==tx_id:
-                    transaction = tx
+        if not admin_action:
+            for i in range(15):
+                for tx in robot_state['transactions']:
+                    if tx['tx_id'] == tx_id:
+                        transaction = tx
+                        break
+                if not transaction:
+                    time.sleep(1)
+                else:
                     break
-            if not transaction:
-                time.sleep(1)
             else:
-                break
-        else:
-            return
+                return
 
-        address = transaction['sender']
+        address = transaction.get('sender') if transaction else None
 
         if payment_mode == 'ticket':
             customer_tickets = get_tickets_by_customer(address=address)
@@ -48,16 +50,17 @@ def spot_logic_process(movement_queue, drawing_queue, robot_state):
 
         calibrate = False
         if len(segments_task) == 0:
-            if address in ADMIN_ACCOUNTS:
+            if admin_action:
                 # calibrate robot
                 calibrate = True
             else:
                 return
 
         print("Got task", segments_task)
-
-        data_recorder = DataRecorder(transaction)
-        data_recorder.start_data_recording()
+        data_recorder = None
+        if not admin_action:
+            data_recorder = DataRecorder(transaction)
+            data_recorder.start_data_recording()
 
 
         # notify videoserver to clear canvas
@@ -102,11 +105,10 @@ def spot_logic_process(movement_queue, drawing_queue, robot_state):
         robot_state['state'] = "saving_data"
         print("Robot powered off and sit down")
         time.sleep(1)
-        data_recorder.stop_data_recording()
-        data_recorder.start_data_uploading()
-
-
-        robot_state['last_session_id'] = transaction['session_id']
+        if not admin_action:
+            data_recorder.stop_data_recording()
+            data_recorder.start_data_uploading()
+            robot_state['last_session_id'] = transaction['session_id']
         robot_state['state'] = "idle"
 
     def start_movement_session():
