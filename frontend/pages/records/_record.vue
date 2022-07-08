@@ -1,7 +1,7 @@
 <template>
   <main class="bg-gray-800 h-screen overflow-hidden relative">
     <div class="flex items-start justify-between">
-      <SidePanel active="Records" />
+      <!--      <SidePanel active="Records" />-->
       <div class="flex flex-col w-full md:space-y-4">
         <HeaderPanel />
         <div class="overflow-auto h-screen pb-24 px-4 md:px-6">
@@ -51,18 +51,14 @@
                     rel="noopener noreferrer"
                   >{{ addressShort(crustTxId) }}</a>
                 </p>
-                <div v-if="crustFileInfo">
-                  Crust file info
-                  <StepProgressBar />
-                </div>
               </CardContainer>
               <CardContainer v-if="launchData" title="Video Record">
                 <video :src="`${makeIpfsFolderLink(traceInfo)}/h264_camera.mp4`" type="video/mp4" controls />
               </CardContainer>
 
-              <CardContainer v-if="launchData" title="Digital twin">
-                <RosbagPlayer :rosbag-url="`${makeIpfsFolderLink(traceInfo)}/state.bag`" />
-              </CardContainer>
+              <!--              <CardContainer v-if="launchData" title="Digital twin">-->
+              <!--                <RosbagPlayer :rosbag-url="`${makeIpfsFolderLink(traceInfo)}/state.bag`" />-->
+              <!--              </CardContainer>-->
             </div>
           </div>
         </div>

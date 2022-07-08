@@ -9,6 +9,8 @@ import {
 export const useRobot = defineStore('robot', {
   state: () => {
     return {
+      robotToken: null,
+      signedRobotToken: null,
       queueSize: null,
       robotState: null,
       lastSessionId: null,
