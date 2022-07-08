@@ -16,7 +16,7 @@
           <p class="text-md mt-2 text-white">
             Record data on IPFS: <a
               v-if="traceInfo.ipfsCid"
-              :href="makeIpfsFolderLink('traceInfo')"
+              :href="makeIpfsFolderLink(traceInfo)"
               class="text-yellow-500"
               target="_blank"
               rel="noopener noreferrer"
