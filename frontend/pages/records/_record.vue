@@ -1,5 +1,5 @@
 <template>
-  <main class="overflow-hidden relative">
+  <main class="bg-gray-800 overflow-hidden relative">
     <div class="flex items-start justify-between">
       <!--      <SidePanel active="Records" />-->
       <div class="flex flex-col w-full md:space-y-4">
