@@ -1,5 +1,5 @@
 <template>
-  <div class="px-6 py-4">
+  <div class="px-6 py-4 sticky top-0">
     <div v-if="robot.robotState">
       <p class="text-3xl my-6 text-center text-white">
         Hi, I’m Spot 🦾🐶

@@ -1,14 +1,11 @@
 <template>
-  <main class="bg-gray-800 h-screen overflow-hidden relative">
+  <main class="overflow-hidden relative">
     <div class="flex items-start justify-between">
       <!--      <SidePanel active="Records" />-->
       <div class="flex flex-col w-full md:space-y-4">
         <HeaderPanel />
-        <div class="overflow-auto h-screen pb-24 px-4 md:px-6">
+        <div class="overflow-auto pb-24 px-4 md:px-6">
           <div v-if="!txId">
-            <h1 class="text-4xl font-semibold text-white">
-              Sessions
-            </h1>
             <div class="grid grid-cols-1 gap-4 my-4">
               <RecordsList />
             </div>

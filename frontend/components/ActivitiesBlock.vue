@@ -1,7 +1,7 @@
 <template>
   <div class="flex">
     <div
-      class="overflow-x-hidden overflow-y-auto h-screen snap-y snap-mandatory"
+      class="overflow-x-hidden overflow-y-auto snap-y snap-mandatory"
     >
       <ProgressContainer>
         <ProgressContainerElement title="Connect your wallet" :status="progressElementStatuses['connectWallet']">
