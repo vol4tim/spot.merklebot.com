@@ -20,11 +20,11 @@ StylesManager.applyTheme('stone')
 
 const surveyJson = {
   title: 'Please let us know more about you',
-  description: 'We are asking order to understand our auditory better. After submission of the survey you will get a free ticket and a little amount of XRT to launch Spot robot. All the data provided will be associated with email only. We don\'t use and never store any association of the data collected with the account address provided.',
+  description: "We are asking order to understand our auditory better. After submission of the survey you will get a free ticket and a little amount of XRT to launch Spot robot. All the data provided will be associated with email only. We don't use and never store any association of the data collected with the account address provided.",
   logoPosition: 'right',
   pages: [
     {
-      name: 'page-1',
+      name: 'page1',
       elements: [
         {
           type: 'text',
@@ -38,9 +38,18 @@ const surveyJson = {
           title: 'What role sounds closer to you?',
           isRequired: true,
           choices: [
-            { value: 'item1', text: 'Casual web3 user' },
-            { value: 'item2', text: 'Web3 early adopter' },
-            { value: 'item3', text: 'Developer' }
+            {
+              value: 'item1',
+              text: 'Casual web3 user'
+            },
+            {
+              value: 'item2',
+              text: 'Web3 early adopter'
+            },
+            {
+              value: 'item3',
+              text: 'Developer'
+            }
           ],
           hasOther: true
         },
@@ -48,6 +57,12 @@ const surveyJson = {
           type: 'boolean',
           name: 'question3',
           title: 'Can we send you our news and updates by email?',
+          isRequired: true
+        },
+        {
+          type: 'text',
+          name: 'question4',
+          title: 'Your Robonomics Network parachain account address (we will send XRTs to it to launch Spot robot demo)?',
           isRequired: true
         }
       ]
