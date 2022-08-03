@@ -42,3 +42,6 @@ services:
     network_mode: host
     ports:
       - "127.0.0.1:9090:9090"
+
+volumes:
+  prometheus_data: {}
