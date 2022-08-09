@@ -3,6 +3,7 @@
     <div
       class="overflow-x-hidden overflow-y-auto snap-y snap-mandatory"
     >
+      <Modal ref="modal" />
       <ProgressContainer>
         <ProgressContainerElement title="Connect your wallet" :status="progressElementStatuses['connectWallet']">
           <StepContentContainer>
@@ -22,7 +23,7 @@
                   class="text-orange-600"
                   href="https://polkadot.js.org/extension/"
                   target="_blank"
-                >Polkadot.js extension</a>, create and add Web3 account. Then reload this page. -->
+                >PolkadotService.js extension</a>, create and add Web3 account. Then reload this page. -->
                   <a
                     class="text-orange-600"
                     href="https://talisman.xyz/"
@@ -31,6 +32,16 @@
                 </p>
               </div>
             </div>
+          </StepContentContainer>
+        </ProgressContainerElement>
+        <ProgressContainerElement v-if="wallet.selectedAccount.account && wallet.selectedAccount.tickets.length===0" title="Get you free ticket" :status="progressElementStatuses['connectWallet']">
+          <StepContentContainer>
+            <Anchor anchor-id="anchor-to-1" href-id="#1" title="" />
+
+            <p class="text-md my-2 text-white mx-6">
+              As you are a first time user of our dApp, tou can get a ticket and small amount of XRT to try it for free.
+            </p>
+            <UserInfoSurveyWrapper @complete="openModal" />
           </StepContentContainer>
         </ProgressContainerElement>
 
@@ -155,7 +166,7 @@
                   Partnerships (optimization📊)
                 </h4>
                 <p class="my-4 text-md text-white">
-                  Easy plug-and-play integrations with parachains in Polkadot ecosystem create endless opportunities for improving internal processes in robotics and equipment operations via Robonomics.
+                  Easy plug-and-play integrations with parachains in PolkadotService ecosystem create endless opportunities for improving internal processes in robotics and equipment operations via Robonomics.
                 </p>
                 <a
                   href="https://robonomics.network/blog/release-2-0-and-xcm-support/"
@@ -187,8 +198,7 @@
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api'
-import { computed } from '@nuxtjs/composition-api'
+import { computed, defineComponent, ref } from '@nuxtjs/composition-api'
 
 import { useWallet } from '~/store/wallet'
 import { useRobot } from '~/store/robot'
@@ -203,6 +213,10 @@ export default defineComponent({
     const wallet = useWallet()
     const robot = useRobot()
     const dAppParameters = useDAppParameters()
+    const modal = ref()
+    const openModal = () => {
+      modal.value.openModal()
+    }
 
     const progressElementStatuses = computed(() => {
       const hasEnoughXrt = (wallet.selectedAccount.balanceRaw * 10 ** -9 > 1)
@@ -238,7 +252,7 @@ export default defineComponent({
 
     )
 
-    return { wallet, progressElementStatuses }
+    return { wallet, progressElementStatuses, modal, openModal }
   }
 })
 </script>

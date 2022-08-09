@@ -33,7 +33,7 @@ export default {
           header: {
             title: '<span class="font-bold text-orange-600">Connect your wallet</span>'
           },
-          content: "First, you need to connect your Polkadot wallet to our app <br/><br/> If you don't have it yet, follow <a class='text-orange-600' href='https://polkadot.js.org/extension/' target='_blank'>the link</a> and reload this page after creating new account"
+          content: "First, you need to connect your PolkadotService wallet to our app <br/><br/> If you don't have it yet, follow <a class='text-orange-600' href='https://polkadot.js.org/extension/' target='_blank'>the link</a> and reload this page after creating new account"
         },
         {
           target: '#anchor-to-2',

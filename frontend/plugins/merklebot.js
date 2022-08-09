@@ -67,3 +67,10 @@ export const createTicketSpending = async (ticketId) => {
     }
   })
 }
+
+export const retrieveFromFaucet = async (account, form) => {
+  await client.post('faucet/retrieve', {
+    account,
+    form
+  })
+}

@@ -28,26 +28,27 @@ const surveyJson = {
       elements: [
         {
           type: 'text',
-          name: 'question1',
+          name: 'email',
+          inputType: 'email',
           title: 'Can we get your email?',
           isRequired: true
         },
         {
           type: 'checkbox',
-          name: 'question2',
+          name: 'role',
           title: 'What role sounds closer to you?',
           isRequired: true,
           choices: [
             {
-              value: 'item1',
+              value: 'Casual web3 user',
               text: 'Casual web3 user'
             },
             {
-              value: 'item2',
+              value: 'Web3 early adopter',
               text: 'Web3 early adopter'
             },
             {
-              value: 'item3',
+              value: 'Developer',
               text: 'Developer'
             }
           ],
@@ -55,14 +56,8 @@ const surveyJson = {
         },
         {
           type: 'boolean',
-          name: 'question3',
+          name: 'allowEmails',
           title: 'Can we send you our news and updates by email?',
-          isRequired: true
-        },
-        {
-          type: 'text',
-          name: 'question4',
-          title: 'Your Robonomics Network parachain account address (we will send XRTs to it to launch Spot robot demo)?',
           isRequired: true
         }
       ]
@@ -75,6 +70,7 @@ export default {
   components: {
     Survey
   },
+  emits: ['submit'],
   data () {
     const survey = new Model(surveyJson)
     survey.focusFirstQuestionAutomatic = false
@@ -88,8 +84,8 @@ export default {
   },
   methods: {
     onCompleteSurvey (sender) {
-      const results = JSON.stringify(sender.data)
-      alert(results)
+      this.$emit('submit', sender.data)
+      // alert(results)
       this.surveyCompleted = true
     }
   }

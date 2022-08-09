@@ -22,7 +22,7 @@
                   class="text-orange-600"
                   href="https://polkadot.js.org/extension/"
                   target="_blank"
-                >Polkadot.js extension</a>, create and add Web3 account. Then reload this page. -->
+                >PolkadotService.js extension</a>, create and add Web3 account. Then reload this page. -->
                   <a
                     class="text-orange-600"
                     href="https://talisman.xyz/"
