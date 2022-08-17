@@ -14,7 +14,7 @@ import datadog
 
 def robonomics_subscriber_process(robot_state):
     datadog_options = {
-        'statsd_host': 'datadog-agent',
+        'statsd_host': '127.0.0.1',
         'statsd_port': 8125,
         'statsd_namespace': 'strelka',
         'statsd_constant_tags': [
