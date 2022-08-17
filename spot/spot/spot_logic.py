@@ -10,8 +10,23 @@ from settings.settings import SPOT_USERNAME, SPOT_PASSWORD, SPOT_IP, MOVEMENT_SE
 
 import time, json
 
+import datadog
 
 def robonomics_subscriber_process(robot_state):
+    datadog_options = {
+        'statsd_host': 'datadog-agent',
+        'statsd_port': 8125,
+        'statsd_namespace': 'strelka',
+        'statsd_constant_tags': [
+            'vendor:boston-dynamics',
+            'cps:spot',
+            'loc:merklebot-sf',
+            'operator:m2m-economy',
+            'product:spot-demo',
+        ],
+    }
+    datadog.initialize(**datadog_options)
+
     robonomics_helper = RobonimicsHelper(robot_state)
     robonomics_helper.start_subscriber()
 

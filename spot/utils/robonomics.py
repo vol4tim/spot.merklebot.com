@@ -2,6 +2,7 @@ import os
 
 from substrateinterface import SubstrateInterface
 import robonomicsinterface
+import datadog
 
 from settings.settings import INTERACTION_MODE
 
@@ -50,6 +51,14 @@ class RobonimicsHelper:
 
         sender, recipient, _ = data
         session_id = get_account_nonce(sender)
+
+        try:
+            datadog.statsd.event(
+                "Launch",
+                "Launch, sender={}, nonce={}, recipient={}".format(sender, recipient, session_id),
+            )
+        except Exception as e:
+            print("Datadog statsd error: {}".format(e))
 
         if INTERACTION_MODE == 'drawing':
             self.robot_state['transactions'] = self.robot_state['transactions'] + [{'tx_id': launch_event_id, 'sender': sender, 'recipient': recipient, 'session_id': session_id}]
