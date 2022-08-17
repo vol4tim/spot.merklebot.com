@@ -89,34 +89,36 @@ def spot_logic_process(movement_queue, drawing_queue, robot_state):
         robot_state['state'] = "executing"
 
         print("Starting spot controller")
-        with SpotController(SPOT_USERNAME, SPOT_PASSWORD, SPOT_IP, coord_nodes) as sc:
-        # sc = SpotController(SPOT_USERNAME, SPOT_PASSWORD, SPOT_IP, coord_nodes)
-        #
-        # print("Spot controller started")
-        # sc.lease_control()
-        # print("Lease control got")
-        # sc.power_on_stand_up()
-        # print("Robot powered and stand up")
 
-            print("Starting movement...")
+        with datadog.statsd.timed('launch.timer'):
+            with SpotController(SPOT_USERNAME, SPOT_PASSWORD, SPOT_IP, coord_nodes) as sc:
+            # sc = SpotController(SPOT_USERNAME, SPOT_PASSWORD, SPOT_IP, coord_nodes)
+            #
+            # print("Spot controller started")
+            # sc.lease_control()
+            # print("Lease control got")
+            # sc.power_on_stand_up()
+            # print("Robot powered and stand up")
 
-            if calibrate:
-                calibration_movement(sc, get_spot_face_on_camera_coords)
-            else:
-                for i, segments in enumerate(segments_task):
-                    print("Drawing segment")
-                    time.sleep(0.1)
+                print("Starting movement...")
 
-                    xx, yy = centralize([segment[0] for segment in segments], [segment[1] for segment in segments],
-                                        all_segments)
-                    sc.move_to_draw(start_drawing_trigger_handler=notify_start_line,
-                                    end_drawing_trigger_handler=notify_stop_line,
-                                    xx=xx, yy=yy)
-                    time.sleep(0.1)
+                if calibrate:
+                    calibration_movement(sc, get_spot_face_on_camera_coords)
+                else:
+                    for i, segments in enumerate(segments_task):
+                        print("Drawing segment")
+                        time.sleep(0.1)
 
-            print("Movement finished")
-            # print("Ready to turn off")
-            # sc.power_off_sit_down()
+                        xx, yy = centralize([segment[0] for segment in segments], [segment[1] for segment in segments],
+                                            all_segments)
+                        sc.move_to_draw(start_drawing_trigger_handler=notify_start_line,
+                                        end_drawing_trigger_handler=notify_stop_line,
+                                        xx=xx, yy=yy)
+                        time.sleep(0.1)
+
+                print("Movement finished")
+                # print("Ready to turn off")
+                # sc.power_off_sit_down()
         robot_state['state'] = "saving_data"
         print("Robot powered off and sit down")
         time.sleep(1)
