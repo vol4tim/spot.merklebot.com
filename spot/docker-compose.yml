@@ -44,5 +44,17 @@ services:
     ports:
       - "127.0.0.1:9010:9010"
 
+  datadog-agent:
+    image: gcr.io/datadoghq/agent:7
+    container_name: datadog-agent
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      -  /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+    environment:
+      DD_API_KEY: ${DATADOG_API_KEY}
+      DD_SITE: ${DATADOG_SITE}
+      DD_DOGSTATSD_NON_LOCAL_TRAFFIC: true
+
 volumes:
   prometheus_data: {}
