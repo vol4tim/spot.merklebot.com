@@ -34,14 +34,19 @@
             </div>
           </StepContentContainer>
         </ProgressContainerElement>
-        <ProgressContainerElement v-if="wallet.selectedAccount.account && wallet.selectedAccount.tickets.length===0" title="Get you free ticket" :status="progressElementStatuses['connectWallet']">
+        <ProgressContainerElement v-if="wallet.selectedAccount.account && wallet.selectedAccount.tickets.length===0" title="Get your free ticket" :status="progressElementStatuses['connectWallet']">
           <StepContentContainer>
             <Anchor anchor-id="anchor-to-1" href-id="#1" title="" />
 
             <p class="text-md my-2 text-white mx-6">
-              As you are a first time user of our dApp, tou can get a ticket and small amount of XRT to try it for free.
+              As a part of this demo we demonstrate the billing system for robotics. If you leave your email below — your first demo is on us!
             </p>
             <UserInfoSurveyWrapper @complete="openModal" />
+            <div
+              class="text-sm mt-4 text-white"
+            >
+              * we never store your email and wallet info together, we’ll use your email to send you info about Web3 and robotics.
+            </div>
           </StepContentContainer>
         </ProgressContainerElement>
 

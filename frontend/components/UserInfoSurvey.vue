@@ -19,45 +19,34 @@ import { Survey } from 'survey-vue-ui'
 StylesManager.applyTheme('stone')
 
 const surveyJson = {
-  title: 'Please let us know more about you',
-  description: "We are asking order to understand our auditory better. After submission of the survey you will get a free ticket and a little amount of XRT to launch Spot robot. All the data provided will be associated with email only. We don't use and never store any association of the data collected with the account address provided.",
+  title: '',
+  description: '',
   logoPosition: 'right',
   pages: [
     {
       name: 'page1',
       elements: [
         {
-          type: 'text',
-          name: 'email',
-          inputType: 'email',
-          title: 'Can we get your email?',
+          type: 'radiogroup',
+          name: 'role',
+          title: 'Are you representing a company or have personal interest in Web3 for robotics?',
+          choices: [
+            {
+              value: 'individual',
+              text: 'Individual'
+            },
+            {
+              value: 'company',
+              text: 'Company'
+            }
+          ],
           isRequired: true
         },
         {
-          type: 'checkbox',
-          name: 'role',
-          title: 'What role sounds closer to you?',
-          isRequired: true,
-          choices: [
-            {
-              value: 'Casual web3 user',
-              text: 'Casual web3 user'
-            },
-            {
-              value: 'Web3 early adopter',
-              text: 'Web3 early adopter'
-            },
-            {
-              value: 'Developer',
-              text: 'Developer'
-            }
-          ],
-          hasOther: true
-        },
-        {
-          type: 'boolean',
-          name: 'allowEmails',
-          title: 'Can we send you our news and updates by email?',
+          type: 'text',
+          name: 'email',
+          inputType: 'email',
+          title: 'Your email?',
           isRequired: true
         }
       ]
