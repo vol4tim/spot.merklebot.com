@@ -10,6 +10,7 @@ import requests
 
 from pinatapy import PinataPy
 from substrateinterface import SubstrateInterface, Keypair
+import datadog
 
 from utils.robonomics import record_datalog
 
@@ -50,6 +51,11 @@ def after_session_complete(
     update_launch_trace(record_id, {'ipfs_cid': ipfs_cid})
     datalog_extrinsic_hash = record_datalog(ipfs_cid)
     update_launch_trace(record_id, {'datalog_tx_id': datalog_extrinsic_hash})
+
+    try:
+        datadog.statsd.increment("trace.bytes", int(pinata_resp["PinSize"]))
+    except Exception as e:
+        pass
 
     # Pin to Crust Network
     try:
