@@ -9,6 +9,7 @@ from utils.recorder import DataRecorder
 from settings.settings import SPOT_USERNAME, SPOT_PASSWORD, SPOT_IP, MOVEMENT_SESSION_DURATION_TIME, USE_ROBONOMICS, ADMIN_ACCOUNTS
 
 import time, json
+from datetime import datetime
 
 import datadog
 
@@ -26,6 +27,7 @@ def robonomics_subscriber_process(robot_state):
         ],
     }
     datadog.initialize(**datadog_options)
+    datadog.statsd.event("Startup", "Spot demo starts at {} UTC".format(datetime.utcnow()))
 
     robonomics_helper = RobonimicsHelper(robot_state)
     robonomics_helper.start_subscriber()
