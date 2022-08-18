@@ -55,7 +55,7 @@ class RobonimicsHelper:
         try:
             datadog.statsd.event(
                 "Launch",
-                "Launch, sender={}, nonce={}, recipient={}".format(sender, recipient, session_id),
+                "Launch, sender={}, nonce={}, recipient={}".format(sender, session_id, recipient),
             )
         except Exception as e:
             print("Datadog statsd error: {}".format(e))
