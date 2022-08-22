@@ -4,7 +4,9 @@ from spot.spot_controller import SpotController
 import json
 import os
 
-coord_nodes = json.load(open("calibrations/calibration_data_final.json")) if os.path.exists("calibrations/calibration_data_final.json") else {
+from settings.settings import CALIBRATIONS_DIR
+
+coord_nodes = json.load(open("{}/calibration_data_final.json".format(CALIBRATIONS_DIR))) if os.path.exists("{}/calibration_data_final.json".format(CALIBRATIONS_DIR)) else {
     "x": [0, 0, 400, 400],
     "y": [0, 300, 0, 300],
     "yaw": [-0.4, -0.4, 0.4, 0.4],

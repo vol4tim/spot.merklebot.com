@@ -12,8 +12,8 @@ services:
       - INTERACTION_MODE=drawing
     privileged: true
     volumes:
-      - ./traces:/home/spot/spot.merklebot.com/spot/traces
-      - ./calibrations:/home/spot/spot.merklebot.com/spot/calibrations
+      - "./traces:${TRACES_DIR}"
+      - "./calibrations:${CALIBRATIONS_DIR}"
 
   node_exporter:
     image: quay.io/prometheus/node-exporter:latest

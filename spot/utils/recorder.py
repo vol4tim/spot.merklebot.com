@@ -23,6 +23,7 @@ from settings.settings import (
     ESTUARY_URL,
     ESTUARY_TOKEN,
     MNEMONIC,
+    TRACES_DIR,
 )
 
 
@@ -37,12 +38,12 @@ def after_session_complete(
     res_record_create = create_launch_trace(sender, session_id, created_at_str, launch_event_id)
     record_id = res_record_create['id']
     print("After session procedure for session {} started".format(session_id))
-    video_path = "./traces/{}/{}".format(record_folder_name, video_name)
-    h264_path = "./traces/{}/h264_{}".format(record_folder_name, video_name)
+    video_path = "{}/{}/{}".format(TRACES_DIR, record_folder_name, video_name)
+    h264_path = "{}/{}/h264_{}".format(TRACES_DIR, record_folder_name, video_name)
     os.system("ffmpeg -loglevel error -i {} -vcodec h264 {} ".format(video_path, h264_path))
 
     pinata = PinataPy(PINATA_API_KEY, PINATA_SECRET_API_KEY)
-    folder = "/home/spot/spot.merklebot.com/spot/traces/{}".format(record_folder_name)
+    folder = "{}/{}".format(TRACES_DIR, record_folder_name)
     print("Record folder {}".format(folder))
     pinata_resp = pinata.pin_file_to_ipfs(folder)
     print("Pinata response: {}".format(pinata_resp))
@@ -130,22 +131,22 @@ class DataRecorder:
         print("New launch, sender={}, recipient={}, session_id={}, bag={}".format(
             self.sender, self.recipient, self.session_id, bag_name))
 
-        os.makedirs("./traces/{}".format(self.record_folder_name), exist_ok=True)
+        os.makedirs("{}/{}".format(TRACES_DIR, self.record_folder_name), exist_ok=True)
 
         # duration=5m limits max recoding time and prevents orphan processes keep recording forever
         self.recorder = subprocess.Popen(
             ["rosbag", "record", "--duration=5m", "--output-name={}".format(bag_name), "/tf", "/tf_static",
              "/joint_states"],
-            cwd="./traces/{}/".format(self.record_folder_name),  # directory to put files
+            cwd="{}/{}/".format(TRACES_DIR, self.record_folder_name),  # directory to put files
         )
 
         # start recording stream from videoserver
         video_url = VIDEOSERVER_URL + "video"
         result_image_name = "result.jpg"
         self.video_recorder = subprocess.Popen(["python3.8", "video_recorder.py", "--video_url={}".format(video_url),
-                                                "--output_file=./traces/{}/{}".format(self.record_folder_name,
+                                                "--output_file={}/{}/{}".format(TRACES_DIR, self.record_folder_name,
                                                                                       self.video_name),
-                                                "--last_im_file=./traces/{}/{}".format(self.record_folder_name,
+                                                "--last_im_file={}/{}/{}".format(TRACES_DIR, self.record_folder_name,
                                                                                        result_image_name)])
 
     def stop_data_recording(self):

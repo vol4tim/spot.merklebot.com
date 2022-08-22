@@ -34,3 +34,6 @@ ADMIN_ACCOUNTS = os.environ.get('ADMIN_ACCOUNTS', '4HVVtYPQ8hu7XGKQPmwjhTTHK5crS
 AUTH_SECRET = os.getenv('AUTH_SECRET', 'abcdefg')
 
 MNEMONIC = os.environ["MNEMONIC"]
+
+TRACES_DIR = os.environ["TRACES_DIR"]
+CALIBRATIONS_DIR = os.environ["CALIBRATIONS_DIR"]
