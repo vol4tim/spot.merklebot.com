@@ -12,7 +12,7 @@ SPOT_IP = os.environ.get("SPOT_IP", "192.168.50.3")
 INTERACTION_MODE = os.environ.get("INTERACTION_MODE", "movement")
 
 # Videoserver url
-VIDEOSERVER_URL = os.environ.get("VIDEOSERVER_IP", "http://10.200.0.8:8000/")
+VIDEOSERVER_URL = os.environ["VIDEOSERVER_URL"]
 
 # Security token to execute video server commands
 VIDEOSERVER_TOKEN = os.environ.get("VIDEOSERVER_TOKEN", "")
