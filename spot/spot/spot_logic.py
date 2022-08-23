@@ -114,7 +114,7 @@ def spot_logic_process(actions_queue, drawing_queue, robot_state):
                         action = actions_queue.get(block=False)
                         if action['action']=='move':
                             vel = action['value']
-                            sc.move_by_velocity_control(v_x=vel['x'], v_y=vel['y'])
+                            sc.move_by_velocity_control(v_x=vel['x'], v_y=vel['y'], v_rot=vel['r'])
                     except:
                         action = None
                     if not action:

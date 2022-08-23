@@ -24,6 +24,7 @@ def server(actions_queue, tasks_queue, robot_state):
             'queue_size': tasks_queue.qsize(),
             'robot_state': robot_state['state'],
             'last_session_id': robot_state['last_session_id'],
+            'current_user': robot_state['current_user']
         }
 
     @app.route("/odom", methods=["GET"])
