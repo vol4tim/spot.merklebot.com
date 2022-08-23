@@ -66,7 +66,7 @@ def server(actions_queue, tasks_queue, robot_state):
         return {'status': 'started'}
 
     @app.route('/start_inspection', methods=['POST'])
-    def draw_figure():
+    def start_inspection():
         print("GOT INSPECTION REQUEST")
 
         data = request.get_json()
