@@ -1,19 +1,27 @@
 <template>
-  <main class="bg-gray-800 font-mono">
-    <div class="z-20 container mx-auto flex flex-row flex-wrap justify-center">
-      <div class="basis-5/12">
-        <InspectionRobotStatePanel />
-      </div>
+  <div>
+    <main class="bg-gray-800 font-mono">
+      <div class="z-20 container mx-auto flex flex-row flex-wrap justify-center">
+        <div class="basis-5/12">
+          <div v-if="spotConnected===false">
+            <input v-model="spotUrl">
+            <button @click="connectToSpot">
+              Set url
+            </button>
+          </div>
+          <InspectionRobotStatePanel />
+        </div>
 
-      <div class="basis-7/12">
-        <InspectionControlsBlock />
+        <div class="basis-7/12">
+          <InspectionControlsBlock />
+        </div>
       </div>
-    </div>
-  </main>
+    </main>
+  </div>
 </template>
 
 <script>
-import { defineComponent, onMounted } from '@nuxtjs/composition-api'
+import { defineComponent, onMounted, ref } from '@nuxtjs/composition-api'
 import { useRobot } from '../store/robot'
 import { useWallet } from '~/store/wallet'
 import { useSpot } from '~/store/spot'
@@ -23,10 +31,12 @@ export default defineComponent({
     const robot = useRobot()
     const wallet = useWallet()
     const spot = useSpot()
-
+    const spotConnected = ref(false)
+    const spotUrl = ref('wss://api.merklebot.com/oz/spot/spot/state/ws')
     const connectToSpot = () => {
       try {
-        const spotSocket = new WebSocket('wss://api.merklebot.com/oz/spot/spot/state/ws')
+        const spotSocket = new WebSocket(spotUrl.value)
+        spotConnected.value = true
         spotSocket.onmessage = (event) => {
           spot.setSpotAnswer(JSON.parse(event.data))
         }
@@ -62,10 +72,10 @@ export default defineComponent({
     onMounted(() => {
       doRobotStatePolling()
       doTicketsListPolling()
-      connectToSpot()
     })
 
     return {
+      spotUrl, spotConnected, connectToSpot
     }
   }
 })
