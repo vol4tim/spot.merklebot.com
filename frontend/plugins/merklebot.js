@@ -14,7 +14,7 @@ const client = axios.create({
  * @param {number|limit} [nonce] - Limit for getting all launches.
  * @returns {?(Object|Array)} - All traces if no argument provided, traces related to the sender if specified, or a specific trace if launch tx nonce provided.
  */
-export const readRobonomicsLaunchTracesBySender = async ({ sender = null, nonce = null, launchTxId = null, skip = null, limit = null }) => {
+export const readRobonomicsLaunchTracesBySender = async ({ sender = null, nonce = null, launchTxId = null, skip = 0, limit = 10_000 }) => {
   const resp = await client.get('robonomics-launch-traces', {
     params: {
       sender,
