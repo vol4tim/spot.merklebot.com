@@ -48,7 +48,7 @@
 <script>
 import { defineComponent, useFetch, ref, reactive, computed } from '@nuxtjs/composition-api'
 import { useWallet } from '../store/wallet'
-import { readRobonomicsLaunchTracesBySender } from '~/plugins/merklebot'
+import { readRobonomicsLaunchTracesBySender, makeIpfsFolderLink } from '~/plugins/merklebot'
 
 export default defineComponent({
   setup () {
@@ -70,9 +70,16 @@ export default defineComponent({
     })
     console.log(sessions.value)
     useFetch(async () => {
-      const dbSessions = await readRobonomicsLaunchTracesBySender({ skip: 200 })
+      const dbSessions = await readRobonomicsLaunchTracesBySender({ skip: 0 })
       dbSessions.reverse().forEach((session) => {
-        session.traceFolderLink = `https://merklebot.mypinata.cloud/ipfs/${session.ipfs_cid}/spot/spot.merklebot.com/spot/traces/user-${session.sender}-cps-4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j-session-${session.nonce}-${session.created_at}`
+        session.traceFolderLink = makeIpfsFolderLink(
+          {
+            ipfsCid: session.ipfs_cid,
+            sender: session.sender,
+            nonce: session.nonce,
+            createdAt: session.created_at
+          }
+        )
         sessionsList.value.push(session)
       })
       console.log(sessions.value)

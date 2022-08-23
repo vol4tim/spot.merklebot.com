@@ -66,7 +66,7 @@
 
 <script>
 import { defineComponent, onMounted, useRoute, ref } from '@nuxtjs/composition-api'
-import { readRobonomicsLaunchTracesBySender } from '../../plugins/merklebot'
+import { readRobonomicsLaunchTracesBySender, makeIpfsFolderLink } from '../../plugins/merklebot'
 import { makeSubscanLink } from '~/plugins/robonomics'
 import { getCrustFileInfo } from '~/plugins/crust'
 
@@ -113,10 +113,6 @@ export default defineComponent({
         return ''
       }
       return address.slice(0, 6) + '...' + address.slice(-4)
-    }
-
-    const makeIpfsFolderLink = ({ ipfsCid, sender, nonce, createdAt }) => {
-      return `https://merklebot.mypinata.cloud/ipfs/${ipfsCid}/spot/spot.merklebot.com/spot/traces/user-${sender}-cps-4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j-session-${nonce}-${createdAt}`
     }
 
     return {

@@ -74,3 +74,33 @@ export const retrieveFromFaucet = async (account, form) => {
     form
   })
 }
+
+const versionsTime = {
+  v1: {
+    begin: 0,
+    end: Date.parse('2022-08-22 16:41:19 +0000')
+  },
+  v2: {
+    begin: Date.parse('2022-08-22 16:41:19 +0000') + 1, // first v2 record in database contains 2022-08-22T16:41:20
+    end: Infinity
+  }
+}
+const ipfsGatewayUrl = 'https://merklebot.mypinata.cloud/ipfs'
+
+export const makeIpfsFolderLink = ({ ipfsCid, sender, nonce, createdAt }) => {
+  const createdTime = Date.parse(createdAt + '+0000') // specify timezone, otherwise it takes local
+
+  switch (true) {
+    case (createdTime > versionsTime.v1.begin && createdTime < versionsTime.v1.end):
+      // v1
+      return `${ipfsGatewayUrl}/${ipfsCid}` +
+             '/spot/spot.merklebot.com/spot/traces' +
+             `/user-${sender}-cps-4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j-session-${nonce}-${createdAt}`
+    case (createdTime > versionsTime.v2.begin && createdTime < versionsTime.v2.end):
+      // v2
+      return `${ipfsGatewayUrl}/${ipfsCid}` +
+             `/user-${sender}-cps-4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j-session-${nonce}-${createdAt}`
+    default:
+      console.error({ msg: "can't identify version", createdAt, versionsTime })
+  }
+}
