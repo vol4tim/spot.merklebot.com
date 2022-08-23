@@ -17,6 +17,9 @@ import traceback
 
 from settings.settings import SPOT_IP, SPOT_USERNAME, SPOT_PASSWORD
 
+VELOCITY_CMD_DURATION = 0.5
+
+
 def get_spot_position():
     sdk = bosdyn.client.create_standard_sdk('ControllingSDK')
     robot = sdk.create_robot(SPOT_IP)
@@ -187,3 +190,13 @@ class SpotController:
             # Send the command
             self.command_client.robot_command(stance_cmd)
             time.sleep(0.1)
+
+    def move_by_velocity_control(self, v_x=0.0, v_y=0.0, v_rot=0.0, cmd_duration=VELOCITY_CMD_DURATION):
+        # v_x+ - forward, v_y+ - left | m/s, v_rot+ - counterclockwise |rad/s
+        self._start_robot_command(
+            RobotCommandBuilder.synchro_velocity_command(v_x=v_x, v_y=v_y, v_rot=v_rot),
+            end_time_secs=time.time() + cmd_duration)
+
+    def _start_robot_command(self, command_proto, end_time_secs=None):
+
+        self.command_client.robot_command(lease=None, command=command_proto, end_time_secs=end_time_secs)
