@@ -18,7 +18,7 @@
               <CardContainer v-if="launchData" title="Launch data">
                 <p class="text-md mt-2 text-white">
                   Robonomics Launch Tx: <a
-                    :href="makeSubscanLink(launchTxId)"
+                    :href="makeSubscanLink('robonomics', launchTxId)"
                     class="text-yellow-500"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -34,7 +34,7 @@
                 </p>
                 <p class="text-md mt-2 text-white">
                   Robonomics Datalog Tx: <a
-                    :href="makeSubscanLink(datalogTxId)"
+                    :href="makeSubscanLink('robonomics', datalogTxId)"
                     class="text-yellow-500"
                     target="_blank"
                     rel="noopener noreferrer"
