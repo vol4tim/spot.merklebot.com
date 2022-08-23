@@ -11,3 +11,13 @@ export const calibrateSpot = async (accountAddress, signedToken) => {
   })
   return resp
 }
+
+export const moveSpot = async (accountAddress, signedToken, vel) => {
+  const resp = await client.post('command', {
+    account: accountAddress,
+    signed_token: signedToken,
+    action: 'move',
+    vel
+  })
+  return resp
+}

@@ -74,6 +74,21 @@ export const useRobot = defineStore('robot', {
       }).then(response => response.json()).then((data) => {
         console.log(data)
       })
+    },
+    startInspection (account = '', paymentMode = 'ticket', txId = '') {
+      fetch('https://api.merklebot.com/strelka/start_inspection', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          account,
+          payment_mode: paymentMode,
+          tx_id: txId
+        })
+      }).then(response => response.json()).then((data) => {
+        console.log(data)
+      })
     }
 
   }

@@ -60,6 +60,8 @@ export default defineComponent({
   setup () {
     const dAppParameters = useDAppParameters()
     const robot = useRobot()
+    const wallet = useWallet()
+
     const sendCommand = async (transferXrtAmount) => {
       console.log('Sending command')
       console.log(dAppParameters.currentDrawingSegments)
@@ -68,7 +70,12 @@ export default defineComponent({
         const res = await robot.launchCps(transferXrtAmount)
         const paymentMode = transferXrtAmount ? 'xrt' : 'ticket'
         if (res) {
-          robot.sendDrawing(dAppParameters.currentDrawingSegments, paymentMode, `${res.txInfo.blockNumber}-${res.txInfo.txIndex}`)
+          if (dAppParameters.currentDrawingSegments > 0) {
+            robot.sendDrawing(dAppParameters.currentDrawingSegments, paymentMode, `${res.txInfo.blockNumber}-${res.txInfo.txIndex}`)
+          } else {
+            // start time based inspection
+            robot.startInspection(wallet.selectedAccount.account.address, paymentMode, `${res.txInfo.blockNumber}-${res.txInfo.txIndex}`)
+          }
         }
       } catch (e) {
         console.error(e)
@@ -82,8 +89,6 @@ export default defineComponent({
     const sendCommandTicket = async () => {
       await sendCommand()
     }
-
-    const wallet = useWallet()
 
     const hasEnoughXrt = computed(() => {
       return wallet.selectedAccount.balanceRaw * 10 ** -9 > 1

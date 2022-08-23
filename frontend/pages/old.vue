@@ -17,7 +17,7 @@
           <p>
             Here you can control Boston Dynamics Spot like a student at MerkleBot Spot SDK Basics course.
             <ol>
-              <li>1. Compose and send a program to Spot with authorization for your Polkadot account,</li>
+              <li>1. Compose and send a program to Spot with authorization for your PolkadotService account,</li>
               <li>2. Watch the robot executes your program,</li>
               <li>3. Verify your session on Robonomics blockchain and IPFS.</li>
             </ol>
