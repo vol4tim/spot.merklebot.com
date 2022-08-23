@@ -12,8 +12,8 @@ def main():
     manager = multiprocessing.Manager()
 
     ctx = multiprocessing.get_context('spawn')
-    drawing_queue = ctx.Queue()
-    movement_queue = ctx.Queue()
+    tasks_queue = ctx.Queue()
+    actions_queue = ctx.Queue()
 
     robot_state = manager.dict()
     robot_state['state'] = "idle"
@@ -21,8 +21,9 @@ def main():
     robot_state['calibration_nodes'] = json.load(open("movement_calibration_nodes.json")) if os.path.exists(
         "movement_calibration_nodes.json") else []
     robot_state['transactions'] = []  # list of transactions
-    spot_controller_process = ctx.Process(target=spot_logic_process, args=(movement_queue, drawing_queue, robot_state))
-    server_process = ctx.Process(target=server, args=(movement_queue, drawing_queue, robot_state))
+    robot_state['current_user'] = None
+    spot_controller_process = ctx.Process(target=spot_logic_process, args=(actions_queue, tasks_queue, robot_state))
+    server_process = ctx.Process(target=server, args=(actions_queue, tasks_queue, robot_state))
     robonomics_process = ctx.Process(target=robonomics_subscriber_process, args=(robot_state,))
 
     PROCESSES.append(spot_controller_process)

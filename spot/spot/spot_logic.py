@@ -6,12 +6,14 @@ from spot.spot_controller import SpotController
 from utils.calibration import centralize, coord_nodes, calibration_movement
 from utils.robonomics import RobonimicsHelper
 from utils.recorder import DataRecorder
-from settings.settings import SPOT_USERNAME, SPOT_PASSWORD, SPOT_IP, MOVEMENT_SESSION_DURATION_TIME, USE_ROBONOMICS, ADMIN_ACCOUNTS
+from settings.settings import SPOT_USERNAME, SPOT_PASSWORD, SPOT_IP, MOVEMENT_SESSION_DURATION_TIME, USE_ROBONOMICS, \
+    ADMIN_ACCOUNTS
 
 import time, json
 from datetime import datetime
 
 import datadog
+
 
 def robonomics_subscriber_process(robot_state):
     datadog_options = {
@@ -33,37 +35,10 @@ def robonomics_subscriber_process(robot_state):
     robonomics_helper.start_subscriber()
 
 
-def spot_logic_process(movement_queue, drawing_queue, robot_state):
-    def execute_drawing_command():
-        task = drawing_queue.get()
+def spot_logic_process(actions_queue, drawing_queue, robot_state):
+    def execute_drawing_command(task, transaction):
         admin_action = task.get('admin_action', False)
         segments_task = task['segments']
-        payment_mode = task.get('payment_mode')
-        tx_id = task.get('tx_id')
-        transaction = None
-        if not admin_action:
-            for i in range(15):
-                for tx in robot_state['transactions']:
-                    if tx['tx_id'] == tx_id:
-                        transaction = tx
-                        break
-                if not transaction:
-                    time.sleep(1)
-                else:
-                    break
-            else:
-                return
-
-        address = transaction.get('sender') if transaction else None
-
-        if payment_mode == 'ticket':
-            customer_tickets = get_tickets_by_customer(address=address)
-            available_tickets = [ticket for ticket in customer_tickets if ticket['spent'] == False]
-            if len(available_tickets) == 0:
-                print("No available tickets for", address)
-                return
-            else:
-                spend_ticket(available_tickets[0]['id'])
 
         calibrate = False
         if len(segments_task) == 0:
@@ -79,7 +54,6 @@ def spot_logic_process(movement_queue, drawing_queue, robot_state):
             data_recorder = DataRecorder(transaction)
             data_recorder.start_data_recording()
 
-
         # notify videoserver to clear canvas
         send_command_to_videoserver("clear_canvas")
 
@@ -94,14 +68,6 @@ def spot_logic_process(movement_queue, drawing_queue, robot_state):
 
         with datadog.statsd.timed('launch.timer'):
             with SpotController(SPOT_USERNAME, SPOT_PASSWORD, SPOT_IP, coord_nodes) as sc:
-            # sc = SpotController(SPOT_USERNAME, SPOT_PASSWORD, SPOT_IP, coord_nodes)
-            #
-            # print("Spot controller started")
-            # sc.lease_control()
-            # print("Lease control got")
-            # sc.power_on_stand_up()
-            # print("Robot powered and stand up")
-
                 print("Starting movement...")
 
                 if calibrate:
@@ -130,46 +96,73 @@ def spot_logic_process(movement_queue, drawing_queue, robot_state):
             robot_state['last_session_id'] = transaction['session_id']
         robot_state['state'] = "idle"
 
-    def start_movement_session():
-        print("Starting movement session")
-
-        print("Starting spot controller")
-        sc = SpotController(SPOT_USERNAME, SPOT_PASSWORD, SPOT_IP, coord_nodes)
-
-        print("Spot controller started")
-        sc.lease_control()
-        print("Lease control got")
-        sc.power_on_stand_up()
-        print("Robot powered and stand up")
+    def execute_inspection_command(task, transaction):
 
         robot_state['state'] = 'waiting_movement_command (left: {}s)'.format(MOVEMENT_SESSION_DURATION_TIME)
         session_start_time = time.time()
+        with SpotController(SPOT_USERNAME, SPOT_PASSWORD, SPOT_IP, coord_nodes) as sc:
+            print("Starting movement...")
 
-        while True:
-            current_time = time.time()
-            current_duration = current_time - session_start_time
-            robot_state['state'] = 'waiting_movement_command (left: {}s)'.format(
-                MOVEMENT_SESSION_DURATION_TIME - current_duration)
+            while True:
+                current_time = time.time()
+                current_duration = current_time - session_start_time
+                robot_state['state'] = 'waiting_movement_command (left: {}s)'.format(
+                    MOVEMENT_SESSION_DURATION_TIME - current_duration)
 
-            if current_duration < MOVEMENT_SESSION_DURATION_TIME:
-                try:
-                    aim_robot_point = movement_queue.get(block=False)
-                except:
-                    aim_robot_point = None
-                if not aim_robot_point:
-                    continue
+                if current_duration < MOVEMENT_SESSION_DURATION_TIME:
+                    try:
+                        action = actions_queue.get(block=False)
+                        if action['action']=='move':
+                            vel = action['value']
+                            sc.move_by_velocity_control(v_x=vel['x'], v_y=vel['y'])
+                    except:
+                        action = None
+                    if not action:
+                        continue
 
-                robot_state['state'] = 'executing_movement_command'
-                sc.move_to_goal(aim_robot_point[0], aim_robot_point[1])
 
+                else:
+                    robot_state['state'] = "saving_data"
+                    break
+
+    def execute_task():
+        task = drawing_queue.get()
+
+        admin_action = task.get('admin_action', False)
+        payment_mode = task.get('payment_mode')
+        tx_id = task.get('tx_id')
+        transaction = None
+        if not admin_action:
+            for i in range(15):
+                for tx in robot_state['transactions']:
+                    if tx['tx_id'] == tx_id:
+                        transaction = tx
+                        break
+                if not transaction:
+                    time.sleep(1)
+                else:
+                    break
             else:
-                # go to 0,0
-                sc.move_to_goal(0, 0)
-                sc.power_off_sit_down()
-                robot_state['state'] = "saving_data"
-                print("Robot powered off and sit down")
-                time.sleep(1)
-                break
+                return
+
+        address = transaction.get('sender') if transaction else None
+
+        if payment_mode == 'ticket':
+            customer_tickets = get_tickets_by_customer(address=address)
+            available_tickets = [ticket for ticket in customer_tickets if ticket['spent'] == False]
+            if len(available_tickets) == 0:
+                print("No available tickets for", address)
+                return
+            else:
+                spend_ticket(available_tickets[0]['id'])
+
+        robot_state['current_user'] = address
+
+        if task['task_type'] == 'drawing':
+            execute_drawing_command(task, transaction)
+        elif task['task_type'] == 'inspection':
+            execute_inspection_command(task, transaction)
+        robot_state['current_user'] = None
 
     while True:
-        execute_drawing_command()
+        execute_task()
