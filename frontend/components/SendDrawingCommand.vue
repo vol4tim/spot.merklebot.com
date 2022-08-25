@@ -70,7 +70,7 @@ export default defineComponent({
         const res = await robot.launchCps(transferXrtAmount)
         const paymentMode = transferXrtAmount ? 'xrt' : 'ticket'
         if (res) {
-          if (dAppParameters.currentDrawingSegments > 0) {
+          if (dAppParameters.currentDrawingSegments.length > 0) {
             robot.sendDrawing(dAppParameters.currentDrawingSegments, paymentMode, `${res.txInfo.blockNumber}-${res.txInfo.txIndex}`)
           } else {
             // start time based inspection
