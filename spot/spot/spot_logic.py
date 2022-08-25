@@ -100,6 +100,8 @@ def spot_logic_process(actions_queue, drawing_queue, robot_state):
 
         robot_state['state'] = 'waiting_movement_command (left: {}s)'.format(MOVEMENT_SESSION_DURATION_TIME)
         session_start_time = time.time()
+        data_recorder = DataRecorder(transaction, record_video=False)
+        data_recorder.start_data_recording()
         with SpotController(SPOT_USERNAME, SPOT_PASSWORD, SPOT_IP, coord_nodes) as sc:
             print("Starting movement...")
 
@@ -119,11 +121,13 @@ def spot_logic_process(actions_queue, drawing_queue, robot_state):
                         action = None
                     if not action:
                         continue
-
-
                 else:
                     robot_state['state'] = "saving_data"
                     break
+        data_recorder.stop_data_recording()
+        data_recorder.start_data_uploading()
+        robot_state['last_session_id'] = transaction['session_id']
+        robot_state['state'] = "idle"
 
     def execute_task():
         task = drawing_queue.get()

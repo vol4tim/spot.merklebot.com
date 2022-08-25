@@ -34,13 +34,16 @@ def after_session_complete(
         session_id,
         created_at_str,
         launch_event_id,
+        record_video
 ):
     res_record_create = create_launch_trace(sender, session_id, created_at_str, launch_event_id)
     record_id = res_record_create['id']
     print("After session procedure for session {} started".format(session_id))
-    video_path = "{}/{}/{}".format(TRACES_DIR, record_folder_name, video_name)
-    h264_path = "{}/{}/h264_{}".format(TRACES_DIR, record_folder_name, video_name)
-    os.system("ffmpeg -loglevel error -i {} -vcodec h264 {} ".format(video_path, h264_path))
+
+    if record_video:
+        video_path = "{}/{}/{}".format(TRACES_DIR, record_folder_name, video_name)
+        h264_path = "{}/{}/h264_{}".format(TRACES_DIR, record_folder_name, video_name)
+        os.system("ffmpeg -loglevel error -i {} -vcodec h264 {} ".format(video_path, h264_path))
 
     pinata = PinataPy(PINATA_API_KEY, PINATA_SECRET_API_KEY)
     folder = "{}/{}".format(TRACES_DIR, record_folder_name)
@@ -106,7 +109,7 @@ def after_session_complete(
 
 
 class DataRecorder:
-    def __init__(self, transaction):
+    def __init__(self, transaction, record_video=True):
         self.sender = transaction['sender']
         self.recipient = transaction['recipient']
         self.session_id = transaction['session_id']
@@ -116,6 +119,7 @@ class DataRecorder:
         self.record_folder_name = None
         self.video_name = None
         self.created_at_str = None
+        self.record_video = record_video
 
     def start_data_recording(self):
         self.created_at_str = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
@@ -139,20 +143,21 @@ class DataRecorder:
              "/joint_states"],
             cwd="{}/{}/".format(TRACES_DIR, self.record_folder_name),  # directory to put files
         )
-
-        # start recording stream from videoserver
-        video_url = VIDEOSERVER_URL + "video"
-        result_image_name = "result.jpg"
-        self.video_recorder = subprocess.Popen(["python3.8", "video_recorder.py", "--video_url={}".format(video_url),
-                                                "--output_file={}/{}/{}".format(TRACES_DIR, self.record_folder_name,
-                                                                                      self.video_name),
-                                                "--last_im_file={}/{}/{}".format(TRACES_DIR, self.record_folder_name,
-                                                                                       result_image_name)])
+        if self.record_video:
+            # start recording stream from videoserver
+            video_url = VIDEOSERVER_URL + "video"
+            result_image_name = "result.jpg"
+            self.video_recorder = subprocess.Popen(["python3.8", "video_recorder.py", "--video_url={}".format(video_url),
+                                                    "--output_file={}/{}/{}".format(TRACES_DIR, self.record_folder_name,
+                                                                                          self.video_name),
+                                                    "--last_im_file={}/{}/{}".format(TRACES_DIR, self.record_folder_name,
+                                                                                           result_image_name)])
 
     def stop_data_recording(self):
         time.sleep(2)  # wait for the robot to finish its movement
         self.recorder.terminate()
-        self.video_recorder.send_signal(signal.SIGINT)
+        if self.record_video:
+            self.video_recorder.send_signal(signal.SIGINT)
         time.sleep(10)
 
     def start_data_uploading(self):
@@ -165,5 +170,6 @@ class DataRecorder:
                 self.session_id,
                 self.created_at_str,
                 self.tx_id,
+                self.record_video
             )
         ).start()
