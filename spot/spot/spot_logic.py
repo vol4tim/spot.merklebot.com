@@ -128,8 +128,8 @@ def spot_logic_process(actions_queue, drawing_queue, robot_state):
                             elif pos_name == 'stand':
                                 sc.stand_at_height(0)
                             elif pos_name == 'bow':
-                                sc.bow(-0.6)
-                                sc.bow(0)
+                                sc.bow(0.6)
+                                # sc.bow(0)
                             # elif pos_name == 'dust':
                                 # sc.dust_off()
 
