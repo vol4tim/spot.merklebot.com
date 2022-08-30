@@ -54,17 +54,17 @@ export default defineComponent({
       document.addEventListener('keydown', (event) => {
         const name = event.key
         if (name === 'w') {
-          moveCommand({ x: 0.5, y: 0, r: 0 })
+          moveCommand({ x: 0.45, y: 0, r: 0 })
         } else if (name === 'a') {
-          moveCommand({ x: 0, y: 0.5, r: 0 })
+          moveCommand({ x: 0, y: 0.4, r: 0 })
         } else if (name === 's') {
-          moveCommand({ x: -0.5, y: 0, r: 0 })
+          moveCommand({ x: -0.4, y: 0, r: 0 })
         } else if (name === 'd') {
-          moveCommand({ x: 0, y: -0.5, r: 0 })
+          moveCommand({ x: 0, y: -0.4, r: 0 })
         } else if (name === 'q') {
-          moveCommand({ x: 0, y: 0, r: 0.5 })
+          moveCommand({ x: 0, y: 0, r: 0.4 })
         } else if (name === 'e') {
-          moveCommand({ x: 0, y: 0, r: -0.5 })
+          moveCommand({ x: 0, y: 0, r: -0.4 })
         }
       }, false)
     })

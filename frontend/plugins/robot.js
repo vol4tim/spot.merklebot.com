@@ -17,7 +17,17 @@ export const moveSpot = async (accountAddress, signedToken, vel) => {
     account: accountAddress,
     signed_token: signedToken,
     action: 'move',
-    vel
+    value: vel
+  })
+  return resp
+}
+
+export const poseSpot = async (accountAddress, signedToken, poseName) => {
+  const resp = await client.post('command', {
+    account: accountAddress,
+    signed_token: signedToken,
+    action: 'pose',
+    value: poseName
   })
   return resp
 }

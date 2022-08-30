@@ -82,9 +82,15 @@
             </DashboardLikeContainer>
             <div class="border-2 border-gray-500 p-4">
               <p class="text-md my-2 text-white">
-                Control spot
+                Control spot movement
               </p>
               <WASDController />
+            </div>
+            <div class="border-2 border-gray-500 p-4 mt-4">
+              <p class="text-md my-2 text-white">
+                Control spot poses
+              </p>
+              <PoseController />
             </div>
           </StepContentContainer>
         </ProgressContainerElement>
@@ -160,6 +166,8 @@ export default defineComponent({
         } else if (lastStatus === 'disabled') {
           resultStatuses[stage] = 'disabled'
         }
+
+        resultStatuses[stage] = 'success'
       })
 
       return resultStatuses
