@@ -114,6 +114,8 @@ class SpotController:
             params = RobotCommandBuilder.mobility_params(footprint_R_body=footprint_r_body, body_height=body_height)
             blocking_stand(self.command_client, timeout_sec=timeout, update_frequency=0.02, params=params)
             self.robot.logger.info("Moved to yaw={} rolls={} pitch={}".format(yaws[i], rolls[i], pitches[i]))
+            if sleep_after_point_reached:
+                time.sleep(sleep_after_point_reached)
 
     def wait_until_action_complete(self, cmd_id, timeout=15):
         start_time = time.time()
@@ -200,3 +202,14 @@ class SpotController:
     def _start_robot_command(self, command_proto, end_time_secs=None):
 
         self.command_client.robot_command(lease=None, command=command_proto, end_time_secs=end_time_secs)
+
+    def stand_at_height(self, body_height):
+        cmd = RobotCommandBuilder.synchro_stand_command(body_height=body_height)
+        self.command_client.robot_command(cmd)
+
+    def bow(self, pitch, body_height=-0.3, sleep_after_point_reached=0):
+        self.move_head_in_points([0, 0], [pitch, 0], [0, 0], body_height=body_height,
+                            sleep_after_point_reached=sleep_after_point_reached, timeout=3)
+
+    def dust_off(self, yaws, pitches, rolls):
+        self.move_head_in_points(yaws, pitches, rolls, sleep_after_point_reached=0, body_height=0)
