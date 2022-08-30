@@ -99,6 +99,7 @@ def server(actions_queue, tasks_queue, robot_state):
             'action': data['action'],
             'value': data['value']
         })
+        return {'status': 'ok'}
 
     @app.route('/start_calibration', methods=['POST'])
     def start_calibration():
