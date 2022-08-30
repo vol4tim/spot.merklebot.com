@@ -1,3 +1,5 @@
+import random
+
 from external_communications.videoserver import send_command_to_videoserver, get_spot_face_on_camera_coords, \
     notify_start_line, notify_stop_line
 from external_communications.tickets import get_tickets_by_customer, spend_ticket
@@ -130,8 +132,12 @@ def spot_logic_process(actions_queue, drawing_queue, robot_state):
                             elif pos_name == 'bow':
                                 sc.bow(0.6)
                                 sc.bow(0)
-                            # elif pos_name == 'dust':
-                                # sc.dust_off()
+                            elif pos_name == 'dust_off':
+                                for _ in range(10):
+                                    rolls = random.randint(-2, 2)
+                                    yaws = random.uniform(-0.3, 0.3)
+                                    pitches = random.uniform(-0.3, 0.3)
+                                    sc.dust_off(yaws, pitches, rolls)
 
                     except:
                         action = None
