@@ -207,7 +207,7 @@ class SpotController:
         cmd = RobotCommandBuilder.synchro_stand_command(body_height=body_height)
         self.command_client.robot_command(cmd)
 
-    def bow(self, pitch, body_height=-0.3, sleep_after_point_reached=0):
+    def bow(self, pitch, body_height=0, sleep_after_point_reached=0):
         self.move_head_in_points([0, 0], [pitch, 0], [0, 0], body_height=body_height,
                             sleep_after_point_reached=sleep_after_point_reached, timeout=3)
 
