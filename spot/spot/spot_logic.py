@@ -122,7 +122,7 @@ def spot_logic_process(actions_queue, drawing_queue, robot_state):
                             if pos_name == 'stance':
                                 sc.make_stance(0.3, 0.3)
                             elif pos_name == 'stance_0':
-                                sc.make_stance(0, 0)
+                                sc.make_stance(0.2, 0.2)
                             elif pos_name == 'seat':
                                 sc.stand_at_height(-0.6)
                             elif pos_name == 'stand':
