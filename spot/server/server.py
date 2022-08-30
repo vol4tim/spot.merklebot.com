@@ -96,8 +96,8 @@ def server(actions_queue, tasks_queue, robot_state):
             return {"status": "no access"}
         actions_queue.empty()
         actions_queue.put({
-            'action': 'move',
-            'value': data['vel']
+            'action': data['action'],
+            'value': data['value']
         })
 
     @app.route('/start_calibration', methods=['POST'])

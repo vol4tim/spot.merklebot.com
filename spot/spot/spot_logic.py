@@ -114,9 +114,23 @@ def spot_logic_process(actions_queue, drawing_queue, robot_state):
                 if current_duration < MOVEMENT_SESSION_DURATION_TIME:
                     try:
                         action = actions_queue.get(block=False)
-                        if action['action']=='move':
+                        if action['action'] == 'move':
                             vel = action['value']
                             sc.move_by_velocity_control(v_x=vel['x'], v_y=vel['y'], v_rot=vel['r'])
+                        elif action['action'] == 'pose':
+                            pos_name = action['value']
+                            if pos_name == 'stance':
+                                sc.make_stance(0.3, 0.3)
+                            elif pos_name == 'seat':
+                                sc.stand_at_height(-0.6)
+                            elif pos_name == 'stand':
+                                sc.stand_at_height(-0.3)
+                            elif pos_name == 'bow':
+                                sc.bow(0.6)
+                                sc.bow(0)
+                            # elif pos_name == 'dust':
+                                # sc.dust_off()
+
                     except:
                         action = None
                     if not action:
