@@ -129,15 +129,26 @@ def spot_logic_process(actions_queue, drawing_queue, robot_state):
                                 sc.stand_at_height(-0.6)
                             elif pos_name == 'stand':
                                 sc.stand_at_height(0)
+                            elif pos_name == 'bow_b':
+                                sc.dust_off([0, 0.3], [0, 0.6], [0, 0])
+
                             elif pos_name == 'bow':
                                 sc.bow(0.6)
                                 sc.bow(0)
                             elif pos_name == 'dust_off':
+                                rolls = []
+                                yaws = []
+                                pitches = []
                                 for _ in range(10):
-                                    rolls = random.randint(-2, 2)
-                                    yaws = random.uniform(-0.3, 0.3)
-                                    pitches = random.uniform(-0.3, 0.3)
-                                    sc.dust_off(yaws, pitches, rolls)
+                                    rolls.append(random.uniform(-1, 1))
+                                    yaws.append(random.uniform(-0.3, 0.3))
+                                    pitches.append(random.uniform(-0.3, 0.3))
+
+                                rolls.append(0)
+                                yaws.append(0)
+                                pitches.append(0)
+
+                                sc.dust_off(yaws, pitches, rolls)
 
                     except:
                         action = None
