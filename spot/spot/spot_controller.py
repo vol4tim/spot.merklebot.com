@@ -17,7 +17,7 @@ import traceback
 
 from settings.settings import SPOT_IP, SPOT_USERNAME, SPOT_PASSWORD
 
-VELOCITY_CMD_DURATION = 0.5
+VELOCITY_CMD_DURATION = 1
 
 
 def get_spot_position():
