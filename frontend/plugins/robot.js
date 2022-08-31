@@ -1,7 +1,10 @@
 import axios from 'axios'
 
+// const client = axios.create({
+//   baseURL: 'https://api.merklebot.com/strelka'
+// })
 const client = axios.create({
-  baseURL: 'https://api.merklebot.com/strelka'
+  baseURL: 'http://10.1.10.147:1234'
 })
 
 export const calibrateSpot = async (accountAddress, signedToken) => {
