@@ -11,3 +11,4 @@ opencv-python
 python-dotenv
 git+https://github.com/Smehnov/pinatapy
 datadog
+
