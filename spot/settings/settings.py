@@ -26,7 +26,7 @@ PINATA_SECRET_API_KEY = os.environ["PINATA_SECRET_API_KEY"]
 ESTUARY_URL = os.environ["ESTUARY_URL"]
 ESTUARY_TOKEN = os.environ["ESTUARY_TOKEN"]
 
-MOVEMENT_SESSION_DURATION_TIME = 120
+MOVEMENT_SESSION_DURATION_TIME = 60
 
 DEMO_API_URL = os.environ.get('DEMO_API_URL', 'https://api.merklebot.com/spot-demo')
 
