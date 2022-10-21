@@ -10,7 +10,9 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.routing import Route
-import os
+from starlette.responses import StreamingResponse
+
+import os, io
 import numpy as np
 from dotenv import load_dotenv
 import pyfakewebcam
@@ -49,7 +51,6 @@ def verify_token_sign(address, token, signed_token):
 
 def run_server(im, state):
     async def frame_producer():
-
         while True:
             frame, obj = im[0], im[1]
 
@@ -59,6 +60,10 @@ def run_server(im, state):
             yield (b"--frame\r\nContent-Type:image/jpeg\r\n\r\n" + encodedImage + b"\r\n")
             await asyncio.sleep(0.033)
         stream.release()
+
+    async def stream_blackboard(request: Request):
+        cv2img = im[2]
+        return StreamingResponse(io.BytesIO(cv2img.tobytes()), media_type="image/jpeg")
 
     async def clear_canvas(request: Request):
         data = await request.json()
@@ -139,6 +144,7 @@ def run_server(im, state):
     web.routes.append(Route("/get_spot_face_coords", endpoint=get_obj_coords, methods=["GET"]))
     web.routes.append(Route("/token", endpoint=get_auth_token, methods=["GET", "POST"]))
     web.routes.append(Route("/control", endpoint=control_camera, methods=["POST"]))
+    web.routes.append(Route("/blackboard", endpoint=stream_blackboard, methods=["GET"]))
 
     uvicorn.run(web(), host="0.0.0.0", port=8000)
 
@@ -214,6 +220,7 @@ def run_camera(im, state):
         # fake_camera.schedule_frame(im_rgb)
         im[0] = blackboard_blended
         im[1] = obj
+        im[2] = blackboard
 
 
 def main():
@@ -221,6 +228,7 @@ def main():
     lst = manager.list()
     state = manager.dict()
 
+    lst.append(None)
     lst.append(None)
     lst.append(None)
 
