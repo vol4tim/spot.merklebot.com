@@ -147,11 +147,15 @@ class DataRecorder:
             # start recording stream from videoserver
             video_url = VIDEOSERVER_URL + "video"
             result_image_name = "result.jpg"
-            self.video_recorder = subprocess.Popen(["python3.8", "video_recorder.py", "--video_url={}".format(video_url),
-                                                    "--output_file={}/{}/{}".format(TRACES_DIR, self.record_folder_name,
-                                                                                          self.video_name),
-                                                    "--last_im_file={}/{}/{}".format(TRACES_DIR, self.record_folder_name,
-                                                                                           result_image_name)])
+            result_drawing_name = "drawing.jpg"
+            self.video_recorder = subprocess.Popen(
+                ["python3.8", "video_recorder.py", "--video_url={}".format(video_url),
+                 "--output_file={}/{}/{}".format(TRACES_DIR, self.record_folder_name,
+                                                 self.video_name),
+                 "--last_im_file={}/{}/{}".format(TRACES_DIR, self.record_folder_name,
+                                                  result_image_name),
+                 "--last_drawing_file={}/{}/{}".format(TRACES_DIR, self.record_folder_name,
+                                                  result_drawing_name)])
 
     def stop_data_recording(self):
         time.sleep(2)  # wait for the robot to finish its movement
