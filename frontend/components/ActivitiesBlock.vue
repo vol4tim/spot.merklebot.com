@@ -76,22 +76,31 @@
             <div class="flex items-center justify-center mt-4">
               <DrawingPanel :canvas-id="'canvas-one'" />
             </div>
-          </StepContentContainer>
-        </ProgressContainerElement>
+            <div>
+              <p class="text-md my-2 text-white mx-6">
+                Teleoperation is authorized by sending a transaction directly to the robot using either a ticket or XRT token.
+              </p>
 
-        <ProgressContainerElement title="Send launch transaction" :status="progressElementStatuses['sendLaunchCommand']">
-          <StepContentContainer>
-            <Anchor anchor-id="anchor-to-4" href-id="#4" title="" />
-            <p class="text-md my-2 text-white mx-6">
-              Teleoperation is authorized by sending a transaction directly to the robot using either a ticket or XRT token.
-            </p>
-            <!--            <img src="/pictures/Frame4.png">-->
-
-            <div class="flex items-center justify-center mt-4">
-              <SendDrawingCommand />
+              <div class="flex items-center justify-center mt-4">
+                <SendDrawingCommand />
+              </div>
             </div>
           </StepContentContainer>
         </ProgressContainerElement>
+
+        <!--        <ProgressContainerElement title="Send launch transaction" :status="progressElementStatuses['sendLaunchCommand']">-->
+        <!--          <StepContentContainer>-->
+        <!--            <Anchor anchor-id="anchor-to-4" href-id="#4" title="" />-->
+        <!--            <p class="text-md my-2 text-white mx-6">-->
+        <!--              Teleoperation is authorized by sending a transaction directly to the robot using either a ticket or XRT token.-->
+        <!--            </p>-->
+        <!--            &lt;!&ndash;            <img src="/pictures/Frame4.png">&ndash;&gt;-->
+
+        <!--            <div class="flex items-center justify-center mt-4">-->
+        <!--              <SendDrawingCommand />-->
+        <!--            </div>-->
+        <!--          </StepContentContainer>-->
+        <!--        </ProgressContainerElement>-->
 
         <ProgressContainerElement title="Wait for your transaction to process" :status="progressElementStatuses['waitTx']">
           <Anchor anchor-id="anchor-to-5" href-id="#5" title="" />
