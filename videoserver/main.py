@@ -63,7 +63,8 @@ def run_server(im, state):
 
     async def stream_blackboard(request: Request):
         cv2img = im[2]
-        return StreamingResponse(io.BytesIO(cv2img.tobytes()), media_type="image/jpeg")
+        res, im_jpeg = cv2.imencode(".jpeg", cv2img)
+        return StreamingResponse(io.BytesIO(im_jpeg.tobytes()), media_type="image/jpeg")
 
     async def clear_canvas(request: Request):
         data = await request.json()
