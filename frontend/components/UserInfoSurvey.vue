@@ -48,6 +48,12 @@ const surveyJson = {
           inputType: 'email',
           title: 'Your email?',
           isRequired: true
+        },
+        {
+          type: 'html',
+          name: '',
+          html: '<div class="text-xs italic">* we never store your email and wallet info together, we’ll use your email to send you info about Web3 and robotics. </div>'
+
         }
       ]
     }

@@ -13,7 +13,7 @@
             </p>
 
             <p class="text-white mt-4">
-              Ticket successfully got. XRT for launch will be send to your account during the next one minute in one of the next few blocks.
+              Ticket successfully got. XRT for launch will be sent to your account during the next one minute in one of the next few blocks.
             </p>
             <div class="px-4 py-3 text-right">
               <button

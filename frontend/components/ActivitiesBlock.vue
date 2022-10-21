@@ -59,6 +59,9 @@
             </p>
             <img src="/pictures/Frame3.png">
 
+            <p class="text-md my-2 text-white mx-6">
+              One launch requires 1 ticket <em>or</em> 1 XRT.
+            </p>
             <PurchaseTicket class="mt-4 mx-6 pr-16 w-full" />
           </StepContentContainer>
         </ProgressContainerElement>
@@ -80,9 +83,9 @@
           <StepContentContainer>
             <Anchor anchor-id="anchor-to-4" href-id="#4" title="" />
             <p class="text-md my-2 text-white mx-6">
-              Teleoperation is authorized by sending transactions directly to the robot’s address using your wallet.
+              Teleoperation is authorized by sending a transaction directly to the robot using either a ticket or XRT token.
             </p>
-            <img src="/pictures/Frame4.png">
+            <!--            <img src="/pictures/Frame4.png">-->
 
             <div class="flex items-center justify-center mt-4">
               <SendDrawingCommand />
