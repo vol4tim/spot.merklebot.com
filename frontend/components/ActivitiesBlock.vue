@@ -102,24 +102,35 @@
         <!--          </StepContentContainer>-->
         <!--        </ProgressContainerElement>-->
 
-        <ProgressContainerElement title="Wait for your transaction to process" :status="progressElementStatuses['waitTx']">
+          <ProgressContainerElement title="Wait for Spot to draw your picture" :status="progressElementStatuses['waitTx']">
           <Anchor anchor-id="anchor-to-5" href-id="#5" title="" />
           <StepContentContainer>
             <DashboardLikeContainer>
               <LaunchTransactionInfoCard />
-            </DashboardLikeContainer>
-          </StepContentContainer>
-        </ProgressContainerElement>
-
-        <ProgressContainerElement title="Watch Spot draw in the air" :status="progressElementStatuses['robotExecution']">
-          <Anchor anchor-id="anchor-to-4" href-id="#6" title="" />
-          <StepContentContainer>
-            <DashboardLikeContainer>
               <RobotStateCard />
               <SpotAnimation />
             </DashboardLikeContainer>
           </StepContentContainer>
         </ProgressContainerElement>
+
+<!--        <ProgressContainerElement title="Wait for your transaction to process" :status="progressElementStatuses['waitTx']">-->
+<!--          <Anchor anchor-id="anchor-to-5" href-id="#5" title="" />-->
+<!--          <StepContentContainer>-->
+<!--            <DashboardLikeContainer>-->
+<!--              <LaunchTransactionInfoCard />-->
+<!--            </DashboardLikeContainer>-->
+<!--          </StepContentContainer>-->
+<!--        </ProgressContainerElement>-->
+
+<!--        <ProgressContainerElement title="Watch Spot draw in the air" :status="progressElementStatuses['robotExecution']">-->
+<!--          <Anchor anchor-id="anchor-to-4" href-id="#6" title="" />-->
+<!--          <StepContentContainer>-->
+<!--            <DashboardLikeContainer>-->
+<!--              <RobotStateCard />-->
+<!--              <SpotAnimation />-->
+<!--            </DashboardLikeContainer>-->
+<!--          </StepContentContainer>-->
+<!--        </ProgressContainerElement>-->
 
         <ProgressContainerElement title="Review recorded data" :status="progressElementStatuses['recordedData']">
           <StepContentContainer>
