@@ -5,7 +5,7 @@ import urllib.request
 import numpy as np
 
 
-def start_record(video_url, output_path, last_im_file, last_drawing_file):
+def start_record(video_url, output_path, last_im_file, last_drawing_file, helloween_drawing_file):
     stream = cv2.VideoCapture(video_url)
 
     width = int(stream.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -31,7 +31,8 @@ def start_record(video_url, output_path, last_im_file, last_drawing_file):
             req = urllib.request.urlopen('https://api.merklebot.com/videoserver/blackboard')
             arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
             last_drawing = cv2.imdecode(arr, -1)
-            cv2.imwrite(last_drawing_file, last_drawing)
+            cv2.imwrite(last_drawing_file, last_drawing, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
+
 
         stream.release()
         out.release()
@@ -42,6 +43,7 @@ if __name__ == '__main__':
     parser.add_argument("--output_file", dest='output_file', required=True, type=str, help='Output file')
     parser.add_argument("--last_im_file", dest='last_im_file', required=True, type=str, help='Last image file (save after process interruption)')
     parser.add_argument("--last_drawing_file", dest='last_drawing_file', required=True, type=str, help='Last drawing file (save after process interruption)')
+    parser.add_argument("--helloween_drawing_file", dest='helloween_drawing_file', required=True, type=str, help='Last drawing file (save after process interruption)')
 
     args = parser.parse_args()
-    start_record(args.video_url, args.output_file, args.last_im_file, args.last_drawing_file)
+    start_record(args.video_url, args.output_file, args.last_im_file, args.last_drawing_file, args.helloween_drawing_file)
