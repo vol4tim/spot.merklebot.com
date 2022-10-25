@@ -132,7 +132,7 @@
 <!--          </StepContentContainer>-->
 <!--        </ProgressContainerElement>-->
 
-        <ProgressContainerElement title="Review recorded data" :status="progressElementStatuses['recordedData']">
+        <!-- <ProgressContainerElement title="Review recorded data" :status="progressElementStatuses['recordedData']">
           <StepContentContainer>
             <Anchor anchor-id="anchor-to-7" href-id="#7" title="" />
             <p class="text-md my-2 text-white mx-6">
@@ -142,7 +142,14 @@
             <p class="text-md my-2 text-white mx-6">
               Here is the report from your interaction with Spot:
             </p>
+          </StepContentContainer>
+        </ProgressContainerElement> -->
+
+        <ProgressContainerElement title="Here is the result of your collaboration with Spot!" :status="progressElementStatuses['recordedData']">
+          <StepContentContainer>
+            <Anchor anchor-id="anchor-to-8" href-id="#8" title="" />
             <ResultingRecordCard />
+            <NftInfo />
           </StepContentContainer>
         </ProgressContainerElement>
 
@@ -251,9 +258,15 @@ import { useDAppParameters } from '~/store'
 import ProgressContainerElement from '~/components/ProgressContainerElement'
 import RobotStateCard from '~/components/RobotStateCard'
 import DashboardLikeContainer from '~/components/DashboardLikeContainer'
+import NftInfo from '~/components/NftInfo.vue'
 
 export default defineComponent({
-  components: { DashboardLikeContainer, RobotStateCard, ProgressContainerElement },
+  components: {
+    DashboardLikeContainer,
+    RobotStateCard,
+    ProgressContainerElement,
+    NftInfo
+  },
   setup () {
     const wallet = useWallet()
     const robot = useRobot()
