@@ -34,34 +34,34 @@
             </div>
           </StepContentContainer>
         </ProgressContainerElement>
-        <ProgressContainerElement v-if="wallet.selectedAccount.account && wallet.selectedAccount.tickets.length===0" title="Get your free ticket" :status="progressElementStatuses['connectWallet']">
-          <StepContentContainer>
-            <Anchor anchor-id="anchor-to-1" href-id="#1" title="" />
+        <!--        <ProgressContainerElement v-if="wallet.selectedAccount.account && wallet.selectedAccount.tickets.length===0" title="Get your free ticket" :status="progressElementStatuses['connectWallet']">-->
+        <!--          <StepContentContainer>-->
+        <!--            <Anchor anchor-id="anchor-to-1" href-id="#1" title="" />-->
 
-            <p class="text-md my-2 text-white mx-6">
-              As a part of this demo we demonstrate the billing system for robotics. If you leave your email below — your first demo is on us!
-            </p>
-            <UserInfoSurveyWrapper @complete="openModal" />
-            <div
-              class="text-sm mt-4 text-white"
-            >
-              * we never store your email and wallet info together, we’ll use your email to send you info about Web3 and robotics.
-            </div>
-          </StepContentContainer>
-        </ProgressContainerElement>
+        <!--            <p class="text-md my-2 text-white mx-6">-->
+        <!--              As a part of this demo we demonstrate the billing system for robotics. If you leave your email below — your first demo is on us!-->
+        <!--            </p>-->
+        <!--            <UserInfoSurveyWrapper @complete="openModal" />-->
+        <!--          </StepContentContainer>-->
+        <!--        </ProgressContainerElement>-->
 
         <ProgressContainerElement title="Acquire launch rights" :status="progressElementStatuses['transferValue']">
           <StepContentContainer>
             <Anchor anchor-id="anchor-to-2" href-id="#2" title="" />
-
             <p class="text-md my-2 text-white mx-6">
               To make onboarding easier for our clients billing can be done in both US dollars and cryptocurrencies - money for robots.
             </p>
             <img src="/pictures/Frame3.png">
-
             <p class="text-md my-2 text-white mx-6">
               One launch requires 1 ticket <em>or</em> 1 XRT.
             </p>
+            <div v-if="wallet.selectedAccount.account && wallet.selectedAccount.tickets.length===0">
+              <p class="text-md my-2 text-white mx-6">
+                Leave your email below and your first demo is on us!
+              </p>
+              <UserInfoSurveyWrapper @complete="openModal" />
+            </div>
+
             <PurchaseTicket class="mt-4 mx-6 pr-16 w-full" />
           </StepContentContainer>
         </ProgressContainerElement>
@@ -102,7 +102,7 @@
         <!--          </StepContentContainer>-->
         <!--        </ProgressContainerElement>-->
 
-          <ProgressContainerElement title="Wait for Spot to draw your picture" :status="progressElementStatuses['waitTx']">
+        <ProgressContainerElement title="Wait for Spot to draw your picture" :status="progressElementStatuses['waitTx']">
           <Anchor anchor-id="anchor-to-5" href-id="#5" title="" />
           <StepContentContainer>
             <DashboardLikeContainer>
@@ -113,24 +113,24 @@
           </StepContentContainer>
         </ProgressContainerElement>
 
-<!--        <ProgressContainerElement title="Wait for your transaction to process" :status="progressElementStatuses['waitTx']">-->
-<!--          <Anchor anchor-id="anchor-to-5" href-id="#5" title="" />-->
-<!--          <StepContentContainer>-->
-<!--            <DashboardLikeContainer>-->
-<!--              <LaunchTransactionInfoCard />-->
-<!--            </DashboardLikeContainer>-->
-<!--          </StepContentContainer>-->
-<!--        </ProgressContainerElement>-->
+        <!--        <ProgressContainerElement title="Wait for your transaction to process" :status="progressElementStatuses['waitTx']">-->
+        <!--          <Anchor anchor-id="anchor-to-5" href-id="#5" title="" />-->
+        <!--          <StepContentContainer>-->
+        <!--            <DashboardLikeContainer>-->
+        <!--              <LaunchTransactionInfoCard />-->
+        <!--            </DashboardLikeContainer>-->
+        <!--          </StepContentContainer>-->
+        <!--        </ProgressContainerElement>-->
 
-<!--        <ProgressContainerElement title="Watch Spot draw in the air" :status="progressElementStatuses['robotExecution']">-->
-<!--          <Anchor anchor-id="anchor-to-4" href-id="#6" title="" />-->
-<!--          <StepContentContainer>-->
-<!--            <DashboardLikeContainer>-->
-<!--              <RobotStateCard />-->
-<!--              <SpotAnimation />-->
-<!--            </DashboardLikeContainer>-->
-<!--          </StepContentContainer>-->
-<!--        </ProgressContainerElement>-->
+        <!--        <ProgressContainerElement title="Watch Spot draw in the air" :status="progressElementStatuses['robotExecution']">-->
+        <!--          <Anchor anchor-id="anchor-to-4" href-id="#6" title="" />-->
+        <!--          <StepContentContainer>-->
+        <!--            <DashboardLikeContainer>-->
+        <!--              <RobotStateCard />-->
+        <!--              <SpotAnimation />-->
+        <!--            </DashboardLikeContainer>-->
+        <!--          </StepContentContainer>-->
+        <!--        </ProgressContainerElement>-->
 
         <!-- <ProgressContainerElement title="Review recorded data" :status="progressElementStatuses['recordedData']">
           <StepContentContainer>
