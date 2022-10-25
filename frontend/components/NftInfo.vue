@@ -37,7 +37,7 @@ export default defineComponent({
     const makeNftUrl = (collectionId, symbol, mintBlock, serialNumber) => {
       const nftSerialNumber = '0000000' + serialNumber
       nftSerialNumber.substr(nftSerialNumber.length - 8)
-      return `http://singular-rmrk2-dev.vercel.app/collectibles/kusama/${collectionId}-${symbol}/${mintBlock}-${collectionId}-${symbol}-${symbol}-${nftSerialNumber}`
+      return `https://singular.app/collectibles/kusama/${collectionId}-${symbol}/${mintBlock}-${collectionId}-${symbol}-${symbol}-${nftSerialNumber}`
     }
 
     console.log('Nft Order info')
