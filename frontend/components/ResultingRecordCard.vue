@@ -56,7 +56,7 @@
         </div>
       </CardContainer>
       <CardContainer>
-        <NftInfo />
+        <NftInfo info="nftOrderInfo"/>
       </CardContainer>
     </div>
   </div>

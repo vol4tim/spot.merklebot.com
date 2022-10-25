@@ -9,7 +9,7 @@ import { defineComponent } from '@vue/composition-api'
 
 export default defineComponent({
   props: {
-    data: {
+    info: {
       type: Object,
       default: null
     }
