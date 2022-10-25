@@ -55,6 +55,9 @@
           </p>
         </div>
       </CardContainer>
+      <CardContainer>
+        <NftInfo />
+      </CardContainer>
     </div>
   </div>
 </template>
@@ -64,9 +67,13 @@ import { useRobot } from '../store/robot'
 import { readRobonomicsLaunchTracesBySender, makeIpfsFolderLink } from '../plugins/merklebot'
 import { makeSubscanLink } from '~/plugins/robonomics'
 import Spinner from '~/components/Spinner'
+import NftInfo from '~/components/NftInfo.vue'
 
 export default defineComponent({
-  components: { Spinner },
+  components: {
+    Spinner,
+    NftInfo
+  },
   setup () {
     const robot = useRobot()
 

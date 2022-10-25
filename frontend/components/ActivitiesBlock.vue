@@ -149,7 +149,6 @@
           <StepContentContainer>
             <Anchor anchor-id="anchor-to-8" href-id="#8" title="" />
             <ResultingRecordCard />
-            <NftInfo />
           </StepContentContainer>
         </ProgressContainerElement>
 
@@ -258,14 +257,12 @@ import { useDAppParameters } from '~/store'
 import ProgressContainerElement from '~/components/ProgressContainerElement'
 import RobotStateCard from '~/components/RobotStateCard'
 import DashboardLikeContainer from '~/components/DashboardLikeContainer'
-import NftInfo from '~/components/NftInfo.vue'
 
 export default defineComponent({
   components: {
     DashboardLikeContainer,
     RobotStateCard,
-    ProgressContainerElement,
-    NftInfo
+    ProgressContainerElement
   },
   setup () {
     const wallet = useWallet()
