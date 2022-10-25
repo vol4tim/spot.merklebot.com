@@ -104,3 +104,13 @@ export const makeIpfsFolderLink = ({ ipfsCid, sender, nonce, createdAt }) => {
       console.error({ msg: "can't identify version", createdAt, versionsTime })
   }
 }
+
+/**
+ * Read NFT order.
+ * @param {number} orderId
+ * @returns {Object}
+ */
+export const readNftOrderById = async (orderId) => {
+  const resp = await client.get(`spot-demo/nft/orders/${orderId}`)
+  return resp.data
+}
