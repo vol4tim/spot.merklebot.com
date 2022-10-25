@@ -146,7 +146,7 @@
           </StepContentContainer>
         </ProgressContainerElement>
 
-        <ProgressContainerElement title="Learn more" status="wait">
+        <!-- <ProgressContainerElement title="Learn more" status="wait">
           <StepContentContainer>
             <Anchor anchor-id="anchor-to-8" href-id="#8" title="" />
             <p class="mx-6 text-white text-md">
@@ -206,6 +206,23 @@
                 </a>
               </div>
             </div>
+            <p class="text-white mx-6">
+              <a
+                href="https://discord.gg/7u8MdtuaX2"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img class="max-w-[30px] inline" src="~/assets/discord.png">
+                <div class="inline text-orange-500 underline">
+                  Join our Discord to learn more.
+                </div>
+              </a>
+            </p>
+          </StepContentContainer>
+        </ProgressContainerElement> -->
+
+        <ProgressContainerElement title="" status="wait">
+          <StepContentContainer>
             <p class="text-white mx-6">
               <a
                 href="https://discord.gg/7u8MdtuaX2"
