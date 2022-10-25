@@ -64,7 +64,11 @@
 <script>
 import { defineComponent, onMounted, ref } from '@nuxtjs/composition-api'
 import { useRobot } from '../store/robot'
-import { readRobonomicsLaunchTracesBySender, makeIpfsFolderLink } from '../plugins/merklebot'
+import {
+  readRobonomicsLaunchTracesBySender,
+  makeIpfsFolderLink,
+  readNftOrderById
+} from '../plugins/merklebot'
 import { makeSubscanLink } from '~/plugins/robonomics'
 import Spinner from '~/components/Spinner'
 import NftInfo from '~/components/NftInfo.vue'
@@ -82,6 +86,8 @@ export default defineComponent({
     const launchTxId = ref(null)
     const datalogTxId = ref(null)
     const crustTxId = ref(null)
+    const nftOrderId = ref(null)
+    const nftOrderInfo = ref(null)
 
     const addressShort = (address) => {
       if (!address) {
@@ -108,6 +114,10 @@ export default defineComponent({
             launchTxId.value = res.launch_tx_id
             datalogTxId.value = res.datalog_tx_id
             crustTxId.value = res.crust_tx_id
+            nftOrderId.value = res.nft_order_id
+          }
+          if (nftOrderId.value) {
+            nftOrderInfo.value = await readNftOrderById(nftOrderId.value)
           }
         } catch (e) {
 
@@ -129,7 +139,8 @@ export default defineComponent({
       crustTxId,
       addressShort,
       makeSubscanLink,
-      makeIpfsFolderLink
+      makeIpfsFolderLink,
+      nftOrderInfo
     }
   }
 })
