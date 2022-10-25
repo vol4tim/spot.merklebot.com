@@ -17,7 +17,7 @@ def make_helloween_nft(customer_address: str, launch_tx_hash: str, image_url: st
         "robot_launch_extrinsic_hash": launch_tx_hash,
         "image_url": image_url
     })
-    return res.json
+    return res.json()
 
 
 def update_launch_trace(launch_id, new_data):
