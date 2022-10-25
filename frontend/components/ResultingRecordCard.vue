@@ -55,8 +55,13 @@
           </p>
         </div>
       </CardContainer>
-      <CardContainer>
-        <NftInfo info="nftOrderInfo"/>
+      <CardContainer class="mt-8" title="NFT data">
+        <NftInfo v-if="nftOrderInfo!==null" :info="nftOrderInfo" />
+        <div v-else>
+          <p class="text-md mt-2 text-white">
+            Your NFT data will appear here after minting.
+          </p>
+        </div>
       </CardContainer>
     </div>
   </div>
@@ -117,7 +122,9 @@ export default defineComponent({
             nftOrderId.value = res.nft_order_id
           }
           if (nftOrderId.value) {
-            nftOrderInfo.value = await readNftOrderById(nftOrderId.value)
+            const nftData = await readNftOrderById(nftOrderId.value)
+            robot.setNftData(nftData)
+            nftOrderInfo.value = nftData
           }
         } catch (e) {
 

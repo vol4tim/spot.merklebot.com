@@ -111,6 +111,10 @@ export const makeIpfsFolderLink = ({ ipfsCid, sender, nonce, createdAt }) => {
  * @returns {Object}
  */
 export const readNftOrderById = async (orderId) => {
-  const resp = await client.get(`spot-demo/nft/orders/${orderId}`)
+  const resp = await client.get(`spot-demo/nft/orders/${orderId}`, {
+    params: {
+      nft_order_id: orderId
+    }
+  })
   return resp.data
 }

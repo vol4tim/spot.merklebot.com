@@ -1,19 +1,27 @@
 <template>
-  <div hidden>
-    NFT Data: {{ nftOrderInfo }}
+  <div>
     <p class="text-md mt-2 text-white">
-      NFT minting status:
-      <span v-if="nftOrderInfo" class="text-yellow-500">{{ nftOrderInfo.status }}</span>
-      <Spinner v-else />
+      Status: <span class="text-yellow-500">{{ robot.nftData.status }}</span>
     </p>
-    <p v-if="['minted', 'delivered'].includes(nftOrderInfo.status)" class="text-md mt-2 text-white">
-      Find your NFT at:
+
+    <img :src="nftOrderInfo.image_url" class="mt-2">
+
+    <p class="text-md mt-2 text-white">
+      NFT Link: <a
+        v-if="['minted', 'delivered'].includes(robot.nftData.status)"
+        :href="makeNftUrl('b437f70371c8622e02', 'MKBHW', robot.nftData.nft_mint_block_number, robot.nftData.nft_serial_num)"
+        class="text-yellow-500"
+        target="_blank"
+        rel="noopener noreferrer"
+      >View in Singular</a>
+      <Spinner v-else />
     </p>
   </div>
 </template>
 
 <script>
 import { defineComponent } from '@vue/composition-api'
+import { useRobot } from '~/store/robot'
 
 export default defineComponent({
   props: {
@@ -24,12 +32,17 @@ export default defineComponent({
   },
   setup (props) {
     const nftOrderInfo = props.info
+    const robot = useRobot()
 
     const makeNftUrl = (collectionId, symbol, mintBlock, serialNumber) => {
-      return `https://singular.app/collectibles/kusama/${collectionId}-${symbol}/${mintBlock}-${collectionId}-${symbol}-${symbol}-${serialNumber}`
+      const nftSerialNumber = '0000000' + serialNumber
+      nftSerialNumber.substr(nftSerialNumber.length - 8)
+      return `http://singular-rmrk2-dev.vercel.app/collectibles/kusama/${collectionId}-${symbol}/${mintBlock}-${collectionId}-${symbol}-${symbol}-${nftSerialNumber}`
     }
 
-    return { nftOrderInfo, makeNftUrl }
+    console.log('Nft Order info')
+    console.log(nftOrderInfo)
+    return { nftOrderInfo, makeNftUrl, robot }
   }
 })
 </script>

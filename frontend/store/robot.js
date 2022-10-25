@@ -14,6 +14,7 @@ export const useRobot = defineStore('robot', {
       queueSize: null,
       robotState: null,
       lastSessionId: null,
+      nftData: null,
       cps: {
         address: '4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j',
         status: 'unknown',
@@ -59,6 +60,9 @@ export const useRobot = defineStore('robot', {
         this.lastSessionId = null
         return false
       }
+    },
+    setNftData (data) {
+      this.nftData = data
     },
     sendDrawing (segments, paymentMode = 'ticket', txId = '') {
       fetch('https://api.merklebot.com/strelka/draw_figure', {
