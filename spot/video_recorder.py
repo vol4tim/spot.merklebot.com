@@ -59,7 +59,7 @@ def start_record(video_url, output_path, last_im_file, last_drawing_file, hellow
         print("\nVideo recording stopped")
         if last_frame is not None:
             cv2.imwrite(last_im_file, last_frame)
-            req = urllib.request.urlopen('https://api.merklebot.com/videoserver/blackboard')
+            req = urllib.request.urlopen('http://luke.merklebot:8000//blackboard')
             arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
             last_drawing = cv2.imdecode(arr, -1)
             cv2.imwrite(last_drawing_file, last_drawing, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
