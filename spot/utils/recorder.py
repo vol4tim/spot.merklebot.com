@@ -14,7 +14,7 @@ import datadog
 
 from utils.robonomics import record_datalog
 
-from external_communications.merklebot import create_launch_trace, update_launch_trace, make_helloween_nft
+from external_communications.merklebot import create_launch_trace, update_launch_trace, create_halloween_nft_order
 
 from settings.settings import (
     VIDEOSERVER_URL,
@@ -53,7 +53,7 @@ def after_session_complete(
 
     ipfs_cid = pinata_resp["IpfsHash"]
     update_launch_trace(record_id, {'ipfs_cid': ipfs_cid})
-    make_helloween_nft(customer_address=sender, launch_tx_hash=launch_event_id,
+    create_halloween_nft_order(customer_address=sender, launch_tx_hash=launch_event_id,
                        image_url=f"https://merklebot.mypinata.cloud/ipfs/{ipfs_cid}/{record_folder_name}/helloween.jpg")
     datalog_extrinsic_hash = record_datalog(ipfs_cid)
     update_launch_trace(record_id, {'datalog_tx_id': datalog_extrinsic_hash})
