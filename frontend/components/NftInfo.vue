@@ -35,8 +35,7 @@ export default defineComponent({
     const robot = useRobot()
 
     const makeNftUrl = (collectionId, symbol, mintBlock, serialNumber) => {
-      const nftSerialNumber = '0000000' + serialNumber
-      nftSerialNumber.substr(nftSerialNumber.length - 8)
+      const nftSerialNumber = `${serialNumber}`.padStart(8, '0')
       return `https://singular.app/collectibles/kusama/${collectionId}-${symbol}/${mintBlock}-${collectionId}-${symbol}-${symbol}-${nftSerialNumber}`
     }
 
