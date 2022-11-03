@@ -93,21 +93,23 @@ def after_session_complete(
         print(f"Crust Network exception: {e=}")
 
     # Upload to Estuary Filecoin node
-    tar = "{}/{}".format(folder, record_folder_name)
-    shutil.make_archive(tar, "xztar", folder)
-    time.sleep(0.3)
-    with open("{}.tar.xz".format(tar), "rb") as fd:
-        estuary_resp = requests.post(f"{ESTUARY_URL}/content/add",
-                                     headers={
-                                         "Authorization": f"Bearer {ESTUARY_TOKEN}",
-                                     },
-                                     files={
-                                         "data": fd,
-                                     },
-                                     )
-        print("Estuary response: {}".format(estuary_resp.text))
-    update_launch_trace(record_id, {'filecoin_cid': estuary_resp.json()["cid"]})
-
+    try:
+        tar = "{}/{}".format(folder, record_folder_name)
+        shutil.make_archive(tar, "xztar", folder)
+        time.sleep(0.3)
+        with open("{}.tar.xz".format(tar), "rb") as fd:
+            estuary_resp = requests.post(f"{ESTUARY_URL}/content/add",
+                                         headers={
+                                             "Authorization": f"Bearer {ESTUARY_TOKEN}",
+                                         },
+                                         files={
+                                             "data": fd,
+                                         },
+                                         )
+            print("Estuary response: {}".format(estuary_resp.text))
+        update_launch_trace(record_id, {'filecoin_cid': estuary_resp.json()["cid"]})
+    except:
+        print('Estuary error')
     print("Session {} trace created with IPFS CID {}".format(session_id, ipfs_cid))
 
 
