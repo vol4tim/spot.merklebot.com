@@ -53,9 +53,9 @@ def after_session_complete(
 
     ipfs_cid = pinata_resp["IpfsHash"]
     update_launch_trace(record_id, {'ipfs_cid': ipfs_cid})
-    nft_order = create_halloween_nft_order(customer_address=sender, launch_tx_hash=launch_event_id,
-                       image_url=f"https://merklebot.mypinata.cloud/ipfs/{ipfs_cid}/{record_folder_name}/helloween.jpg")
-    update_launch_trace(record_id, {'nft_order_id': nft_order["id"]})
+    # nft_order = create_halloween_nft_order(customer_address=sender, launch_tx_hash=launch_event_id,
+    #                    image_url=f"https://merklebot.mypinata.cloud/ipfs/{ipfs_cid}/{record_folder_name}/helloween.jpg")
+    # update_launch_trace(record_id, {'nft_order_id': nft_order["id"]})
     datalog_extrinsic_hash = record_datalog(ipfs_cid)
     update_launch_trace(record_id, {'datalog_tx_id': datalog_extrinsic_hash})
 
