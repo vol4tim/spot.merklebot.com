@@ -48,7 +48,7 @@ def after_session_complete(
     pinata = PinataPy(PINATA_API_KEY, PINATA_SECRET_API_KEY)
     folder = "{}/{}".format(TRACES_DIR, record_folder_name)
     print("Record folder {}".format(folder))
-    pinata_resp = pinata.pin_file_to_ipfs(folder)
+    pinata_resp = pinata.pin_file_to_ipfs(folder, options={'pinataOptions': '{"cidVersion": 1}'})
     print("Pinata response: {}".format(pinata_resp))
 
     ipfs_cid = pinata_resp["IpfsHash"]
