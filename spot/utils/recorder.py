@@ -24,6 +24,7 @@ from settings.settings import (
     ESTUARY_TOKEN,
     MNEMONIC,
     TRACES_DIR,
+    WEB3_STORAGE_API_KEY
 )
 
 
@@ -53,6 +54,15 @@ def after_session_complete(
 
     ipfs_cid = pinata_resp["IpfsHash"]
     update_launch_trace(record_id, {'ipfs_cid': ipfs_cid})
+
+    try:
+        car_url = "https://merklebot.mypinata.cloud/ipfs/{}?format=car&download=true".format(ipfs_cid)
+        res_car = requests.get(car_url)
+        web3_storage_resp = requests.post("https://api.web3.storage/car", data=res_car.content,
+                                          headers={"Authorization": f"Bearer {WEB3_STORAGE_API_KEY}"})
+        print("web3.storage car upload: {}".format(web3_storage_resp.json()))
+    except Exception as e:
+        print(f'web3 storage upload error: {e}')
     # nft_order = create_halloween_nft_order(customer_address=sender, launch_tx_hash=launch_event_id,
     #                    image_url=f"https://merklebot.mypinata.cloud/ipfs/{ipfs_cid}/{record_folder_name}/helloween.jpg")
     # update_launch_trace(record_id, {'nft_order_id': nft_order["id"]})
