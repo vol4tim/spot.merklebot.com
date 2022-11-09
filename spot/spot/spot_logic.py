@@ -15,6 +15,8 @@ import time, json
 from datetime import datetime
 
 import datadog
+from utils.logger import logger
+
 
 
 def robonomics_subscriber_process(robot_state):
@@ -50,7 +52,7 @@ def spot_logic_process(actions_queue, drawing_queue, robot_state):
             else:
                 return
 
-        print("Got task", segments_task)
+        logger.info("Got task", segments_task)
         data_recorder = None
         if not admin_action:
             data_recorder = DataRecorder(transaction)
@@ -62,21 +64,21 @@ def spot_logic_process(actions_queue, drawing_queue, robot_state):
         all_segments = []
         for segment in segments_task:
             all_segments += segment
-        print("Got segments", all_segments)
+        logger.info("Got segments", all_segments)
 
         robot_state['state'] = "executing"
 
-        print("Starting spot controller")
+        logger.info("Starting spot controller")
 
         with datadog.statsd.timed('launch.timer'):
             with SpotController(SPOT_USERNAME, SPOT_PASSWORD, SPOT_IP, coord_nodes) as sc:
-                print("Starting movement...")
+                logger.info("Starting movement...")
 
                 if calibrate:
                     calibration_movement(sc, get_spot_face_on_camera_coords)
                 else:
                     for i, segments in enumerate(segments_task):
-                        print("Drawing segment")
+                        logger.info("Drawing segment")
                         time.sleep(0.1)
 
                         xx, yy = centralize([segment[0] for segment in segments], [segment[1] for segment in segments],
@@ -86,11 +88,11 @@ def spot_logic_process(actions_queue, drawing_queue, robot_state):
                                         xx=xx, yy=yy)
                         time.sleep(0.1)
 
-                print("Movement finished")
+                logger.info("Movement finished")
                 # print("Ready to turn off")
                 # sc.power_off_sit_down()
         robot_state['state'] = "saving_data"
-        print("Robot powered off and sit down")
+        logger.info("Robot powered off and sit down")
         time.sleep(1)
         if not admin_action:
             data_recorder.stop_data_recording()
@@ -105,7 +107,7 @@ def spot_logic_process(actions_queue, drawing_queue, robot_state):
         data_recorder = DataRecorder(transaction, record_video=False)
         data_recorder.start_data_recording()
         with SpotController(SPOT_USERNAME, SPOT_PASSWORD, SPOT_IP, coord_nodes) as sc:
-            print("Starting movement...")
+            logger.info("Starting movement...")
 
             while True:
                 current_time = time.time()
@@ -188,7 +190,7 @@ def spot_logic_process(actions_queue, drawing_queue, robot_state):
             customer_tickets = get_tickets_by_customer(address=address)
             available_tickets = [ticket for ticket in customer_tickets if ticket['spent'] == False]
             if len(available_tickets) == 0:
-                print("No available tickets for", address)
+                logger.info("No available tickets for", address)
                 return
             else:
                 spend_ticket(available_tickets[0]['id'])

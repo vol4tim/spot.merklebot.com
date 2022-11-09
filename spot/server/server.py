@@ -10,6 +10,7 @@ from settings.settings import INTERACTION_MODE
 from scipy.interpolate import Rbf
 
 import logging
+from utils.logger import logger
 
 
 def server(actions_queue, tasks_queue, robot_state):
@@ -50,7 +51,7 @@ def server(actions_queue, tasks_queue, robot_state):
 
     @app.route('/draw_figure', methods=['POST'])
     def draw_figure():
-        print("GOT DRWAWING REQUEST")
+        logger.info("GOT DRWAWING REQUEST")
 
         data = request.get_json()
 
@@ -68,7 +69,7 @@ def server(actions_queue, tasks_queue, robot_state):
 
     @app.route('/start_inspection', methods=['POST'])
     def start_inspection():
-        print("GOT INSPECTION REQUEST")
+        logger.info("GOT INSPECTION REQUEST")
 
         data = request.get_json()
 
@@ -103,7 +104,7 @@ def server(actions_queue, tasks_queue, robot_state):
 
     @app.route('/start_calibration', methods=['POST'])
     def start_calibration():
-        print("GOT CALIBRATION REQUEST")
+        logger.info("GOT CALIBRATION REQUEST")
 
         data = request.get_json()
         account = data['account']

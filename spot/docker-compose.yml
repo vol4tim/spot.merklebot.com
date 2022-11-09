@@ -13,6 +13,7 @@ services:
     privileged: true
     volumes:
       - "./traces:${TRACES_DIR}"
+      - "./logs:/logs"
       - "./calibrations:${CALIBRATIONS_DIR}"
 
   node_exporter:

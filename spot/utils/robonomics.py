@@ -5,7 +5,7 @@ import robonomicsinterface
 import datadog
 
 from settings.settings import INTERACTION_MODE
-
+from utils.logger import logger
 
 def get_account_nonce(address) -> int:
     substrate = SubstrateInterface(
@@ -58,7 +58,7 @@ class RobonimicsHelper:
                 "Launch, sender={}, nonce={}, recipient={}".format(sender, session_id, recipient),
             )
         except Exception as e:
-            print("Datadog statsd error: {}".format(e))
+            logger.error("Datadog statsd error: {}".format(e))
 
         if INTERACTION_MODE == 'drawing':
             self.robot_state['transactions'] = self.robot_state['transactions'] + [{'tx_id': launch_event_id, 'sender': sender, 'recipient': recipient, 'session_id': session_id}]
@@ -66,12 +66,12 @@ class RobonimicsHelper:
         elif INTERACTION_MODE == 'movement':
             pass
 
-        print("Session {} complete, creating a trace".format(session_id))
+        logger.info("Session {} complete, creating a trace".format(session_id))
 
     def start_subscriber(self):
         while True:
             try:
-                print("Robonomics subscriber starting...")
+                logger.info("Robonomics subscriber starting...")
                 account = robonomicsinterface.Account()
                 robonomicsinterface.Subscriber(
                     account,
@@ -81,4 +81,4 @@ class RobonimicsHelper:
                     addr="4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j",
                 )
             except:
-                print("Error while connecting to robonomics, restart subscriber...")
+                logger.error("Error while connecting to robonomics, restart subscriber...")
