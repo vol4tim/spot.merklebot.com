@@ -1,5 +1,8 @@
 FROM ros:melodic-ros-base-bionic
 
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
 RUN DEBIAN_FRONTEND=noninteractive apt-get -yqq update && \
     apt-get install -yqq software-properties-common && \
     add-apt-repository ppa:deadsnakes/ppa && \
