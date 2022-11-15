@@ -52,7 +52,7 @@ def spot_logic_process(actions_queue, drawing_queue, robot_state):
             else:
                 return
 
-        logger.info("Got task", segments_task)
+        logger.info("Got task: {}".format(segments_task))
         data_recorder = None
         if not admin_action:
             data_recorder = DataRecorder(transaction)
@@ -64,7 +64,7 @@ def spot_logic_process(actions_queue, drawing_queue, robot_state):
         all_segments = []
         for segment in segments_task:
             all_segments += segment
-        logger.info("Got segments", all_segments)
+        logger.info(f"Got segments :{all_segments}")
 
         robot_state['state'] = "executing"
 
@@ -166,6 +166,7 @@ def spot_logic_process(actions_queue, drawing_queue, robot_state):
 
     def execute_task():
         task = drawing_queue.get()
+        logger.info("executing task {}".format(task))
 
         admin_action = task.get('admin_action', False)
         payment_mode = task.get('payment_mode')
@@ -182,6 +183,7 @@ def spot_logic_process(actions_queue, drawing_queue, robot_state):
                 else:
                     break
             else:
+                logger.info("Tx not found for a task {}".format(task))
                 return
 
         address = transaction.get('sender') if transaction else None
