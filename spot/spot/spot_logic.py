@@ -18,7 +18,6 @@ import datadog
 from utils.logger import logger
 
 
-
 def robonomics_subscriber_process(robot_state):
     datadog_options = {
         'statsd_host': '127.0.0.1',
@@ -178,7 +177,10 @@ def spot_logic_process(actions_queue, drawing_queue, robot_state):
 
                 for tx in robot_state['transactions']:
                     if tx['tx_id'] == tx_id:
-                        transaction = tx
+                        transaction = tx.copy()
+                        robot_state['transactions'] = [_tx for _tx in robot_state['transactions'] if
+                                                       _tx['tx_id'] != tx_id]
+
                         break
                 if not transaction:
                     time.sleep(1)
