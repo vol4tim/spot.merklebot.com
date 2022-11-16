@@ -167,7 +167,6 @@ def spot_logic_process(actions_queue, drawing_queue, robot_state):
     def execute_task():
         task = drawing_queue.get()
         logger.info("executing task {}".format(task))
-        logger.info("transactions {}".format(robot_state['transactions']))
 
         admin_action = task.get('admin_action', False)
         payment_mode = task.get('payment_mode')
@@ -175,6 +174,8 @@ def spot_logic_process(actions_queue, drawing_queue, robot_state):
         transaction = None
         if not admin_action:
             for i in range(15):
+                logger.info("transactions {}".format(robot_state['transactions']))
+
                 for tx in robot_state['transactions']:
                     if tx['tx_id'] == tx_id:
                         transaction = tx
