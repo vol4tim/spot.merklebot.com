@@ -1,5 +1,6 @@
 import random
 
+import requests
 from external_communications.videoserver import send_command_to_videoserver, get_spot_face_on_camera_coords, \
     notify_start_line, notify_stop_line
 from external_communications.tickets import get_tickets_by_customer, spend_ticket
@@ -9,7 +10,7 @@ from utils.calibration import centralize, coord_nodes, calibration_movement
 from utils.robonomics import RobonimicsHelper
 from utils.recorder import DataRecorder
 from settings.settings import SPOT_USERNAME, SPOT_PASSWORD, SPOT_IP, MOVEMENT_SESSION_DURATION_TIME, USE_ROBONOMICS, \
-    ADMIN_ACCOUNTS
+    ADMIN_ACCOUNTS, TELEGRAM_BOT_TOKEN, TELEGRAM_BOT_USER_ID
 
 import time, json
 from datetime import datetime
@@ -188,6 +189,7 @@ def spot_logic_process(actions_queue, drawing_queue, robot_state):
                     break
             else:
                 logger.info("Tx not found for a task {}".format(task))
+                requests.post(f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage?chat_id={TELEGRAM_BOT_USER_ID}&text=%E2%9B%94Spot%20launch%20failed%0ATx%20matching%20failed")
                 return
 
         address = transaction.get('sender') if transaction else None

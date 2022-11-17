@@ -3,7 +3,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-
 # Constants to access spot robot
 SPOT_USERNAME = os.environ.get("SPOT_USERNAME", "admin")
 SPOT_PASSWORD = os.environ.get("SPOT_PASSWORD", "2zqa8dgw7lor")
@@ -30,7 +29,9 @@ MOVEMENT_SESSION_DURATION_TIME = 120
 
 DEMO_API_URL = os.environ.get('DEMO_API_URL', 'https://api.merklebot.com/spot-demo')
 
-ADMIN_ACCOUNTS = os.environ.get('ADMIN_ACCOUNTS', '4HVVtYPQ8hu7XGKQPmwjhTTHK5crSsiitJpLsA4B4PQV1PNr,4G1SKuxjYkm7AtbMzjpZZnXdt3sShj7nrvEB9dxLcVYJe87P,4HY2Mb4fpsyz6vyWHd3xGPgnHC983junioxhT2Cnfa5Kok5b').split(',')
+ADMIN_ACCOUNTS = os.environ.get('ADMIN_ACCOUNTS',
+                                '4HVVtYPQ8hu7XGKQPmwjhTTHK5crSsiitJpLsA4B4PQV1PNr,4G1SKuxjYkm7AtbMzjpZZnXdt3sShj7nrvEB9dxLcVYJe87P,4HY2Mb4fpsyz6vyWHd3xGPgnHC983junioxhT2Cnfa5Kok5b').split(
+    ',')
 AUTH_SECRET = os.getenv('AUTH_SECRET', 'abcdefg')
 
 MNEMONIC = os.environ["MNEMONIC"]
@@ -39,3 +40,6 @@ TRACES_DIR = os.environ["TRACES_DIR"]
 CALIBRATIONS_DIR = os.environ["CALIBRATIONS_DIR"]
 
 WEB3_STORAGE_API_KEY = os.environ["WEB3_STORAGE_API_KEY"]
+
+TELEGRAM_BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
+TELEGRAM_BOT_USER_ID = os.environ["TELEGRAM_BOT_USER_ID"]
