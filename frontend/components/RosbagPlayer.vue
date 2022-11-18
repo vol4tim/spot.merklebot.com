@@ -1,39 +1,37 @@
 <template>
   <div>
+    <div>
+      <input
+        type="file"
+        @change="onFileChanged($event)"
+      >
+    </div>
+    <div>status: {{ status }}</div>
     <div ref="stage" class="stage" />
-    <button
-      type="button"
-      class="uppercase py-2 my-2 px-4  bg-transparent text-gray-800 bg-gray-200 hover:bg-gray-100 border-2 border-gray-800 text-gray-800 text-white hover:bg-gray-800 hover:text-white text-md"
-      @click="playBag"
-    >
-      Play bag
-    </button>
   </div>
 </template>
 
 <script>
 import * as THREE from 'three'
-import TrackballControls from 'three-trackballcontrols'
-
 import { LoaderUtils } from 'three'
 import { XacroLoader } from 'xacro-parser'
-import URDFLoader from 'urdf-loader'
-
-import { defineComponent, ref, onMounted } from '@nuxtjs/composition-api'
-import axios from 'axios'
 import { open } from 'rosbag'
+import URDFLoader from 'urdf-loader'
+import { defineComponent, ref, onMounted } from '@nuxtjs/composition-api'
 
 export default defineComponent({
-  props: ['rosbagUrl'],
+  props: ['rosUrl', 'urdfUrl'],
   setup (props) {
-    const rosbagLink = props.rosbagUrl
+    console.log(props)
+    // const robotSocketLink = props.rosUrl
+    const file = ref(null)
+    const url = props.urdfUrl
+    const status = ref('wait')
     const stage = ref(null)
-    const speed = ref(0.01)
-    const initialRobotPositionOffset = ref(null)
-    const robotJoints = ref([])
-    const bagPlaying = ref(false)
 
-    const url = '/urdf/spot.urdf.xacro'
+    const initialRobotPositionOffset = ref(null)
+    const bodyTf = ref(null)
+    const robotJoints = ref(null)
     const xacroLoader = new XacroLoader()
 
     const scene = new THREE.Scene()
@@ -42,7 +40,7 @@ export default defineComponent({
     const plane = new THREE.Mesh(geometry, material)
 
     const camera = new THREE.PerspectiveCamera(
-      75,
+      80,
       4 / 3,
       0.1,
       1000
@@ -52,9 +50,10 @@ export default defineComponent({
     const axes = new THREE.AxesHelper(5)
     let robot = null
 
-    camera.position.z = 0
-    camera.position.y = 0.8
-    camera.position.x = 1
+    camera.position.z = -2.3
+    camera.position.y = 1.6
+    camera.position.x = -3.8
+    camera.rotation.y = -Math.PI / 2 - 0.4
 
     plane.rotation.x = Math.PI / 2
     plane.position.y = 0
@@ -71,27 +70,15 @@ export default defineComponent({
 
       robot = urdfLoader.parse(xml)
 
-      console.log('Robot parsed')
-      console.log(robot.joints)
       robot.rotation.x = -Math.PI / 2
       scene.add(robot)
+      status.value = 'urdf loaded'
     })
 
-    renderer.setSize(400, 300)
+    renderer.setSize(800, 500)
     light.position.set(5, 5, 0)
 
     scene.background = new THREE.Color('hsl(0, 100%, 100%)')
-
-    const controls = new TrackballControls(camera, renderer.domElement)
-    controls.rotateSpeed = 1.0
-    controls.zoomSpeed = 5
-    controls.panSpeed = 0.8
-    controls.noZoom = false
-    controls.noPan = false
-    controls.staticMoving = true
-    controls.dynamicDampingFactor = 0.3
-
-    const curJointNum = ref(0)
 
     const animate = () => {
       // requestAnimationFrame(animate)
@@ -102,16 +89,8 @@ export default defineComponent({
 
       renderer.render(scene, camera)
 
-      // cube.rotation.y += speed.value
-      if (bagPlaying.value) {
-        if (curJointNum.value > robotJoints.value.length - 1) {
-          curJointNum.value = 0
-          bagPlaying.value = false
-        }
-
-        const jointState = robotJoints.value[curJointNum.value][0]
-        const tf = robotJoints.value[curJointNum.value][1]
-        // console.log(tf.translation.z)
+      if (bodyTf.value) {
+        const tf = bodyTf.value
         if (!initialRobotPositionOffset.value) {
           initialRobotPositionOffset.value = {
             y: tf.translation.z,
@@ -123,86 +102,103 @@ export default defineComponent({
 
         robot.position.x = tf.translation.x - initialRobotPositionOffset.value.x
         robot.position.z = -tf.translation.y - initialRobotPositionOffset.value.z
-        // console.log(robot.position.y)
 
         const rotation = new THREE.Euler()
         rotation.setFromQuaternion(new THREE.Quaternion(tf.rotation.x, tf.rotation.y, tf.rotation.z, tf.rotation.w))
-        console.log(tf.rotation)
-        console.log(rotation)
-        robot.rotation.x = -Math.PI / 2// rotation.z - Math.PI
+        robot.rotation.x = -rotation.y - Math.PI / 2
+        robot.rotation.y = rotation.x
+        robot.rotation.z = rotation.z
 
-        robot.rotation.y = -rotation.x
-        robot.rotation.z = rotation.y
-        console.log(robot.rotation.x)
-
-        for (let j = 0; j < jointState.position.length; j++) {
-          // console.log(jointState.name[j], jointState.position[j])
-          robot.joints[jointState.name[j]].setJointValue(jointState.position[j])
+        if (robotJoints.value !== null) {
+          const joints = robotJoints.value
+          for (let j = 0; j < joints.position.length; j++) {
+            robot.joints[joints.name[j]].setJointValue(joints.position[j])
+          }
         }
-        curJointNum.value += 1
       }
-      controls.update()
     }
+
+    const loadRosbag = async () => {
+      const bag = await open(file.value)
+      const rosMessages = []
+      const topicsData = []
+      let lastTopicFrame = {}
+
+      await bag.readMessages({ topics: ['/tf', '/joint_states'] }, (result) => {
+        rosMessages.push(result)
+
+        if (result.topic === '/joint_states') {
+          if (!lastTopicFrame.robotJoints) {
+            lastTopicFrame.robotJoints = result.message
+          }
+        } else if (result.topic === '/tf') {
+          if (result.message.transforms.length === 4) {
+            result.message.transforms.forEach((transform) => {
+              if (transform.child_frame_id === 'body') {
+                if (!lastTopicFrame.bodyTf) {
+                  lastTopicFrame.bodyTf = transform.transform
+                }
+              }
+            })
+          }
+        }
+        if (lastTopicFrame.bodyTf && lastTopicFrame.robotJoints) {
+          topicsData.push(Object.assign({}, lastTopicFrame))
+          lastTopicFrame = {}
+        }
+      })
+      for (let i = 0; i < topicsData.length; i++) {
+        const frame = topicsData[i]
+        setTimeout(() => {
+          console.log(frame)
+          robotJoints.value = frame.robotJoints
+          bodyTf.value = frame.bodyTf
+        }, i * 50)
+      }
+    }
+
+    const onFileChanged = ($event) => {
+      const target = $event.target
+      if (target && target.files) {
+        file.value = target.files[0]
+        loadRosbag()
+        console.log(file.value)
+      }
+    }
+
     onMounted(() => {
       stage.value.appendChild(renderer.domElement)
       animate()
-      console.log('ROSBAG LINK')
-      console.log(rosbagLink)
+
+      // robotDataSocket.onopen = (e) => {
+      //   console.log('Connection established')
+      // }
+      // robotDataSocket.onmessage = function (event) {
+      //   const data = JSON.parse(event.data)
+      //   console.log(data)
+      //   const robotData = data.robot
+      //   robotJoints.value = robotData.topics['/joint_states']
+      //   const tfData = robotData.topics['/tf']
+      //   if (tfData.transforms.length === 4) {
+      //     tfData.transforms.forEach((transform) => {
+      //       if (transform.child_frame_id === 'body') {
+      //         bodyTf.value = transform.transform
+      //       }
+      //     })
+      //   }
+      // }
     })
-
-    const readBagFromUrl = async (rosbagUrl) => {
-      const blobResponse = await axios({
-        url: rosbagUrl,
-        method: 'GET',
-        responseType: 'blob'
-      })
-      console.log(blobResponse)
-      const blobBag = new Blob([blobResponse.data])
-      console.log(blobBag)
-      const bag = await open(blobBag)
-      console.log(bag)
-      let prevTf = null
-      await bag.readMessages({ topics: ['/tf', '/joint_states'] }, (result) => {
-        // console.log(result.timestamp)
-        console.log(result.message)
-        if ((result.topic === '/tf') && (result.message.transforms.length === 4)) {
-          result.message.transforms.forEach((transform) => {
-            if (transform.child_frame_id === 'body') {
-              prevTf = transform.transform
-            }
-          })
-        } else if (result.topic === '/joint_states') {
-          if (prevTf) {
-            robotJoints.value.push([result.message, prevTf])
-          }
-          // console.log(result.message)
-        }
-      })
-    }
-
-    const playBag = async () => {
-      console.log('Start playing rosbag')
-      console.log(rosbagLink.value)
-      await readBagFromUrl(rosbagLink)
-      console.log(robotJoints.value)
-      bagPlaying.value = true
-    }
 
     return {
       scene,
       camera,
-      controls: [],
       renderer,
       light,
       axes,
-      speed,
       stage,
-      playBag
+      status,
+      onFileChanged
     }
   }
 })
 </script>
-
-<style scoped>
-
-</style>

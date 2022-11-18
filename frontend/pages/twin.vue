@@ -8,7 +8,8 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 my-4">
               <CardContainer title="Digital twin">
                 <!--                <URDFFrame urdf-url="/urdf/spot.urdf.xacro" ros-url="ws://10.200.0.3:9494" />-->
-                <URDFFrame urdf-url="/urdf/spot.urdf.xacro" ros-url="ws://localhost:8000/robots/1/realtime_ws" />
+                <!--                <URDFFrame urdf-url="/urdf/spot.urdf.xacro" ros-url="ws://localhost:8000/robots/1/realtime_ws" />-->
+                <RosbagPlayer urdf-url="/urdf/spot.urdf.xacro" ros-url="ws://localhost:8000/robots/1/realtime_ws" />
               </CardContainer>
 
               <!--              <CardContainer v-if="launchData" title="Digital twin">-->
