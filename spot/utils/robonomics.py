@@ -72,7 +72,7 @@ class RobonimicsHelper:
         while True:
             try:
                 logger.info("Robonomics subscriber starting...")
-                account = robonomicsinterface.Account()
+                account = robonomicsinterface.Account(remote_ws="wss://robonomics.leemo.me")
                 robonomicsinterface.Subscriber(
                     account,
                     robonomicsinterface.SubEvent.NewLaunch,
