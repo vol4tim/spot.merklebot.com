@@ -12,7 +12,7 @@ export const getInstance = async () => {
     return robonomics
   }
   robonomics = new Robonomics({
-    endpoint: 'wss://kusama.rpc.robonomics.network/'
+    endpoint: 'wss://robonomics.leemo.me'
   })
   robonomics.setAccountManager(new AccountManager(keyring))
   await robonomics.run()

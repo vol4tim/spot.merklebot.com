@@ -9,7 +9,7 @@ from utils.logger import logger
 
 def get_account_nonce(address) -> int:
     substrate = SubstrateInterface(
-        url="wss://kusama.rpc.robonomics.network/",
+        url="wss://robonomics.leemo.me",
         ss58_format=32,
         type_registry_preset="substrate-node-template",
         type_registry={
