@@ -27,6 +27,11 @@ export const readRobonomicsLaunchTracesBySender = async ({ sender = null, nonce 
   return resp.data
 }
 
+export const getFilecoinProvidersByipfsCid = async (ipfsCid) => {
+  const resp = await client.get('filecoin-finder/providers/' + ipfsCid, {})
+  return resp.data
+}
+
 /**
  * Create new Stripe payment session to purchase Spot demo ticket by card.
  * @param {string} customer - Customer's account address to receive purchased ticket. Robonomics parachain format expected.

@@ -48,6 +48,9 @@
                     rel="noopener noreferrer"
                   >{{ addressShort(crustTxId) }}</a>
                 </p>
+                <p v-if="providers" class="text-md mt-2 text-white">
+                  Filecoin providers: <span v-if="providers.length>0" class="text-yellow-500">{{ providers.join(', ') }}</span> <span v-else>will be stored and appear here during 48 hours...</span>
+                </p>
               </CardContainer>
               <CardContainer v-if="launchData" title="Video Record">
                 <video :src="`${makeIpfsFolderLink(traceInfo)}/h264_camera.mp4`" type="video/mp4" controls />
@@ -66,7 +69,7 @@
 
 <script>
 import { defineComponent, onMounted, useRoute, ref } from '@nuxtjs/composition-api'
-import { readRobonomicsLaunchTracesBySender, makeIpfsFolderLink } from '../../plugins/merklebot'
+import { readRobonomicsLaunchTracesBySender, makeIpfsFolderLink, getFilecoinProvidersByipfsCid } from '../../plugins/merklebot'
 import { makeSubscanLink } from '~/plugins/robonomics'
 import { getCrustFileInfo } from '~/plugins/crust'
 
@@ -81,6 +84,7 @@ export default defineComponent({
     const datalogTxId = ref(null)
     const crustTxId = ref(null)
     const crustFileInfo = ref(null)
+    const providers = ref(null)
 
     if (!txId) {
       return {
@@ -102,6 +106,8 @@ export default defineComponent({
       launchTxId.value = res.launch_tx_id
       datalogTxId.value = res.datalog_tx_id
       crustTxId.value = res.crust_tx_id
+      const providersRes = await getFilecoinProvidersByipfsCid(res.ipfs_cid)
+      providers.value = providersRes.providers
 
       if (res.crust_tx_id) {
         crustFileInfo.value = await getCrustFileInfo(res.ipfs_cid)
@@ -116,7 +122,7 @@ export default defineComponent({
     }
 
     return {
-      txId, launchData, traceInfo, launchTxId, datalogTxId, crustTxId, crustFileInfo, addressShort, makeSubscanLink, makeIpfsFolderLink
+      txId, launchData, traceInfo, launchTxId, datalogTxId, crustTxId, crustFileInfo, providers, addressShort, makeSubscanLink, makeIpfsFolderLink
     }
   }
 })
