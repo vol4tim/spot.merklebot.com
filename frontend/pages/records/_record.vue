@@ -55,10 +55,13 @@
                   >{{ addressShort(crustTxId) }}</a>
                 </p>
                 <p v-if="providers" class="text-md mt-2 text-white">
-                  Filecoin providers:
-                  <span v-if="providers.length > 0" class="text-yellow-500">{{
-                    providers.join(", ")
-                  }}</span>
+                  Filecoin:
+                  <span v-if="providers.length > 0">
+                    content
+                    <span class="text-yellow-500">
+                      {{ launchData.ipfs_cid }}</span> stored by <span class="text-yellow-500">{{
+                      providers.join(", ")
+                    }}</span> providers</span>
                   <span v-else>will be stored and appear here during 48 hours...</span>
                 </p>
               </CardContainer>
