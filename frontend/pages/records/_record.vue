@@ -14,10 +14,13 @@
             <h1 class="text-4xl font-semibold text-white">
               Session {{ txId }}
             </h1>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 my-4">
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 my-4"
+            >
               <CardContainer v-if="launchData" title="Launch data">
                 <p class="text-md mt-2 text-white">
-                  Robonomics Launch Tx: <a
+                  Robonomics Launch Tx:
+                  <a
                     :href="makeSubscanLink('robonomics', launchTxId)"
                     class="text-yellow-500"
                     target="_blank"
@@ -25,7 +28,8 @@
                   >{{ addressShort(launchTxId) }}</a>
                 </p>
                 <p class="text-md mt-2 text-white">
-                  Record data on IPFS: <a
+                  Record data on IPFS:
+                  <a
                     :href="makeIpfsFolderLink(traceInfo)"
                     class="text-yellow-500"
                     target="_blank"
@@ -33,7 +37,8 @@
                   >{{ addressShort(launchData.ipfs_cid) }}</a>
                 </p>
                 <p class="text-md mt-2 text-white">
-                  Robonomics Datalog Tx: <a
+                  Robonomics Datalog Tx:
+                  <a
                     :href="makeSubscanLink('robonomics', datalogTxId)"
                     class="text-yellow-500"
                     target="_blank"
@@ -41,7 +46,8 @@
                   >{{ addressShort(datalogTxId) }}</a>
                 </p>
                 <p class="text-md mt-2 text-white">
-                  Crust Storage Order Tx: <a
+                  Crust Storage Order Tx:
+                  <a
                     :href="makeSubscanLink('crust', crustTxId)"
                     class="text-yellow-500"
                     target="_blank"
@@ -49,11 +55,19 @@
                   >{{ addressShort(crustTxId) }}</a>
                 </p>
                 <p v-if="providers" class="text-md mt-2 text-white">
-                  Filecoin providers: <span v-if="providers.length>0" class="text-yellow-500">{{ providers.join(', ') }}</span> <span v-else>will be stored and appear here during 48 hours...</span>
+                  Filecoin providers:
+                  <span v-if="providers.length > 0" class="text-yellow-500">{{
+                    providers.join(", ")
+                  }}</span>
+                  <span v-else>will be stored and appear here during 48 hours...</span>
                 </p>
               </CardContainer>
               <CardContainer v-if="launchData" title="Video Record">
-                <video :src="`${makeIpfsFolderLink(traceInfo)}/h264_camera.mp4`" type="video/mp4" controls />
+                <video
+                  :src="`${makeIpfsFolderLink(traceInfo)}/h264_camera.mp4`"
+                  type="video/mp4"
+                  controls
+                />
               </CardContainer>
 
               <!--              <CardContainer v-if="launchData" title="Digital twin">-->
@@ -68,8 +82,17 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, useRoute, ref } from '@nuxtjs/composition-api'
-import { readRobonomicsLaunchTracesBySender, makeIpfsFolderLink, getFilecoinProvidersByipfsCid } from '../../plugins/merklebot'
+import {
+  defineComponent,
+  onMounted,
+  useRoute,
+  ref
+} from '@nuxtjs/composition-api'
+import {
+  readRobonomicsLaunchTracesBySender,
+  makeIpfsFolderLink,
+  getFilecoinProvidersByipfsCid
+} from '../../plugins/merklebot'
 import { makeSubscanLink } from '~/plugins/robonomics'
 import { getCrustFileInfo } from '~/plugins/crust'
 
@@ -93,7 +116,9 @@ export default defineComponent({
     }
 
     onMounted(async () => {
-      const res = await readRobonomicsLaunchTracesBySender({ launchTxId: txId })
+      const res = await readRobonomicsLaunchTracesBySender({
+        launchTxId: txId
+      })
       console.log(res)
       launchData.value = res
       traceInfo.value = {
@@ -101,7 +126,6 @@ export default defineComponent({
         sender: res.sender,
         nonce: res.nonce,
         createdAt: res.created_at
-
       }
       launchTxId.value = res.launch_tx_id
       datalogTxId.value = res.datalog_tx_id
@@ -122,9 +146,18 @@ export default defineComponent({
     }
 
     return {
-      txId, launchData, traceInfo, launchTxId, datalogTxId, crustTxId, crustFileInfo, providers, addressShort, makeSubscanLink, makeIpfsFolderLink
+      txId,
+      launchData,
+      traceInfo,
+      launchTxId,
+      datalogTxId,
+      crustTxId,
+      crustFileInfo,
+      providers,
+      addressShort,
+      makeSubscanLink,
+      makeIpfsFolderLink
     }
   }
 })
-
 </script>
