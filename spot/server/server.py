@@ -4,7 +4,7 @@ from flask_cors import CORS, cross_origin
 import json
 
 from spot.spot_controller import get_spot_position
-from utils.auth import check_if_admin, verify_token_sign
+from utils.auth import check_if_admin, verify_token_sign, generate_auth_token
 from settings.settings import INTERACTION_MODE
 
 from scipy.interpolate import Rbf
@@ -83,6 +83,14 @@ def server(actions_queue, tasks_queue, robot_state):
                 }
             )
         return {'status': 'started'}
+
+    @app.route('/token', methods=['POST', 'GET'])
+    def create_auth_token():
+        data = request.get_json()
+        account = data['account']
+        token = generate_auth_token(account)
+
+        return {"status": "ok", "token": token}
 
     @app.route('/command', methods=['POST'])
     def process_command():

@@ -4,8 +4,12 @@ const client = axios.create({
   baseURL: 'https://api.merklebot.com/videoserver'
 })
 
+const spotClient = axios.create({
+  baseURL: 'https://api.merklebot.com/strelka'
+})
+
 export const getAuthToken = async (accountAddress) => {
-  const resp = await client.post('token', {
+  const resp = await spotClient.post('token', {
     account: accountAddress
   })
 
