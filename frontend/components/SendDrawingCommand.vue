@@ -18,7 +18,8 @@
               text-gray-800 bg-gray-200 border-2
               hover:bg-gray-100 hover:bg-gray-800 hover:text-white
             "
-          :disabled="!hasTicket"
+          :class="{'opacity-30 pointer-events-none': !canLaunchForTicket}"
+          :disabled="!canLaunchForTicket"
           @click="sendCommandTicket"
         >
           Launch for 1 ticket
@@ -39,7 +40,8 @@
               text-gray-800 bg-gray-200 border-2
               hover:bg-gray-100 hover:bg-gray-800 hover:text-white
             "
-          :disabled="!hasEnoughXrt"
+          :class="{'opacity-30 pointer-events-none': !canLaunchForXrt}"
+          :disabled="!canLaunchForXrt"
           @click="sendCommandXrt"
         >
           Launch for 1 XRT
@@ -90,15 +92,17 @@ export default defineComponent({
       await sendCommand()
     }
 
-    const hasEnoughXrt = computed(() => {
-      return wallet.selectedAccount.balanceRaw * 10 ** -9 > 1
+    const canLaunchForXrt = computed(() => {
+      const hasEnoughXrt = wallet.selectedAccount.balanceRaw * 10 ** -9 > 1
+      return hasEnoughXrt && robot.robotState
     })
 
-    const hasTicket = computed(() => {
-      return wallet.selectedAccount.tickets.filter(ticket => ticket.spent === false).length >= 1
+    const canLaunchForTicket = computed(() => {
+      const hasTicket = wallet.selectedAccount.tickets.filter(ticket => ticket.spent === false).length >= 1
+      return hasTicket && robot.robotState
     })
 
-    return { sendCommandXrt, sendCommandTicket, hasEnoughXrt, hasTicket, wallet }
+    return { sendCommandXrt, sendCommandTicket, wallet, canLaunchForXrt, canLaunchForTicket }
   }
 })
 
