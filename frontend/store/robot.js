@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import Hash from 'ipfs-only-hash'
 import {
   makeLaunchTx,
   makeTransferTx,
@@ -30,10 +31,11 @@ export const useRobot = defineStore('robot', {
     }
   },
   actions: {
-    async launchCps (transferXrtAmount) {
+    async launchCps (transferXrtAmount, commandParams) {
       this.cps.launch.txInfo = { tx: null }
       this.cps.launch.txStatus = null
-      const launchTx = await makeLaunchTx(this.cps.address, true)
+      const commandParamsHash = await Hash.of(JSON.stringify(commandParams))
+      const launchTx = await makeLaunchTx(this.cps.address, commandParamsHash)
       this.cps.status = 'wait_tx'
       if (transferXrtAmount) {
         const transferTx = await makeTransferTx(this.cps.address, transferXrtAmount)
@@ -64,13 +66,14 @@ export const useRobot = defineStore('robot', {
     setNftData (data) {
       this.nftData = data
     },
-    sendDrawing (segments, paymentMode = 'ticket', txId = '') {
+    sendDrawing (account, segments, paymentMode = 'ticket', txId = '') {
       fetch('https://api.merklebot.com/strelka/draw_figure', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+          account,
           segments,
           payment_mode: paymentMode,
           tx_id: txId

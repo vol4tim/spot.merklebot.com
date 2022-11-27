@@ -1,10 +1,8 @@
-import { Robonomics } from 'robonomics-interface'
+import { Robonomics, utils } from 'robonomics-interface'
 import AccountManager from 'robonomics-interface/dist/accountManagerUi'
 import keyring from '@polkadot/ui-keyring'
-import { blake2AsHex } from '@polkadot/util-crypto'
 import { web3FromSource } from '@polkadot/extension-dapp'
 import { stringToHex } from '@polkadot/util'
-
 let robonomics
 
 export const getInstance = async () => {
@@ -49,9 +47,9 @@ export const subscribeToBalanceUpdates = async (address, onBalanceUpdate) => {
   )
 }
 
-export const makeLaunchTx = async (targetAddress, enabledFlag) => {
+export const makeLaunchTx = async (targetAddress, cid) => {
   const robonomics = await getInstance()
-  const tx = robonomics.launch.send(targetAddress, blake2AsHex(enabledFlag))
+  const tx = robonomics.launch.send(targetAddress, utils.cidToHex(cid))
   return tx
 }
 

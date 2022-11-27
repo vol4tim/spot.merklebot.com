@@ -67,16 +67,22 @@ export default defineComponent({
     const sendCommand = async (transferXrtAmount) => {
       console.log('Sending command')
       console.log(dAppParameters.currentDrawingSegments)
-
+      const commandParams = {
+        account: 'wallet.selectedAccount.account.address',
+        payment_mode: transferXrtAmount ? 'xrt' : 'ticket',
+        task_type: dAppParameters.currentDrawingSegments.length > 0 ? 'drawing' : 'inspection'
+      }
+      if (commandParams.task_type === 'drawing') {
+        commandParams.segments = dAppParameters.currentDrawingSegments
+      }
       try {
-        const res = await robot.launchCps(transferXrtAmount)
-        const paymentMode = transferXrtAmount ? 'xrt' : 'ticket'
+        const res = await robot.launchCps(transferXrtAmount, commandParams)
         if (res) {
           if (dAppParameters.currentDrawingSegments.length > 0) {
-            robot.sendDrawing(dAppParameters.currentDrawingSegments, paymentMode, `${res.txInfo.blockNumber}-${res.txInfo.txIndex}`)
+            robot.sendDrawing(commandParams.account, commandParams.segments, commandParams.paymentMode, `${res.txInfo.blockNumber}-${res.txInfo.txIndex}`)
           } else {
             // start time based inspection
-            robot.startInspection(wallet.selectedAccount.account.address, paymentMode, `${res.txInfo.blockNumber}-${res.txInfo.txIndex}`)
+            robot.startInspection(commandParams.account, commandParams.paymentMode, `${res.txInfo.blockNumber}-${res.txInfo.txIndex}`)
           }
         }
       } catch (e) {
