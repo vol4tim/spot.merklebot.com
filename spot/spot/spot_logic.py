@@ -173,7 +173,7 @@ def spot_logic_process(actions_queue, drawing_queue, robot_state):
         tx_id = task.get('tx_id')
         transaction = None
         if not admin_action:
-            for i in range(15):
+            for i in range(60):
                 logger.info("transactions {}".format(robot_state['transactions']))
 
                 for tx in robot_state['transactions']:
