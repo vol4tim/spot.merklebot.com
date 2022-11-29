@@ -68,7 +68,7 @@ export default defineComponent({
       console.log('Sending command')
       console.log(dAppParameters.currentDrawingSegments)
       const commandParams = {
-        account: 'wallet.selectedAccount.account.address',
+        account: wallet.selectedAccount.account.address,
         payment_mode: transferXrtAmount ? 'xrt' : 'ticket',
         task_type: dAppParameters.currentDrawingSegments.length > 0 ? 'drawing' : 'inspection'
       }
