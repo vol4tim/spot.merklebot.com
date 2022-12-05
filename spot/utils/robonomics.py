@@ -9,7 +9,7 @@ from utils.logger import logger
 
 def get_account_nonce(address) -> int:
     substrate = SubstrateInterface(
-        url="wss://robonomics.leemo.me",
+        url="wss://kusama.rpc.robonomics.network",
         ss58_format=32,
         type_registry_preset="substrate-node-template",
         type_registry={
@@ -72,7 +72,7 @@ class RobonimicsHelper:
         while True:
             try:
                 logger.info("Robonomics subscriber starting...")
-                account = robonomicsinterface.Account(remote_ws="wss://robonomics.leemo.me")
+                account = robonomicsinterface.Account(remote_ws="wss://kusama.rpc.robonomics.network")
                 robonomicsinterface.Subscriber(
                     account,
                     robonomicsinterface.SubEvent.NewLaunch,
