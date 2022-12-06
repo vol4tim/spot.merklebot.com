@@ -7,6 +7,8 @@ import {
   signAndSendTxsBatchWithActiveAccount
 } from '@/plugins/robonomics'
 
+import { uploadCommandParamsToIpfs } from '~/plugins/merklebot'
+
 export const useRobot = defineStore('robot', {
   state: () => {
     return {
@@ -34,7 +36,13 @@ export const useRobot = defineStore('robot', {
     async launchCps (transferXrtAmount, commandParams) {
       this.cps.launch.txInfo = { tx: null }
       this.cps.launch.txStatus = null
-      const commandParamsHash = await Hash.of(JSON.stringify(commandParams))
+      const commandParamsJSON = JSON.stringify(commandParams)
+      const commandParamsHash = await Hash.of(commandParamsJSON)
+      await uploadCommandParamsToIpfs(commandParamsJSON)
+
+      console.log(commandParamsHash)
+      console.log(commandParamsJSON)
+
       const launchTx = await makeLaunchTx(this.cps.address, commandParamsHash)
       this.cps.status = 'wait_tx'
       if (transferXrtAmount) {

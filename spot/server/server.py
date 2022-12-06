@@ -49,41 +49,6 @@ def server(actions_queue, tasks_queue, robot_state):
             'status': 'ok'
         }
 
-    @app.route('/draw_figure', methods=['POST'])
-    def draw_figure():
-        logger.info("GOT DRWAWING REQUEST")
-
-        data = request.get_json()
-
-        if 'segments' in data:
-            segments = data['segments']
-            tasks_queue.put(
-                {
-                    'task_type': 'drawing',
-                    'segments': segments,
-                    'payment_mode': data['payment_mode'],
-                    'tx_id': data['tx_id']
-                }
-            )
-        return {'status': 'started'}
-
-    @app.route('/start_inspection', methods=['POST'])
-    def start_inspection():
-        logger.info("GOT INSPECTION REQUEST")
-
-        data = request.get_json()
-
-        if check_if_admin(data['account']):
-            tasks_queue.put(
-                {
-                    'task_type': 'inspection',
-                    'account': data['account'],
-                    'payment_mode': data['payment_mode'],
-                    'tx_id': data['tx_id']
-                }
-            )
-        return {'status': 'started'}
-
     @app.route('/token', methods=['POST', 'GET'])
     def create_auth_token():
         data = request.get_json()

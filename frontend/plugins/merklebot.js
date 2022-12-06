@@ -27,6 +27,18 @@ export const readRobonomicsLaunchTracesBySender = async ({ sender = null, nonce 
   return resp.data
 }
 
+/**
+ * Send command params to ipfs.
+ * @param {string} commandParams - dumped JSON of command params.
+ */
+export const uploadCommandParamsToIpfs = async (commandParams) => {
+  await client.post('spot-demo/process_command', null, {
+    params: {
+      command_params: commandParams
+    }
+  })
+}
+
 export const getFilecoinProvidersByipfsCid = async (ipfsCid) => {
   const resp = await client.get('filecoin-finder/providers/' + ipfsCid, {})
   return resp.data
