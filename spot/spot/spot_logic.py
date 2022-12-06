@@ -19,7 +19,7 @@ import datadog
 from utils.logger import logger
 
 
-def robonomics_subscriber_process(robot_state):
+def robonomics_subscriber_process(robot_state, tasks_queue):
     datadog_options = {
         'statsd_host': '127.0.0.1',
         'statsd_port': 8125,
@@ -35,7 +35,7 @@ def robonomics_subscriber_process(robot_state):
     datadog.initialize(**datadog_options)
     datadog.statsd.event("Startup", "Spot demo starts at {} UTC".format(datetime.utcnow()))
 
-    robonomics_helper = RobonimicsHelper(robot_state)
+    robonomics_helper = RobonimicsHelper(robot_state, tasks_queue)
     robonomics_helper.start_subscriber()
 
 
@@ -166,31 +166,9 @@ def spot_logic_process(actions_queue, drawing_queue, robot_state):
 
     def execute_task():
         task = drawing_queue.get()
+        transaction = task.get('transaction', None)
         logger.info("executing task {}".format(task))
-
-        admin_action = task.get('admin_action', False)
         payment_mode = task.get('payment_mode')
-        tx_id = task.get('tx_id')
-        transaction = None
-        if not admin_action:
-            for i in range(60):
-                logger.info("transactions {}".format(robot_state['transactions']))
-
-                for tx in robot_state['transactions']:
-                    if tx['tx_id'] == tx_id:
-                        transaction = tx.copy()
-                        robot_state['transactions'] = [_tx for _tx in robot_state['transactions'] if
-                                                       _tx['tx_id'] != tx_id]
-
-                        break
-                if not transaction:
-                    time.sleep(1)
-                else:
-                    break
-            else:
-                logger.info("Tx not found for a task {}".format(task))
-                requests.post(f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage?chat_id={TELEGRAM_BOT_USER_ID}&text=%E2%9B%94Spot%20launch%20failed%0ATx%20matching%20failed")
-                return
 
         address = transaction.get('sender') if transaction else None
 
@@ -208,7 +186,8 @@ def spot_logic_process(actions_queue, drawing_queue, robot_state):
         if task['task_type'] == 'drawing':
             execute_drawing_command(task, transaction)
         elif task['task_type'] == 'inspection':
-            execute_inspection_command(task, transaction)
+            if transaction['sender'] in ADMIN_ACCOUNTS:
+                execute_inspection_command(task, transaction)
         robot_state['current_user'] = None
 
     while True:

@@ -43,3 +43,5 @@ WEB3_STORAGE_API_KEY = os.environ["WEB3_STORAGE_API_KEY"]
 
 TELEGRAM_BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 TELEGRAM_BOT_USER_ID = os.environ["TELEGRAM_BOT_USER_ID"]
+
+IPFS_COMMAND_GATEWAY = os.getenv('IPFS_COMMAND_GATEWAY', 'https://merklebot.mypinata.cloud/ipfs')

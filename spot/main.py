@@ -24,7 +24,7 @@ def main():
     robot_state['current_user'] = None
     spot_controller_process = ctx.Process(target=spot_logic_process, args=(actions_queue, tasks_queue, robot_state))
     server_process = ctx.Process(target=server, args=(actions_queue, tasks_queue, robot_state))
-    robonomics_process = ctx.Process(target=robonomics_subscriber_process, args=(robot_state,))
+    robonomics_process = ctx.Process(target=robonomics_subscriber_process, args=(robot_state, tasks_queue))
 
     PROCESSES.append(spot_controller_process)
     PROCESSES.append(server_process)
