@@ -163,7 +163,7 @@ class DataRecorder:
             video_url = VIDEOSERVER_URL + "video"
             result_image_name = "result.jpg"
             result_drawing_name = "drawing.jpg"
-            result_helloween_name = "helloween.jpg"
+            result_nft_name = "LATAMDAY.jpg"
             self.video_recorder = subprocess.Popen(
                 ["python3.8", "video_recorder.py", "--video_url={}".format(video_url),
                  "--output_file={}/{}/{}".format(TRACES_DIR, self.record_folder_name,
@@ -173,7 +173,7 @@ class DataRecorder:
                  "--last_drawing_file={}/{}/{}".format(TRACES_DIR, self.record_folder_name,
                                                        result_drawing_name),
                  "--helloween_drawing_file={}/{}/{}".format(TRACES_DIR, self.record_folder_name,
-                                                            result_helloween_name)
+                                                            result_nft_name)
                  ])
 
     def stop_data_recording(self):
