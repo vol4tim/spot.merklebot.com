@@ -5,7 +5,7 @@ import urllib.request
 import numpy as np
 
 def make_helloween_card(drawing):
-  template = cv2.imread("NFT_SPOT_Helloween.jpeg")
+  template = cv2.imread("NFT_SPOT_LATAM.jpg")
   t_w, t_h, _ = template.shape
   mask_template = np.ones((t_h, t_w))*255
 
@@ -17,10 +17,10 @@ def make_helloween_card(drawing):
   cropped_mask = mask[y:y+h, x:x+w]
   cropped_mask = cv2.bitwise_not(cropped_mask)
 
-  template_area_x = 1700
-  template_area_y = 800
-  template_area_w = 2200
-  template_area_h = 1500
+  template_area_x = 358
+  template_area_y = 168
+  template_area_w = 463
+  template_area_h = 316
 
   if w>h:
     resized_mask = cv2.resize(cropped_mask, (template_area_w, int(template_area_w/w*h)), interpolation = cv2.INTER_AREA)
