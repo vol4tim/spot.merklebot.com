@@ -55,14 +55,14 @@
           </p>
         </div>
       </CardContainer>
-      <!--      <CardContainer class="mt-8" title="NFT data">-->
-      <!--        <NftInfo v-if="nftOrderInfo!==null" :info="nftOrderInfo" />-->
-      <!--        <div v-else>-->
-      <!--          <p class="text-md mt-2 text-white">-->
-      <!--            Your NFT data will appear here after minting.-->
-      <!--          </p>-->
-      <!--        </div>-->
-      <!--      </CardContainer>-->
+      <CardContainer class="mt-8" title="NFT data">
+        <NftInfo v-if="nftOrderInfo!==null" :info="nftOrderInfo" />
+        <div v-else>
+          <p class="text-md mt-2 text-white">
+            Your NFT data will appear here after minting.
+          </p>
+        </div>
+      </CardContainer>
     </div>
   </div>
 </template>
@@ -71,11 +71,11 @@ import { defineComponent, onMounted, ref } from '@nuxtjs/composition-api'
 import { useRobot } from '../store/robot'
 import {
   readRobonomicsLaunchTracesBySender,
-  makeIpfsFolderLink
+  makeIpfsFolderLink,
+  readNftOrderById
 } from '../plugins/merklebot'
 import { makeSubscanLink } from '~/plugins/robonomics'
 import Spinner from '~/components/Spinner'
-// import NftInfo from '~/components/NftInfo.vue'
 
 export default defineComponent({
   components: {
@@ -89,8 +89,8 @@ export default defineComponent({
     const launchTxId = ref(null)
     const datalogTxId = ref(null)
     const crustTxId = ref(null)
-    // const nftOrderId = ref(null)
-    // const nftOrderInfo = ref(null)
+    const nftOrderId = ref(null)
+    const nftOrderInfo = ref(null)
 
     const addressShort = (address) => {
       if (!address) {
@@ -102,7 +102,10 @@ export default defineComponent({
     const updateLaunchData = async () => {
       if (robot.cps.launch.txStatus) {
         try {
-          const res = await readRobonomicsLaunchTracesBySender({ launchTxId: `${robot.cps.launch.txInfo.blockNumber}-${robot.cps.launch.txInfo.txIndex}` })
+          let res = await readRobonomicsLaunchTracesBySender({ launchTxId: `${robot.cps.launch.txInfo.blockNumber}-${robot.cps.launch.txInfo.txIndex}` })
+          if (!res) {
+            res = await readRobonomicsLaunchTracesBySender({ launchTxId: `${robot.cps.launch.txInfo.blockNumber - 1}-${robot.cps.launch.txInfo.txIndex}` })
+          }
           console.log(res)
           if (res) {
             robot.cps.launch.recordData = res
@@ -117,13 +120,13 @@ export default defineComponent({
             launchTxId.value = res.launch_tx_id
             datalogTxId.value = res.datalog_tx_id
             crustTxId.value = res.crust_tx_id
-            // nftOrderId.value = res.nft_order_id
+            nftOrderId.value = res.nft_order_id
           }
-          // if (nftOrderId.value) {
-          //   const nftData = await readNftOrderById(nftOrderId.value)
-          //   robot.setNftData(nftData)
-          //   nftOrderInfo.value = nftData
-          // }
+          if (nftOrderId.value) {
+            const nftData = await readNftOrderById(nftOrderId.value)
+            robot.setNftData(nftData)
+            nftOrderInfo.value = nftData
+          }
         } catch (e) {
 
         }
@@ -144,8 +147,8 @@ export default defineComponent({
       crustTxId,
       addressShort,
       makeSubscanLink,
-      makeIpfsFolderLink
-      // nftOrderInfo
+      makeIpfsFolderLink,
+      nftOrderInfo
     }
   }
 })
