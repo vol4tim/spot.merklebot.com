@@ -63,9 +63,9 @@ def after_session_complete(
         print("web3.storage car upload: {}".format(web3_storage_resp.json()))
     except Exception as e:
         print(f'web3 storage upload error: {e}')
-    # nft_order = create_halloween_nft_order(customer_address=sender, launch_tx_hash=launch_event_id,
-    #                    image_url=f"https://merklebot.mypinata.cloud/ipfs/{ipfs_cid}/{record_folder_name}/helloween.jpg")
-    # update_launch_trace(record_id, {'nft_order_id': nft_order["id"]})
+    nft_order = create_halloween_nft_order(customer_address=sender, launch_tx_hash=launch_event_id,
+                       image_url=f"https://merklebot.mypinata.cloud/ipfs/{ipfs_cid}/{record_folder_name}/LATAMDAY.jpg")
+    update_launch_trace(record_id, {'nft_order_id': nft_order["id"]})
     datalog_extrinsic_hash = record_datalog(ipfs_cid)
     update_launch_trace(record_id, {'datalog_tx_id': datalog_extrinsic_hash})
 
