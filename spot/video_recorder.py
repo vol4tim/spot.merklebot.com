@@ -6,7 +6,7 @@ import numpy as np
 
 
 def make_helloween_card(drawing):
-    template = cv2.imread("NFT_SPOT_LATAM.jpg")
+    template = cv2.imread("NFT_SPOT_HOLIDAYS.jpeg")
     t_w, t_h, _ = template.shape
     mask_template = np.ones((t_h, t_w)) * 255
 
@@ -18,28 +18,28 @@ def make_helloween_card(drawing):
     cropped_mask = mask[y:y + h, x:x + w]
     cropped_mask = cv2.bitwise_not(cropped_mask)
 
-    template_area_x = 358
-    template_area_y = 168
-    template_area_w = 463
-    template_area_h = 316
+    template_area_x = 735
+    template_area_y = 50
+    template_area_w = 700
+    template_area_h = 520
 
     if w > h:
         resized_mask = cv2.resize(cropped_mask, (template_area_w, int(template_area_w / w * h)),
                                   interpolation=cv2.INTER_AREA)
-        resized_mask = cv2.blur(resized_mask, (3, 3))
+        resized_mask = cv2.blur(resized_mask, (5, 5))
         mask_template[template_area_y:template_area_y + int(template_area_w / w * h),
         template_area_x:template_area_x + template_area_w] = resized_mask[:, :]
     else:
         resized_mask = cv2.resize(cropped_mask, (int(template_area_h / h * w), template_area_h),
                                   interpolation=cv2.INTER_AREA)
-        resized_mask = cv2.blur(resized_mask, (3, 3))
+        resized_mask = cv2.blur(resized_mask, (5, 5))
         mask_template[template_area_y:template_area_y + template_area_h,
         template_area_x:template_area_x + int(template_area_h / h * w)] = resized_mask[:, :]
 
     mask_template = (mask_template > 0) * 255
     mask_template = mask_template.astype('uint8')
-
-    return cv2.bitwise_and(template, template, mask=mask_template)
+    template[mask_template==0] = [255,255,255]
+    return template#cv2.bitwise_and(template, template, mask=mask_template)
 
 
 def start_record(video_url, output_path, last_im_file, last_drawing_file, helloween_drawing_file):
