@@ -21,7 +21,7 @@ from utils.logger import logger
 
 def robonomics_subscriber_process(robot_state, tasks_queue):
     datadog_options = {
-        'statsd_host': '127.0.0.1',
+        'statsd_host': '172.17.0.1',
         'statsd_port': 8125,
         'statsd_namespace': 'strelka',
         'statsd_constant_tags': [
