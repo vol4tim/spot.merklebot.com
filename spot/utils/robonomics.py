@@ -1,4 +1,5 @@
 import os
+import traceback
 
 import requests
 from substrateinterface import SubstrateInterface
@@ -86,4 +87,5 @@ class RobonimicsHelper:
                     addr="4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j",
                 )
             except:
+                traceback.print_exc()
                 logger.error("Error while connecting to robonomics, restart subscriber...")
