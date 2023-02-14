@@ -1,5 +1,5 @@
 <template>
-  <div class="flex">
+  <div class="bg-gray-800 flex">
     <div
       class="overflow-x-hidden overflow-y-auto snap-y snap-mandatory"
     >

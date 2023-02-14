@@ -1,17 +1,25 @@
 <template>
   <main class="bg-gray-800 font-mono">
-    <div v-if="screenSize.w >= minScreenSize.w && screenSize.h >= minScreenSize.h" class="z-20 container mx-auto flex flex-row flex-wrap justify-center">
+    <div
+      v-if="screenSize.w >= minScreenSize.w && screenSize.h >= minScreenSize.h"
+      class="z-20 container mx-auto flex flex-row flex-wrap justify-center"
+    >
       <div class="basis-5/12">
-        <AlwaysVisibleBlock />
+        <div class="px-6 py-4 sticky top-0">
+          <AlwaysVisibleBlock />
+        </div>
       </div>
 
       <div class="basis-7/12">
         <ActivitiesBlock />
       </div>
     </div>
-    <div v-else class="flex items-center justify-items-center w-full h-screen">
-      <div class="container w-full max-h-fit text-center font-bold text-orange-600">
-        Please open on a desktop computer in a window larger than {{ minScreenSize.w }} x {{ minScreenSize.h }}
+    <div v-else class="items-center justify-items-center w-full h-screen">
+      <div>
+        <AlwaysVisibleBlock />
+      </div>
+      <div>
+        <ActivitiesBlock />
       </div>
     </div>
   </main>
