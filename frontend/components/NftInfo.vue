@@ -9,7 +9,7 @@
     <p class="text-md mt-2 text-white">
       NFT Link: <a
         v-if="['minted', 'delivered'].includes(robot.nftData.status)"
-        :href="makeNftUrl('b437f70371c8622e02', 'MBOTNY2023', robot.nftData.nft_mint_block_number, robot.nftData.nft_serial_num)"
+        :href="makeNftUrl('b437f70371c8622e02', 'MBVD-2023', robot.nftData.nft_mint_block_number, robot.nftData.nft_serial_num)"
         class="text-yellow-500"
         target="_blank"
         rel="noopener noreferrer"
