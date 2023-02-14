@@ -8,6 +8,7 @@ import datadog
 
 from settings.settings import INTERACTION_MODE, IPFS_COMMAND_GATEWAY
 from utils.logger import logger
+import time
 
 def get_account_nonce(address) -> int:
     substrate = SubstrateInterface(
@@ -89,3 +90,4 @@ class RobonimicsHelper:
             except:
                 traceback.print_exc()
                 logger.error("Error while connecting to robonomics, restart subscriber...")
+            time.sleep(5)
