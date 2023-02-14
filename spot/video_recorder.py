@@ -5,8 +5,8 @@ import urllib.request
 import numpy as np
 
 
-def make_helloween_card(drawing):
-    template = cv2.imread("NFT_SPOT_HOLIDAYS.jpeg")
+def make_nft_card(drawing):
+    template = cv2.imread("NFT_SPOT_VALENTINE.jpg")
     t_w, t_h, _ = template.shape
     mask_template = np.ones((t_h, t_w)) * 255
 
@@ -18,10 +18,11 @@ def make_helloween_card(drawing):
     cropped_mask = mask[y:y + h, x:x + w]
     cropped_mask = cv2.bitwise_not(cropped_mask)
 
-    template_area_x = 735
-    template_area_y = 50
-    template_area_w = 700
-    template_area_h = 520
+    template_area_x = int(0.43 * t_w)
+    template_area_y = int(0.15 * t_w)
+    template_area_w = int(0.41 * t_w)
+    template_area_h = int(0.30 * t_w)
+
 
     if w > h:
         resized_mask = cv2.resize(cropped_mask, (template_area_w, int(template_area_w / w * h)),
@@ -42,7 +43,7 @@ def make_helloween_card(drawing):
     return template#cv2.bitwise_and(template, template, mask=mask_template)
 
 
-def start_record(video_url, output_path, last_im_file, last_drawing_file, helloween_drawing_file):
+def start_record(video_url, output_path, last_im_file, last_drawing_file, nft_drawing_file):
     stream = cv2.VideoCapture(video_url)
 
     width = int(stream.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -69,8 +70,8 @@ def start_record(video_url, output_path, last_im_file, last_drawing_file, hellow
             arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
             last_drawing = cv2.imdecode(arr, -1)
             cv2.imwrite(last_drawing_file, last_drawing, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
-            helloween_img = make_helloween_card(last_drawing)
-            cv2.imwrite(helloween_drawing_file, helloween_img, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
+            helloween_img = make_nft_card(last_drawing)
+            cv2.imwrite(nft_drawing_file, helloween_img, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
         stream.release()
         out.release()
 
@@ -83,9 +84,9 @@ if __name__ == '__main__':
                         help='Last image file (save after process interruption)')
     parser.add_argument("--last_drawing_file", dest='last_drawing_file', required=True, type=str,
                         help='Last drawing file (save after process interruption)')
-    parser.add_argument("--helloween_drawing_file", dest='helloween_drawing_file', required=True, type=str,
+    parser.add_argument("--nft_drawing_file", dest='nft_drawing_file', required=True, type=str,
                         help='Last drawing file (save after process interruption)')
 
     args = parser.parse_args()
     start_record(args.video_url, args.output_file, args.last_im_file, args.last_drawing_file,
-                 args.helloween_drawing_file)
+                 args.nft_drawing_file)
