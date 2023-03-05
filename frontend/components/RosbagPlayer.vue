@@ -7,7 +7,19 @@
       >
     </div>
     <div>status: {{ status }}</div>
-    <div ref="stage" class="stage" />
+    <div :class="{width: FRAME_WIDTH}">
+      <div ref="stage" class="stage" />
+      <div v-if="frameMax>0" class="mt-10 mb-10">
+        <vue-slider v-model="frameNum" :max="frameMax" :drag-on-click="true" @change="sliderChooseFrame" />
+        <div class="mt-4">
+          <button class="rounded bg-blue-500 focus:outline-none m-2 p-2" @click="()=>{isPlaying=!isPlaying}">
+            <i class="fa fa-play fa-2x text-white">
+              {{ isPlaying?"Stop":"Play" }}
+            </i>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -17,9 +29,16 @@ import { LoaderUtils } from 'three'
 import { XacroLoader } from 'xacro-parser'
 import { open } from 'rosbag'
 import URDFLoader from 'urdf-loader'
+import VueSlider from 'vue-slider-component'
+import 'vue-slider-component/theme/default.css'
+
 import { defineComponent, ref, onMounted } from '@nuxtjs/composition-api'
 
+const FRAME_WIDTH = 800
+const FRAME_HEIGHT = 500
+
 export default defineComponent({
+  components: { VueSlider },
   props: ['rosUrl', 'urdfUrl'],
   setup (props) {
     console.log(props)
@@ -28,6 +47,12 @@ export default defineComponent({
     const url = props.urdfUrl
     const status = ref('wait')
     const stage = ref(null)
+    const frameNum = ref(0)
+    const frameMax = ref(0)
+    const isPlaying = ref(false)
+    const timerId = ref(null)
+
+    const topicsData = []
 
     const initialRobotPositionOffset = ref(null)
     const bodyTf = ref(null)
@@ -75,7 +100,7 @@ export default defineComponent({
       status.value = 'urdf loaded'
     })
 
-    renderer.setSize(800, 500)
+    renderer.setSize(FRAME_WIDTH, FRAME_HEIGHT)
     light.position.set(5, 5, 0)
 
     scene.background = new THREE.Color('hsl(0, 100%, 100%)')
@@ -118,10 +143,31 @@ export default defineComponent({
       }
     }
 
+    const sliderChooseFrame = (chosenFrameNum) => {
+      frameNum.value = chosenFrameNum
+    }
+
+    const playFrame = () => {
+      console.log(isPlaying.value)
+      const frame = topicsData[frameNum.value]
+      robotJoints.value = frame.robotJoints
+      bodyTf.value = frame.bodyTf
+
+      if (isPlaying.value === true) {
+        if (frameNum.value < frameMax.value) {
+          frameNum.value += 1
+        }
+      }
+    }
+
     const loadRosbag = async () => {
+      if (timerId.value) {
+        clearInterval(timerId)
+        frameMax.value = 0
+        frameNum.value = 0
+      }
       const bag = await open(file.value)
       const rosMessages = []
-      const topicsData = []
       let lastTopicFrame = {}
 
       await bag.readMessages({ topics: ['/tf', '/joint_states'] }, (result) => {
@@ -147,14 +193,11 @@ export default defineComponent({
           lastTopicFrame = {}
         }
       })
-      for (let i = 0; i < topicsData.length; i++) {
-        const frame = topicsData[i]
-        setTimeout(() => {
-          console.log(frame)
-          robotJoints.value = frame.robotJoints
-          bodyTf.value = frame.bodyTf
-        }, i * 50)
-      }
+      frameMax.value = topicsData.length
+      console.log('Frames number', frameMax.value)
+      timerId.value = setInterval(() => {
+        playFrame()
+      }, 40)
     }
 
     const onFileChanged = ($event) => {
@@ -169,24 +212,6 @@ export default defineComponent({
     onMounted(() => {
       stage.value.appendChild(renderer.domElement)
       animate()
-
-      // robotDataSocket.onopen = (e) => {
-      //   console.log('Connection established')
-      // }
-      // robotDataSocket.onmessage = function (event) {
-      //   const data = JSON.parse(event.data)
-      //   console.log(data)
-      //   const robotData = data.robot
-      //   robotJoints.value = robotData.topics['/joint_states']
-      //   const tfData = robotData.topics['/tf']
-      //   if (tfData.transforms.length === 4) {
-      //     tfData.transforms.forEach((transform) => {
-      //       if (transform.child_frame_id === 'body') {
-      //         bodyTf.value = transform.transform
-      //       }
-      //     })
-      //   }
-      // }
     })
 
     return {
@@ -197,7 +222,13 @@ export default defineComponent({
       axes,
       stage,
       status,
-      onFileChanged
+      onFileChanged,
+      frameNum,
+      frameMax,
+      sliderChooseFrame,
+      isPlaying,
+      FRAME_WIDTH,
+      FRAME_HEIGHT
     }
   }
 })
