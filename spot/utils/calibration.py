@@ -43,6 +43,7 @@ def calibration_movement(sc, get_spot_face_on_camera_coords):
 
     for i in range(len(yaws)):
         sc.move_head_in_points(yaws=yaws[i:i + 1], pitches=pitches[i:i + 1], rolls=rolls[i:i + 1])
+        time.sleep(0.3)
         x, y = get_spot_face_on_camera_coords()
         calibration_result["x"].append(x)
         calibration_result["y"].append(y)
