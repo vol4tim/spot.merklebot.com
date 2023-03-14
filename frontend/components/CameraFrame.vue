@@ -3,16 +3,27 @@
     <!--    <VideoContainer/>-->
     <!-- <img style="display: block;-webkit-user-select: none;margin: auto;background-color: hsl(0, 0%, 25%);" src="http://10.200.0.8:8000/video"> -->
 
-    <img
-      v-if="imageLoaded"
-      ref="image"
-      class="w-full"
-      style="display: block;-webkit-user-select: none;margin: auto;background-color: hsl(0, 0%, 25%);"
-      src="https://api.merklebot.com/videoserver/video"
-      :style="interactionMode==='drawing'?{'aspect-ratio': '4/3', 'object-fit': 'cover'}:{}"
-      @click="onClickImage"
-      @error="onImageError"
-    >
+    <!--    <img-->
+    <!--      v-if="imageLoaded"-->
+    <!--      ref="image"-->
+    <!--      class="w-full"-->
+    <!--      style="display: block;-webkit-user-select: none;margin: auto;background-color: hsl(0, 0%, 25%);"-->
+    <!--      src="https://api.merklebot.com/videoserver/video"-->
+    <!--      :style="interactionMode==='drawing'?{'aspect-ratio': '4/3', 'object-fit': 'cover'}:{}"-->
+    <!--      @click="onClickImage"-->
+    <!--      @error="onImageError"-->
+    <!--    >-->
+    <div>
+      <iframe
+        style="display: block;-webkit-user-select: none;margin: auto;background-color: hsl(0, 0%, 25%);"
+        src="https://player.twitch.tv/?channel=merklebotStreamer&amp;parent=spot.merklebot.com"
+        frameborder="0"
+        allowfullscreen="true"
+        scrolling="no"
+        height="350"
+        class="w-full"
+      />
+    </div>
     <p v-if="!imageLoaded" class="text-3xl my-6 text-center text-red-600">
       Camera isn't loaded
     </p>
