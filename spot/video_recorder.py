@@ -6,7 +6,7 @@ import numpy as np
 
 
 def make_nft_card(drawing):
-    template = cv2.imread("NFT_SPOT_VALENTINE.jpg")
+    template = cv2.imread("NFT_SPOT_AUSTIN.jpeg")
     t_w, t_h, _ = template.shape
     mask_template = np.ones((t_h, t_w)) * 255
 

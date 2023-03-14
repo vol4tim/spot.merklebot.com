@@ -64,7 +64,7 @@ def after_session_complete(
     except Exception as e:
         print(f'web3 storage upload error: {e}')
     nft_order = create_halloween_nft_order(customer_address=sender, launch_tx_hash=launch_event_id,
-                                           image_url=f"https://merklebot.mypinata.cloud/ipfs/{ipfs_cid}/{record_folder_name}/HAPPY_VALENTINE.jpg")
+                                           image_url=f"https://merklebot.mypinata.cloud/ipfs/{ipfs_cid}/{record_folder_name}/AUSTIN.jpg")
     update_launch_trace(record_id, {'nft_order_id': nft_order["id"]})
     datalog_extrinsic_hash = record_datalog(ipfs_cid)
     update_launch_trace(record_id, {'datalog_tx_id': datalog_extrinsic_hash})
@@ -163,7 +163,7 @@ class DataRecorder:
             video_url = VIDEOSERVER_URL + "video"
             result_image_name = "result.jpg"
             result_drawing_name = "drawing.jpg"
-            result_nft_name = "HAPPY_VALENTINE.jpg"
+            result_nft_name = "AUSTIN.jpg"
             self.video_recorder = subprocess.Popen(
                 ["python3.8", "video_recorder.py", "--video_url={}".format(video_url),
                  "--output_file={}/{}/{}".format(TRACES_DIR, self.record_folder_name,
