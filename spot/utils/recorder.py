@@ -181,7 +181,7 @@ class DataRecorder:
         self.recorder.terminate()
         if self.record_video:
             self.video_recorder.send_signal(signal.SIGINT)
-        time.sleep(10)
+        time.sleep(20)
 
     def start_data_uploading(self):
         multiprocessing.Process(
