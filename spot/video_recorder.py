@@ -63,7 +63,6 @@ def start_record(video_url, output_path, last_im_file, last_drawing_file, nft_dr
     except KeyboardInterrupt:
         print("Stop video recording...")
     finally:
-        print("\nVideo recording stopped")
         if last_frame is not None:
             cv2.imwrite(last_im_file, last_frame)
             req = urllib.request.urlopen('https://api.merklebot.com/videoserver/blackboard')
@@ -74,6 +73,8 @@ def start_record(video_url, output_path, last_im_file, last_drawing_file, nft_dr
             cv2.imwrite(nft_drawing_file, helloween_img, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
         stream.release()
         out.release()
+        print("\nVideo recording stopped")
+
 
 
 if __name__ == '__main__':
