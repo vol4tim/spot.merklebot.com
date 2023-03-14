@@ -86,7 +86,7 @@ def spot_logic_process(actions_queue, drawing_queue, robot_state):
                         sc.move_to_draw(start_drawing_trigger_handler=notify_start_line,
                                         end_drawing_trigger_handler=notify_stop_line,
                                         xx=xx, yy=yy)
-                        time.sleep(0.8)
+                        time.sleep(0.1)
 
                 logger.info("Movement finished")
                 # print("Ready to turn off")

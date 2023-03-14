@@ -161,8 +161,10 @@ class SpotController:
 
         self.move_head_in_points(yaws=yaws[0:1], pitches=pitches[0:1], rolls=rolls[0:1], body_height=body_height)
         start_drawing_trigger_handler()
+        time.sleep(0.2)
         self.move_head_in_points(yaws=yaws[1:], pitches=pitches[1:], rolls=rolls[1:], body_height=body_height)
         end_drawing_trigger_handler()
+        time.sleep(0.2)
 
     def interpolate_coords(self, x, y):
         return float(self.yaw_interpolate(x, y)), float(self.pitch_interpolate(x, y)), 0
