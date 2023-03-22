@@ -43,6 +43,12 @@
             >{{ addressShort(crustTxId) }}</a>
             <Spinner v-else />
           </p>
+          <p class="text-md mt-2 text-white">
+            Filecoin: Information will appear <NuxtLink :to="`/records/${launchTxId}`">
+              here
+            </NuxtLink> during 48 hours...
+            <Spinner />
+          </p>
 
           <div class="flex items-left justify-left m-4">
             <video :src="`${makeIpfsFolderLink(traceInfo)}/h264_camera.mp4`" type="video/mp4" controls />

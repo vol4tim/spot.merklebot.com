@@ -68,10 +68,9 @@ export default defineComponent({
         return showSession
       })
     })
-    console.log(sessions.value)
     useFetch(async () => {
-      const dbSessions = await readRobonomicsLaunchTracesBySender({ skip: 0 })
-      dbSessions.reverse().forEach((session) => {
+      const dbSessions = await readRobonomicsLaunchTracesBySender({ skip: 800 })
+      dbSessions.sort((a, b) => b.id - a.id).forEach((session) => {
         session.traceFolderLink = makeIpfsFolderLink(
           {
             ipfsCid: session.ipfs_cid,

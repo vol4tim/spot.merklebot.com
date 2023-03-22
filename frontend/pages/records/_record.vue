@@ -133,8 +133,12 @@ export default defineComponent({
       launchTxId.value = res.launch_tx_id
       datalogTxId.value = res.datalog_tx_id
       crustTxId.value = res.crust_tx_id
-      const providersRes = await getFilecoinProvidersByipfsCid(res.ipfs_cid)
-      providers.value = providersRes.providers
+      try {
+        const providersRes = await getFilecoinProvidersByipfsCid(res.ipfs_cid)
+        providers.value = providersRes.providers
+      } catch (e) {
+        providers.value = []
+      }
 
       if (res.crust_tx_id) {
         crustFileInfo.value = await getCrustFileInfo(res.ipfs_cid)
