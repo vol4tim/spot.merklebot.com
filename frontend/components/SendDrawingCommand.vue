@@ -1,6 +1,6 @@
 <template>
   <PayWithToggle>
-    <template #ticket>
+    <!-- <template #ticket>
       <div class="w-full px-2 bg-gray-600 relative">
         <p class="text-md my-4 mb-16 text-white text-center">
           You have {{
@@ -25,7 +25,7 @@
           Launch for 1 ticket
         </button>
       </div>
-    </template>
+    </template> -->
     <template #XRT>
       <div class="w-full px-2 bg-gray-600 relative">
         <p class="text-md my-4 mb-16 text-white text-center">
@@ -52,8 +52,8 @@
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api'
 import { computed } from '@nuxtjs/composition-api'
+import { defineComponent } from '@vue/composition-api'
 import { useDAppParameters } from '~/store'
 import { useRobot } from '~/store/robot'
 import { useWallet } from '~/store/wallet'

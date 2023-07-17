@@ -2,30 +2,6 @@
   <div class="w-full">
     <div>
       <PayWithToggle>
-        <template #ticket>
-          <div class="w-full px-2 bg-gray-600 relative">
-            <p class="text-md my-4 mb-2 text-white text-center">
-              You have {{
-                wallet.selectedAccount.tickets.filter(
-                  (ticket) => ticket.spent === false
-                ).length
-              }}
-              tickets
-            </p>
-            <button
-              type="button"
-              class="uppercase text-md w-full py-2 my-2 px-4 bg-gray-200 text-gray-800
-                hover:bg-gray-800 hover:bg-gray-100 hover:text-white"
-              @click="checkout"
-            >
-              <span>Get ticket</span>
-              <img
-                class="h-6 ml-2 inline-block bg-indigo-400 rounded-lg"
-                src="stripe.svg"
-              >
-            </button>
-          </div>
-        </template>
         <template #XRT>
           <div class="w-full px-2 bg-gray-600 relative">
             <p class="text-md my-4 mb-16 text-white text-center">
@@ -61,22 +37,12 @@
 </template>
 
 <script>
-import { defineComponent, computed } from '@nuxtjs/composition-api'
+import { computed, defineComponent } from '@nuxtjs/composition-api'
 import { useWallet } from '../store/wallet'
-import { createSpotDemoTicketStripePurchaseSession } from '../plugins/merklebot'
-import { getStripe } from '@/plugins/stripe'
 
 export default defineComponent({
   setup () {
     const wallet = useWallet()
-
-    const checkout = async () => {
-      const stripeSessionId = await createSpotDemoTicketStripePurchaseSession(
-        wallet.selectedAccount.account.address
-      )
-      const stripe = await getStripe()
-      await stripe.redirectToCheckout({ sessionId: stripeSessionId })
-    }
 
     const hasEnoughXrt = computed(() => {
       return wallet.selectedAccount.balanceRaw * 10 ** -9 > 1
@@ -92,7 +58,6 @@ export default defineComponent({
 
     return {
       wallet,
-      checkout,
       hasEnoughXrt,
       hasTicket
     }

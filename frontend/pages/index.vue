@@ -27,14 +27,16 @@
 
 <script>
 import { defineComponent, onMounted, ref, useRoute } from '@nuxtjs/composition-api'
+
 import { useRobot } from '../store/robot'
+
 import { useWallet } from '~/store/wallet'
 
 export default defineComponent({
   setup () {
     const robot = useRobot()
     const wallet = useWallet()
-    // wallet.connectWallet()
+    wallet.connectWallet()
 
     const doRobotStatePolling = async () => {
       try {
