@@ -1,5 +1,5 @@
 import { Contract } from '@ethersproject/contracts'
-import { formatEther, formatUnits } from '@ethersproject/units'
+import { formatUnits } from '@ethersproject/units'
 import { useWeb3 } from '@instadapp/vue-web3'
 import { watch } from '@nuxtjs/composition-api'
 import { defineStore } from 'pinia'
@@ -36,20 +36,8 @@ export const useWallet = defineStore('wallet', {
       }
     },
     setActiveAccount (account) {
-      const { library, chainId } = useWeb3()
+      const { library } = useWeb3()
       this.selectedAccount.account = { address: account }
-
-      watch([account, library, chainId], () => {
-        if (!!library.value && !!account.value) {
-          library.value
-            .getBalance(account.value)
-            .then((value) => {
-              this.selectedAccount.balanceRaw = value
-              this.selectedAccount.balanceFormatted = formatEther(value) + ' XRT'
-            })
-            .catch(() => {})
-        }
-      })
 
       const xrtAddress = '0x7dE91B204C1C737bcEe6F000AAA6569Cf7061cb7'
       const contract = new Contract(xrtAddress, xrtAbi, library.value)

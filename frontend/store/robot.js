@@ -1,17 +1,27 @@
+import { Contract } from '@ethersproject/contracts'
+import { parseUnits } from '@ethersproject/units'
+import { useWeb3 } from '@instadapp/vue-web3'
+import { base58_to_binary as base58Encode, binary_to_base58 as base58decode } from 'base58-js'
 import Hash from 'ipfs-only-hash'
 import { defineStore } from 'pinia'
-
-import { Contract } from '@ethersproject/contracts'
-import { useWeb3 } from '@instadapp/vue-web3'
 import utils from 'web3-utils'
 import factoryAbi from '../abi/factory.json'
+import xrtAbi from '../abi/xrt.json'
 
+import { decodeMsg, encodeMsg, getIpfs } from '~/plugins/ipfs'
 import { uploadCommandParamsToIpfs } from '~/plugins/merklebot'
 
 const xrtAddress = '0x7dE91B204C1C737bcEe6F000AAA6569Cf7061cb7'
 const factoryAddress = '0x7e384AD1FE06747594a6102EE5b377b273DC1225'
 const lighthouseAddress = '0xD40AC7F1e5401e03D00F5aeC1779D8e5Af4CF9f1'
 const validatorAddress = '0x0000000000000000000000000000000000000000'
+const model = 'QmPusVLw9Gd7xQX77auWtHABqpkpiPz6469xxbkGe7Ru9r'
+const topic = 'airalab.lighthouse.5.robonomics.eth'
+
+function hexToStr (hex) {
+  const bytes = utils.hexToBytes(hex)
+  return base58decode(Buffer.from(bytes)).toString('utf8')
+}
 
 function demandHash (demand) {
   return utils.soliditySha3(
@@ -28,21 +38,14 @@ function demandHash (demand) {
   )
 }
 
-function encode (msg) {
-  if (msg.signature) {
-    msg.signature = msg.signature.replace(/0x/i, '')
-  }
-  return Buffer.from(JSON.stringify(msg))
-}
-
-async function demand (library, account) {
+async function demand (library, account, objective) {
   const factoryContract = new Contract(factoryAddress, factoryAbi, library)
   const nonce = await factoryContract.nonceOf(account)
   const block = await library.getBlockNumber()
   const demandData =
   {
-    model: utils.randomHex(34),
-    objective: utils.randomHex(34),
+    model: utils.bytesToHex(base58Encode(model)),
+    objective: utils.bytesToHex(base58Encode(objective)),
     token: xrtAddress,
     cost: 1,
     lighthouse: lighthouseAddress,
@@ -57,7 +60,18 @@ async function demand (library, account) {
   const signer = await library.getSigner()
   demandData.signature = (await signer.signMessage(hash))
 
-  return encode(demandData)
+  return encodeMsg(demandData)
+}
+
+async function getApprove (library, account) {
+  const xrtContract = new Contract(xrtAddress, xrtAbi, library)
+  return await xrtContract.allowance(account, factoryAddress)
+}
+async function approve (library, value) {
+  const xrtContract = new Contract(xrtAddress, xrtAbi, await library.getSigner())
+  const tx = await xrtContract.approve(factoryAddress, value)
+  console.log(tx.hash)
+  await tx.wait()
 }
 
 export const useRobot = defineStore('robot', {
@@ -95,8 +109,21 @@ export const useRobot = defineStore('robot', {
       console.log(commandParamsJSON)
 
       const { library, account } = useWeb3()
-      const msg = await demand(library.value, account.value)
-      console.log(msg)
+
+      const allowance = await getApprove(library.value, account.value)
+      if (allowance.lt(parseUnits('1', 9))) {
+        await approve(library.value, parseUnits('100', 9))
+      }
+
+      const ipfs = getIpfs()
+      ipfs.pubsub.subscribe(topic, (r) => {
+        const msg = decodeMsg(r.data)
+        if (msg.model && hexToStr(msg.model) === model) {
+          console.log(msg)
+        }
+      }, { discover: true })
+      const msg = await demand(library.value, account.value, commandParamsHash)
+      ipfs.pubsub.publish(topic, msg)
 
       // const launchTx = await makeLaunchTx(this.cps.address, commandParamsHash)
       // this.cps.status = 'wait_tx'

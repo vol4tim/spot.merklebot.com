@@ -39,6 +39,7 @@
     "@web3-react/network-connector": "^6.2.9",
     "@web3-react/walletconnect-connector": "^6.2.13",
     "babel-loader": "^8.2.5",
+    "base58-js": "^2.0.0",
     "cids": "^1.1.9",
     "clientjs": "^0.2.1",
     "core-js": "^3.19.3",
