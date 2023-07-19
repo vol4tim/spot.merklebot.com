@@ -66,6 +66,10 @@ async function getPromisee (library, address) {
   const liability = new library.eth.Contract(liabilityAbi, address)
   return await liability.methods.promisee().call()
 }
+async function getResult (library, address) {
+  const liability = new library.eth.Contract(liabilityAbi, address)
+  return await liability.methods.result().call()
+}
 async function getApprove (library, account) {
   const xrtContract = new library.eth.Contract(xrtAbi, xrtAddress)
   return await xrtContract.methods.allowance(account, factoryAddress).call()
@@ -153,7 +157,7 @@ export const useRobot = defineStore('robot', {
           if (msg.liability && await getPromisee(library.value, msg.liability) === account.value) {
             this.cps.liability.address = msg.liability
           }
-          if (msg.finalized && this.cps.liability.address) {
+          if (msg.finalized && this.cps.liability.address && await getResult(library.value, this.cps.liability.address)) {
             this.cps.liability.result = msg.finalized
           }
           if (msg.nftContract) {
