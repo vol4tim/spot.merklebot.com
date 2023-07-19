@@ -9,16 +9,10 @@ export function decodeMsg (msg) {
     throw new Error(e)
   }
   const data = { ...json }
-  if (data.signature) {
-    data.signature = '0x' + data.signature.replace(/0x/i, '')
-  }
   return data
 }
 
 export function encodeMsg (msg) {
-  if (msg.signature) {
-    msg.signature = msg.signature.replace(/0x/i, '')
-  }
   return Buffer.from(JSON.stringify(msg))
 }
 

@@ -1,4 +1,3 @@
-import { Contract } from '@ethersproject/contracts'
 import { parseUnits } from '@ethersproject/units'
 import { useWeb3 } from '@instadapp/vue-web3'
 import { base58_to_binary as base58Encode } from 'base58-js'
@@ -27,38 +26,46 @@ function demandHash (demand) {
   )
 }
 
+function setPrefix (hash) {
+  return utils.soliditySha3(
+    {
+      type: 'bytes',
+      value: utils.stringToHex('\x19Ethereum Signed Message:\n32')
+    },
+    { type: 'bytes', value: hash }
+  )
+}
+
 async function demand (library, account, objective) {
-  const factoryContract = new Contract(factoryAddress, factoryAbi, library)
-  const nonce = await factoryContract.nonceOf(account)
-  const block = await library.getBlockNumber()
+  const factoryContract = new library.eth.Contract(factoryAbi, factoryAddress)
+  const nonce = await factoryContract.methods.nonceOf(account).call()
+  const block = await library.eth.getBlockNumber()
   const demandData =
   {
     model: utils.bytesToHex(base58Encode(model)),
-    objective: utils.bytesToHex(base58Encode(objective)),
+    objective: library.utils.toHex(objective),
     token: xrtAddress,
     cost: 1,
     lighthouse: lighthouseAddress,
     validator: validatorAddress,
     validatorFee: 0,
     deadline: block + 1000,
-    nonce,
+    nonce: Number(nonce.toString()),
     sender: account,
     signature: ''
   }
   const hash = demandHash(demandData)
-  const signer = await library.getSigner()
-  demandData.signature = (await signer.signMessage(hash))
-
+  demandData.signature = await library.eth.sign(setPrefix(hash), account)
   return encodeMsg(demandData)
 }
 
 async function getApprove (library, account) {
-  const xrtContract = new Contract(xrtAddress, xrtAbi, library)
-  return await xrtContract.allowance(account, factoryAddress)
+  const xrtContract = new library.eth.Contract(xrtAbi, xrtAddress)
+  return await xrtContract.methods.allowance(account, factoryAddress).call()
 }
-async function approve (library, value) {
-  const xrtContract = new Contract(xrtAddress, xrtAbi, await library.getSigner())
-  const tx = await xrtContract.approve(factoryAddress, value)
+async function approve (library, value, account) {
+  const xrtContract = new library.eth.Contract(xrtAbi, xrtAddress)
+  const tx = await xrtContract.methods.approve(factoryAddress, value).send({ from: account })
   return tx
 }
 
@@ -110,10 +117,10 @@ export const useRobot = defineStore('robot', {
       const { library, account } = useWeb3()
 
       const allowance = await getApprove(library.value, account.value)
-      if (allowance.lt(parseUnits('1', 9))) {
+      if (Number(allowance) < parseUnits('1', 9).toNumber()) {
         const tx = await approve(library.value, parseUnits('100', 9))
-        this.cps.approve.tx = tx.hash
-        await tx.wait()
+        this.cps.approve.tx = tx.transactionHash
+        // await tx.wait()
         this.cps.approve.status = true
       } else {
         this.cps.approve.status = true
@@ -139,24 +146,6 @@ export const useRobot = defineStore('robot', {
       ipfs.pubsub.publish(topic, msg)
       this.cps.status = 'wait_tx'
       this.cps.launch.txStatus = 'accepted'
-
-      setTimeout(() => {
-        ipfs.pubsub.publish(topic, encodeMsg({ liability: '0x123123123' }))
-      }, 15000)
-      setTimeout(() => {
-        ipfs.pubsub.publish(topic, encodeMsg({ finalized: true }))
-      }, 20000)
-
-      // const launchTx = await makeLaunchTx(this.cps.address, commandParamsHash)
-      // this.cps.status = 'wait_tx'
-      // if (transferXrtAmount) {
-      //   // const transferTx = await makeTransferTx(this.cps.address, transferXrtAmount)
-      //   this.cps.launch.txInfo = await signAndSendTxsBatchWithActiveAccount([launchTx, transferTx])
-      // } else {
-      //   this.cps.launch.txInfo = await signAndSendTxWithActiveAccount(launchTx)
-      // }
-      // this.cps.launch.txStatus = 'accepted'
-      // this.cps.status = 'activated'
       return this.cps.launch
     },
     async updateRobotState () {

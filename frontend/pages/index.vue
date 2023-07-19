@@ -42,7 +42,7 @@ export default defineComponent({
     const { ipfs } = useIpfs()
     watch([ipfs], () => {
       if (ipfs.value) {
-        ipfs.value.pubsub.subscribe(topic, () => {}, { discover: true })
+        ipfs.value.pubsub.subscribe(topic, (r) => {}, { discover: true })
         setInterval(() => {
           ipfs.value.pubsub.peers(topic).then((peers) => {
             console.log('ipfs pubsub peers', peers)

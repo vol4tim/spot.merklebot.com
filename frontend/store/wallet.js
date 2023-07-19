@@ -1,4 +1,3 @@
-import { Contract } from '@ethersproject/contracts'
 import { formatUnits } from '@ethersproject/units'
 import { useWeb3 } from '@instadapp/vue-web3'
 import { watch } from '@nuxtjs/composition-api'
@@ -40,9 +39,9 @@ export const useWallet = defineStore('wallet', {
       const { library } = useWeb3()
       this.selectedAccount.account = { address: account }
 
-      const contract = new Contract(xrtAddress, xrtAbi, library.value)
+      const contract = new library.value.eth.Contract(xrtAbi, xrtAddress)
       const getBalance = async () => {
-        const balance = await contract.balanceOf(account.value)
+        const balance = await contract.methods.balanceOf(account.value).call()
         this.selectedAccount.balanceRaw = balance
         this.selectedAccount.balanceFormatted = formatUnits(balance, 9) + ' XRT'
       }

@@ -9,7 +9,13 @@
     </p>
 
     <p class="text-md mt-2 text-white">
-      liability address: <span class="text-yellow-500">{{ robot.cps.liability.address }}</span>
+      liability address:
+      <a
+        class="text-yellow-500"
+        :href="`https://devnet.neonscan.org/address/${robot.cps.liability.address}`"
+        target="_blank"
+        rel="noopener noreferrer"
+      >{{ addressShort(robot.cps.liability.address) }}</a>
     </p>
 
     <p class="text-md mt-2 text-white">
