@@ -150,7 +150,8 @@ export default defineComponent({
         sendLaunchCommand: (robot.cps.status !== 'unknown'),
         waitTx: (robot.cps.launch.txStatus === 'accepted'),
         robotExecution: (robot.cps.launch.recordData !== null),
-        recordedData: (robot.cps.launch.recordData !== null)
+        recordedData: (robot.cps.nft !== null)
+        // recordedData: (robot.cps.launch.recordData !== null)
       }
 
       const resultStatuses = {}
@@ -167,11 +168,8 @@ export default defineComponent({
           resultStatuses[stage] = 'disabled'
         }
       })
-
       return resultStatuses
-    }
-
-    )
+    })
 
     return { wallet, progressElementStatuses, modal, openModal }
   }

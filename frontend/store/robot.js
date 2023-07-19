@@ -1,10 +1,12 @@
 import { parseUnits } from '@ethersproject/units'
 import { useWeb3 } from '@instadapp/vue-web3'
+import axios from 'axios'
 import { base58_to_binary as base58Encode } from 'base58-js'
 import Hash from 'ipfs-only-hash'
 import { defineStore } from 'pinia'
 import utils from 'web3-utils'
 import factoryAbi from '../abi/factory.json'
+import nftAbi from '../abi/nft.json'
 import xrtAbi from '../abi/xrt.json'
 import { factoryAddress, ipfsSender, lighthouseAddress, model, topic, validatorAddress, xrtAddress } from '../connectors/config'
 
@@ -95,9 +97,9 @@ export const useRobot = defineStore('robot', {
         liability: {
           address: null,
           result: false
-        }
+        },
+        nft: { contract: null, tokenId: null }
       }
-
     }
   },
   actions: {
@@ -106,6 +108,7 @@ export const useRobot = defineStore('robot', {
       this.cps.launch.txStatus = null
       this.cps.approve = { status: false, tx: null }
       this.cps.liability = { address: null, result: false }
+      this.cps.nft = { contract: null, tokenId: null }
 
       const commandParamsJSON = JSON.stringify(commandParams)
       const commandParamsHash = await Hash.of(commandParamsJSON)
@@ -126,6 +129,13 @@ export const useRobot = defineStore('robot', {
         this.cps.approve.status = true
       }
 
+      const getTokenInfo = async (library, address, id) => {
+        const nftContract = new library.eth.Contract(nftAbi, address)
+        const nftUri = await nftContract.methods.tokenURI(id).call()
+        const nftData = (await axios.get(nftUri)).data
+        this.nftData = nftData
+      }
+
       const ipfs = getIpfs()
 
       const handler = (r) => {
@@ -135,7 +145,12 @@ export const useRobot = defineStore('robot', {
             this.cps.liability.address = msg.liability
           }
           if (msg.finalized) {
-            this.cps.liability.result = true
+            this.cps.liability.result = msg.finalized
+          }
+          if (msg.nftContract) {
+            this.cps.nft.contract = msg.nftContract
+            this.cps.nft.tokenId = msg.tokenId
+            getTokenInfo(library.value, msg.nftContract, msg.tokenId)
             ipfs.pubsub.unsubscribe(topic, handler)
           }
         }
