@@ -124,10 +124,6 @@ export const useRobot = defineStore('robot', {
 
       const { library, account } = useWeb3()
 
-      // const liability = new library.value.eth.Contract(liabilityAbi, '0xb00ae16a934aea01b2d9a16ee37e9bc6545b7180')
-      // return await liability.methods.promisee().call()
-      // console.log(asd)
-
       const allowance = await getApprove(library.value, account.value)
       if (Number(allowance) < parseUnits('1', 9).toNumber()) {
         const tx = await approve(library.value, parseUnits('100', 9), account.value)
