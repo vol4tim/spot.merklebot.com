@@ -149,9 +149,7 @@ export default defineComponent({
         draw: ((dAppParameters.currentDrawingSegments.length > 0) || (robot.cps.launch.txStatus !== null)),
         sendLaunchCommand: (robot.cps.status !== 'unknown'),
         waitTx: (robot.cps.launch.txStatus === 'accepted'),
-        robotExecution: (robot.cps.launch.recordData !== null),
         recordedData: (robot.cps.nft !== null)
-        // recordedData: (robot.cps.launch.recordData !== null)
       }
 
       const resultStatuses = {}
