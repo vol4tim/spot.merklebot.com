@@ -1,27 +1,16 @@
 import { Contract } from '@ethersproject/contracts'
 import { parseUnits } from '@ethersproject/units'
 import { useWeb3 } from '@instadapp/vue-web3'
-import { base58_to_binary as base58Encode, binary_to_base58 as base58decode } from 'base58-js'
+import { base58_to_binary as base58Encode } from 'base58-js'
 import Hash from 'ipfs-only-hash'
 import { defineStore } from 'pinia'
 import utils from 'web3-utils'
 import factoryAbi from '../abi/factory.json'
 import xrtAbi from '../abi/xrt.json'
+import { factoryAddress, ipfsSender, lighthouseAddress, model, topic, validatorAddress, xrtAddress } from '../connectors/config'
 
 import { decodeMsg, encodeMsg, getIpfs } from '~/plugins/ipfs'
 import { uploadCommandParamsToIpfs } from '~/plugins/merklebot'
-
-const xrtAddress = '0x7dE91B204C1C737bcEe6F000AAA6569Cf7061cb7'
-const factoryAddress = '0x7e384AD1FE06747594a6102EE5b377b273DC1225'
-const lighthouseAddress = '0xD40AC7F1e5401e03D00F5aeC1779D8e5Af4CF9f1'
-const validatorAddress = '0x0000000000000000000000000000000000000000'
-const model = 'QmPusVLw9Gd7xQX77auWtHABqpkpiPz6469xxbkGe7Ru9r'
-const topic = 'airalab.lighthouse.5.robonomics.eth'
-
-function hexToStr (hex) {
-  const bytes = utils.hexToBytes(hex)
-  return base58decode(Buffer.from(bytes)).toString('utf8')
-}
 
 function demandHash (demand) {
   return utils.soliditySha3(
@@ -50,7 +39,7 @@ async function demand (library, account, objective) {
     cost: 1,
     lighthouse: lighthouseAddress,
     validator: validatorAddress,
-    validatorFee: 1,
+    validatorFee: 0,
     deadline: block + 1000,
     nonce,
     sender: account,
@@ -70,8 +59,7 @@ async function getApprove (library, account) {
 async function approve (library, value) {
   const xrtContract = new Contract(xrtAddress, xrtAbi, await library.getSigner())
   const tx = await xrtContract.approve(factoryAddress, value)
-  console.log(tx.hash)
-  await tx.wait()
+  return tx
 }
 
 export const useRobot = defineStore('robot', {
@@ -92,6 +80,14 @@ export const useRobot = defineStore('robot', {
           },
           txStatus: null,
           recordData: null
+        },
+        approve: {
+          tx: null,
+          status: false
+        },
+        liability: {
+          address: null,
+          result: false
         }
       }
 
@@ -101,6 +97,9 @@ export const useRobot = defineStore('robot', {
     async launchCps (transferXrtAmount, commandParams) {
       this.cps.launch.txInfo = { tx: null }
       this.cps.launch.txStatus = null
+      this.cps.approve = { status: false, tx: null }
+      this.cps.liability = { address: null, result: false }
+
       const commandParamsJSON = JSON.stringify(commandParams)
       const commandParamsHash = await Hash.of(commandParamsJSON)
       await uploadCommandParamsToIpfs(commandParamsJSON)
@@ -112,18 +111,41 @@ export const useRobot = defineStore('robot', {
 
       const allowance = await getApprove(library.value, account.value)
       if (allowance.lt(parseUnits('1', 9))) {
-        await approve(library.value, parseUnits('100', 9))
+        const tx = await approve(library.value, parseUnits('100', 9))
+        this.cps.approve.tx = tx.hash
+        await tx.wait()
+        this.cps.approve.status = true
+      } else {
+        this.cps.approve.status = true
       }
 
       const ipfs = getIpfs()
-      ipfs.pubsub.subscribe(topic, (r) => {
-        const msg = decodeMsg(r.data)
-        if (msg.model && hexToStr(msg.model) === model) {
-          console.log(msg)
+
+      const handler = (r) => {
+        if (r.from === ipfsSender) {
+          const msg = decodeMsg(r.data)
+          if (msg.liability) {
+            this.cps.liability.address = msg.liability
+          }
+          if (msg.finalized) {
+            this.cps.liability.result = true
+            ipfs.pubsub.unsubscribe(topic, handler)
+          }
         }
-      }, { discover: true })
+      }
+
+      ipfs.pubsub.subscribe(topic, handler, { discover: true })
       const msg = await demand(library.value, account.value, commandParamsHash)
       ipfs.pubsub.publish(topic, msg)
+      this.cps.status = 'wait_tx'
+      this.cps.launch.txStatus = 'accepted'
+
+      setTimeout(() => {
+        ipfs.pubsub.publish(topic, encodeMsg({ liability: '0x123123123' }))
+      }, 15000)
+      setTimeout(() => {
+        ipfs.pubsub.publish(topic, encodeMsg({ finalized: true }))
+      }, 20000)
 
       // const launchTx = await makeLaunchTx(this.cps.address, commandParamsHash)
       // this.cps.status = 'wait_tx'
@@ -135,7 +157,7 @@ export const useRobot = defineStore('robot', {
       // }
       // this.cps.launch.txStatus = 'accepted'
       // this.cps.status = 'activated'
-      // return this.cps.launch
+      return this.cps.launch
     },
     async updateRobotState () {
       // const response = await fetch('http://10.200.0.3:1234/current_state', { method: 'GET' })

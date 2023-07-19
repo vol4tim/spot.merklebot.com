@@ -1,6 +1,22 @@
 <template>
   <CardContainer title="Launch info">
     <p class="text-md mt-2 text-white">
+      approve status: <span class="text-yellow-500">{{ robot.cps.approve.status }}</span>
+    </p>
+
+    <p v-if="robot.cps.approve.tx" class="text-md mt-2 text-white">
+      approve tx: <span class="text-yellow-500">{{ robot.cps.approve.tx }}</span>
+    </p>
+
+    <p class="text-md mt-2 text-white">
+      liability address: <span class="text-yellow-500">{{ robot.cps.liability.address }}</span>
+    </p>
+
+    <p class="text-md mt-2 text-white">
+      liability result: <span class="text-yellow-500">{{ robot.cps.liability.result }}</span>
+    </p>
+
+    <!-- <p class="text-md mt-2 text-white">
       launch status: <span class="text-yellow-500">{{ robot.cps.status }}</span>
     </p>
 
@@ -17,14 +33,14 @@
         target="_blank"
         rel="noopener noreferrer"
       >{{ addressShort(robot.cps.launch.txInfo.tx) }}</a>
-    </p>
+    </p> -->
   </CardContainer>
 </template>
 
 <script>
 import { defineComponent } from '@vue/composition-api'
+import { addressShort, makeSubscanLink } from '~/plugins/robonomics'
 import { useRobot } from '~/store/robot'
-import { makeSubscanLink, addressShort } from '~/plugins/robonomics'
 
 export default defineComponent({
   setup () {

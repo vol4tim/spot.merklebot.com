@@ -4,6 +4,7 @@ import { useWeb3 } from '@instadapp/vue-web3'
 import { watch } from '@nuxtjs/composition-api'
 import { defineStore } from 'pinia'
 import xrtAbi from '../abi/xrt.json'
+import { xrtAddress } from '../connectors/config'
 import { readTicketsByCustomer } from '../plugins/merklebot'
 
 export const useWallet = defineStore('wallet', {
@@ -39,13 +40,14 @@ export const useWallet = defineStore('wallet', {
       const { library } = useWeb3()
       this.selectedAccount.account = { address: account }
 
-      const xrtAddress = '0x7dE91B204C1C737bcEe6F000AAA6569Cf7061cb7'
       const contract = new Contract(xrtAddress, xrtAbi, library.value)
-      setInterval(async () => {
+      const getBalance = async () => {
         const balance = await contract.balanceOf(account.value)
         this.selectedAccount.balanceRaw = balance
         this.selectedAccount.balanceFormatted = formatUnits(balance, 9) + ' XRT'
-      }, 3000)
+      }
+      getBalance()
+      setInterval(getBalance, 3000)
     }
   }
 })

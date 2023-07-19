@@ -27,12 +27,11 @@
 
 <script>
 import { defineComponent, onMounted, ref, useRoute, watch } from '@nuxtjs/composition-api'
-
+import { topic } from '../connectors/config'
 import { useRobot } from '../store/robot'
 
-import { useWallet } from '~/store/wallet'
-
 import { useIpfs } from '~/plugins/ipfs'
+import { useWallet } from '~/store/wallet'
 
 export default defineComponent({
   setup () {
@@ -43,7 +42,6 @@ export default defineComponent({
     const { ipfs } = useIpfs()
     watch([ipfs], () => {
       if (ipfs.value) {
-        const topic = 'airalab.lighthouse.5.robonomics.eth'
         ipfs.value.pubsub.subscribe(topic, () => {}, { discover: true })
         setInterval(() => {
           ipfs.value.pubsub.peers(topic).then((peers) => {
