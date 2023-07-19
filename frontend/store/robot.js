@@ -121,7 +121,7 @@ export const useRobot = defineStore('robot', {
 
       const allowance = await getApprove(library.value, account.value)
       if (Number(allowance) < parseUnits('1', 9).toNumber()) {
-        const tx = await approve(library.value, parseUnits('100', 9))
+        const tx = await approve(library.value, parseUnits('100', 9), account.value)
         this.cps.approve.tx = tx.transactionHash
         // await tx.wait()
         this.cps.approve.status = true
