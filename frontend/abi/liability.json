@@ -1,0 +1,435 @@
+[
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "lighthouseFee",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x051064c6"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "model",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x0ad9d052"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "isSuccess",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x0b6c754b"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "cost",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x13faede6"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "objective",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x14f1586a"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "xrt",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x330f9588"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "validator",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x3a5381b5"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "validatorFee",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x3f6d8256"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "promisee",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x474ce872"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "lighthouse",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x6301fd63"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "result",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x65372147"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "offerHash",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x699373ca"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "isFinalized",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0x8d4e4083"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "promisor",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0xc2d8de54"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "factory",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0xc45a0155"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "demandHash",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0xf0476bc5"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "token",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "signature": "0xfc0c546a"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "success",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "name": "result",
+        "type": "bytes"
+      }
+    ],
+    "name": "Finalized",
+    "type": "event",
+    "signature": "0x7d5242f52c478159b4963f0898012c593d0786bfa3bce2e9bb2f073b068caee0"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_xrt",
+        "type": "address"
+      }
+    ],
+    "name": "setup",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "signature": "0x66d38203"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_model",
+        "type": "bytes"
+      },
+      {
+        "name": "_objective",
+        "type": "bytes"
+      },
+      {
+        "name": "_token",
+        "type": "address"
+      },
+      {
+        "name": "_cost",
+        "type": "uint256"
+      },
+      {
+        "name": "_lighthouse",
+        "type": "address"
+      },
+      {
+        "name": "_validator",
+        "type": "address"
+      },
+      {
+        "name": "_validator_fee",
+        "type": "uint256"
+      },
+      {
+        "name": "_deadline",
+        "type": "uint256"
+      },
+      {
+        "name": "_sender",
+        "type": "address"
+      },
+      {
+        "name": "_signature",
+        "type": "bytes"
+      }
+    ],
+    "name": "demand",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "signature": "0x48a984e4"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_model",
+        "type": "bytes"
+      },
+      {
+        "name": "_objective",
+        "type": "bytes"
+      },
+      {
+        "name": "_token",
+        "type": "address"
+      },
+      {
+        "name": "_cost",
+        "type": "uint256"
+      },
+      {
+        "name": "_validator",
+        "type": "address"
+      },
+      {
+        "name": "_lighthouse",
+        "type": "address"
+      },
+      {
+        "name": "_lighthouse_fee",
+        "type": "uint256"
+      },
+      {
+        "name": "_deadline",
+        "type": "uint256"
+      },
+      {
+        "name": "_sender",
+        "type": "address"
+      },
+      {
+        "name": "_signature",
+        "type": "bytes"
+      }
+    ],
+    "name": "offer",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "signature": "0x413781d2"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_result",
+        "type": "bytes"
+      },
+      {
+        "name": "_success",
+        "type": "bool"
+      },
+      {
+        "name": "_signature",
+        "type": "bytes"
+      }
+    ],
+    "name": "finalize",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "signature": "0x4fe6365e"
+  }
+]

@@ -6,6 +6,7 @@ import Hash from 'ipfs-only-hash'
 import { defineStore } from 'pinia'
 import utils from 'web3-utils'
 import factoryAbi from '../abi/factory.json'
+import liabilityAbi from '../abi/liability.json'
 import nftAbi from '../abi/nft.json'
 import xrtAbi from '../abi/xrt.json'
 import { factoryAddress, ipfsSender, lighthouseAddress, model, topic, validatorAddress, xrtAddress } from '../connectors/config'
@@ -61,6 +62,10 @@ async function demand (library, account, objective) {
   return encodeMsg(demandData)
 }
 
+async function getPromisee (library, address) {
+  const liability = new library.eth.Contract(liabilityAbi, address)
+  return await liability.methods.promisee().call()
+}
 async function getApprove (library, account) {
   const xrtContract = new library.eth.Contract(xrtAbi, xrtAddress)
   return await xrtContract.methods.allowance(account, factoryAddress).call()
@@ -119,6 +124,10 @@ export const useRobot = defineStore('robot', {
 
       const { library, account } = useWeb3()
 
+      // const liability = new library.value.eth.Contract(liabilityAbi, '0xb00ae16a934aea01b2d9a16ee37e9bc6545b7180')
+      // return await liability.methods.promisee().call()
+      // console.log(asd)
+
       const allowance = await getApprove(library.value, account.value)
       if (Number(allowance) < parseUnits('1', 9).toNumber()) {
         const tx = await approve(library.value, parseUnits('100', 9), account.value)
@@ -135,23 +144,30 @@ export const useRobot = defineStore('robot', {
         const nftData = (await axios.get(nftUri)).data
         this.nftData = nftData
       }
+      const checkNftToken = async (library, address, id) => {
+        const nftContract = new library.eth.Contract(nftAbi, address)
+        return await nftContract.methods.ownerOf(id).call()
+      }
 
       const ipfs = getIpfs()
 
-      const handler = (r) => {
+      const handler = async (r) => {
         if (r.from === ipfsSender) {
           const msg = decodeMsg(r.data)
-          if (msg.liability) {
+          if (msg.liability && await getPromisee(library.value, msg.liability) === account.value) {
             this.cps.liability.address = msg.liability
           }
-          if (msg.finalized) {
+          if (msg.finalized && this.cps.liability.address) {
             this.cps.liability.result = msg.finalized
           }
           if (msg.nftContract) {
-            this.cps.nft.contract = msg.nftContract
-            this.cps.nft.tokenId = msg.tokenId
-            getTokenInfo(library.value, msg.nftContract, msg.tokenId)
-            ipfs.pubsub.unsubscribe(topic, handler)
+            const owner = await checkNftToken(library.value, msg.nftContract, msg.tokenId)
+            if (owner === account.value) {
+              this.cps.nft.contract = msg.nftContract
+              this.cps.nft.tokenId = msg.tokenId
+              getTokenInfo(library.value, msg.nftContract, msg.tokenId)
+              ipfs.pubsub.unsubscribe(topic, handler)
+            }
           }
         }
       }
