@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="px-3">
     <span>
       {{
         account === null

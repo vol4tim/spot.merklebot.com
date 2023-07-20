@@ -1,5 +1,6 @@
 
-import { onMounted, ref } from '@nuxtjs/composition-api'
+import { topic } from '../connectors/config'
+import { useIpfs } from '../store/ipfs'
 
 export function decodeMsg (msg) {
   let json = {}
@@ -64,16 +65,18 @@ export async function init () {
   return ipfs
 }
 
-export function useIpfs () {
-  const ipfs = ref()
-
-  onMounted(() => {
-    init().then((r) => {
-      ipfs.value = r
+export function connect () {
+  const ipfs = useIpfs()
+  init().then((node) => {
+    node.pubsub.subscribe(topic, () => {}, { discover: true })
+    node.pubsub.peers(topic).then((r) => {
+      ipfs.setPeers(r)
     })
+    setInterval(() => {
+      node.pubsub.peers(topic).then((r) => {
+        ipfs.setPeers(r)
+        // console.log('ipfs pubsub peers', r)
+      })
+    }, 5000)
   })
-
-  return {
-    ipfs
-  }
 }

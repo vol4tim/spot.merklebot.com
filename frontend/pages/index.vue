@@ -26,11 +26,10 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, ref, useRoute, watch } from '@nuxtjs/composition-api'
-import { topic } from '../connectors/config'
+import { defineComponent, onMounted, ref, useRoute } from '@nuxtjs/composition-api'
 import { useRobot } from '../store/robot'
 
-import { useIpfs } from '~/plugins/ipfs'
+import { connect } from '~/plugins/ipfs'
 import { useWallet } from '~/store/wallet'
 
 export default defineComponent({
@@ -39,16 +38,8 @@ export default defineComponent({
     const wallet = useWallet()
     wallet.connectWallet()
 
-    const { ipfs } = useIpfs()
-    watch([ipfs], () => {
-      if (ipfs.value) {
-        ipfs.value.pubsub.subscribe(topic, (r) => {}, { discover: true })
-        setInterval(() => {
-          ipfs.value.pubsub.peers(topic).then((peers) => {
-            console.log('ipfs pubsub peers', peers)
-          })
-        }, 10000)
-      }
+    onMounted(() => {
+      connect()
     })
 
     const doRobotStatePolling = async () => {

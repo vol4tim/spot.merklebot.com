@@ -1,5 +1,6 @@
 import { parseUnits } from '@ethersproject/units'
 import { useWeb3 } from '@instadapp/vue-web3'
+import awaitTransactionMined from 'await-transaction-mined'
 import axios from 'axios'
 import { base58_to_binary as base58Encode } from 'base58-js'
 import Hash from 'ipfs-only-hash'
@@ -132,7 +133,7 @@ export const useRobot = defineStore('robot', {
       if (Number(allowance) < parseUnits('1', 9).toNumber()) {
         const tx = await approve(library.value, parseUnits('100', 9), account.value)
         this.cps.approve.tx = tx.transactionHash
-        // await tx.wait()
+        await awaitTransactionMined.awaitTx(library.value, tx.transactionHash, { blocksToWait: 12 })
         this.cps.approve.status = true
       } else {
         this.cps.approve.status = true
@@ -154,9 +155,7 @@ export const useRobot = defineStore('robot', {
       const handler = async (r) => {
         if (r.from === ipfsSender) {
           const msg = decodeMsg(r.data)
-          if (msg.model) {
-            console.log(msg)
-          }
+
           if (msg.liability) {
             const p = await getPromisee(library.value, msg.liability)
             console.log({ liability: msg.liability, p })
@@ -165,13 +164,14 @@ export const useRobot = defineStore('robot', {
             const res = await getResult(library.value, this.cps.liability.address)
             console.log({ liability: this.cps.liability.address, res })
           }
+
           if (msg.liability && await getPromisee(library.value, msg.liability) === account.value) {
             this.cps.liability.address = msg.liability
           }
           if (msg.finalized && this.cps.liability.address && await getResult(library.value, this.cps.liability.address)) {
             this.cps.liability.result = msg.finalized
           }
-          if (msg.nftContract && this.cps.liability.address === msg.liability) {
+          if (msg.nftContract && this.cps.liability.address === msg.liabilityAddress) {
             const owner = await checkNftToken(library.value, msg.nftContract, msg.tokenId)
             console.log({ nftowner: owner })
             if (owner === account.value) {

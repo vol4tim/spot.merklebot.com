@@ -75,8 +75,7 @@ export default defineComponent({
         commandParams.segments = dAppParameters.currentDrawingSegments
       }
       try {
-        const res = await robot.launchCps(transferXrtAmount, commandParams)
-        console.log(res)
+        await robot.launchCps(transferXrtAmount, commandParams)
       } catch (e) {
         console.error(e)
       }

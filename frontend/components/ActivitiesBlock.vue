@@ -29,6 +29,11 @@
                 </p>
               </div> -->
             </div>
+            <div>
+              <p class="text-md mt-2 text-white text-center">
+                Ipfs pubsub: <span class="text-yellow-500">{{ ipfs.peers.length > 0 ? 'success' : 'waiting' }}</span>
+              </p>
+            </div>
           </StepContentContainer>
         </ProgressContainerElement>
 
@@ -121,6 +126,7 @@ import DashboardLikeContainer from '~/components/DashboardLikeContainer'
 import ProgressContainerElement from '~/components/ProgressContainerElement'
 import RobotStateCard from '~/components/RobotStateCard'
 import { useDAppParameters } from '~/store'
+import { useIpfs } from '~/store/ipfs'
 import { useRobot } from '~/store/robot'
 import { useWallet } from '~/store/wallet'
 
@@ -138,13 +144,14 @@ export default defineComponent({
     const openModal = () => {
       modal.value.openModal()
     }
+    const ipfs = useIpfs()
 
     const progressElementStatuses = computed(() => {
       const hasEnoughXrt = (wallet.selectedAccount.balanceRaw * 10 ** -9 > 1)
       const hasTicket = (wallet.selectedAccount.tickets.filter(ticket => ticket.spent === false).length >= 1)
 
       const stagesStatus = {
-        connectWallet: (wallet.walletConnectionStatus === 'connected'),
+        connectWallet: (wallet.walletConnectionStatus === 'connected') && ipfs.peers.length > 0,
         transferValue: ((hasEnoughXrt || hasTicket) || (robot.cps.launch.txStatus !== null)),
         draw: ((dAppParameters.currentDrawingSegments.length > 0) || (robot.cps.launch.txStatus !== null)),
         sendLaunchCommand: (robot.cps.status !== 'unknown'),
@@ -169,7 +176,7 @@ export default defineComponent({
       return resultStatuses
     })
 
-    return { wallet, progressElementStatuses, modal, openModal }
+    return { wallet, progressElementStatuses, modal, openModal, ipfs }
   }
 })
 </script>
