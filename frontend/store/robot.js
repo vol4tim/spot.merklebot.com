@@ -49,7 +49,7 @@ async function demand (library, account, objective) {
     model: utils.bytesToHex(base58Encode(model)),
     objective: library.utils.toHex(objective),
     token: xrtAddress,
-    cost: 1,
+    cost: parseUnits('1', 9).toNumber(),
     lighthouse: lighthouseAddress,
     validator: validatorAddress,
     validatorFee: 0,
