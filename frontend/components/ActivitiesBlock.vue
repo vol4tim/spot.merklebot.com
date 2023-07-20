@@ -150,8 +150,12 @@ export default defineComponent({
       const hasEnoughXrt = (wallet.selectedAccount.balanceRaw * 10 ** -9 > 1)
       const hasTicket = (wallet.selectedAccount.tickets.filter(ticket => ticket.spent === false).length >= 1)
 
+      const checkPeers = ipfs.peers.includes('QmdfQmbmXt6sqjZyowxPUsmvBsgSGQjm4VXrV7WGy62dv8') ||
+        ipfs.peers.includes('QmPTFt7GJ2MfDuVYwJJTULr6EnsQtGVp8ahYn9NSyoxmd9') ||
+        ipfs.peers.includes('QmWZSKTEQQ985mnNzMqhGCrwQ1aTA6sxVsorsycQz9cQrw')
+
       const stagesStatus = {
-        connectWallet: (wallet.walletConnectionStatus === 'connected') && ipfs.peers.length > 0,
+        connectWallet: (wallet.walletConnectionStatus === 'connected') && checkPeers,
         transferValue: ((hasEnoughXrt || hasTicket) || (robot.cps.launch.txStatus !== null)),
         draw: ((dAppParameters.currentDrawingSegments.length > 0) || (robot.cps.launch.txStatus !== null)),
         sendLaunchCommand: (robot.cps.status !== 'unknown'),
