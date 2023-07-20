@@ -13,13 +13,13 @@
     <p class="text-md mt-2 text-white">
       token: <a
         class="text-yellow-500"
-        :href="`https://devnet.neonscan.org/address/${cps.nft.contract}`"
+        :href="`https://devnet.neonscan.org/address/${robot.cps.nft.contract}`"
         target="_blank"
         rel="noopener noreferrer"
-      >{{ addressShort(cps.nft.contract) }}</a>
+      >{{ addressShort(robot.cps.nft.contract) }}</a>
     </p>
     <p class="text-md mt-2 text-white">
-      tokenId: <span class="text-yellow-500">{{ cps.nft.tokenId }}</span>
+      tokenId: <span class="text-yellow-500">{{ robot.cps.nft.tokenId }}</span>
     </p>
   </div>
 </template>
@@ -27,6 +27,8 @@
 <script>
 import { defineComponent } from '@nuxtjs/composition-api'
 import { useRobot } from '../store/robot'
+
+import { addressShort } from '~/plugins/robonomics'
 
 export default defineComponent({
   props: {
@@ -39,7 +41,8 @@ export default defineComponent({
     const robot = useRobot()
 
     return {
-      robot
+      robot,
+      addressShort
     }
   }
 })
