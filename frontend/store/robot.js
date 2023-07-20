@@ -186,7 +186,22 @@ export const useRobot = defineStore('robot', {
 
       ipfs.pubsub.subscribe(topic, handler, { discover: true })
       const msg = await demand(library.value, account.value, commandParamsHash)
+
+      const handlerPublish = (r) => {
+        const msgResponse = decodeMsg(r.data)
+        if (msgResponse.gotDemand && msgResponse.demandSender === account.value && msgResponse.demandObjective === msg.objective) {
+          console.log('stop reapeat publish')
+          clearInterval(intervalPublish)
+          ipfs.pubsub.unsubscribe(topic, handler)
+        }
+      }
+      ipfs.pubsub.subscribe(topic, handlerPublish, { discover: true })
       ipfs.pubsub.publish(topic, msg)
+      const intervalPublish = setInterval(() => {
+        console.log('repeat publish')
+        ipfs.pubsub.publish(topic, msg)
+      }, 3000)
+
       this.cps.status = 'wait_tx'
       this.cps.launch.txStatus = 'accepted'
       return this.cps.launch
