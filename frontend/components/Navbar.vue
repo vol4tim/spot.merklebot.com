@@ -3,7 +3,7 @@
   <nav id="navigation" class="p-2 bg-gray-800 font-mono border-b-2 text-white">
     <div class="flex items-center mx-24">
       <NuxtLink to="/" class="flex items-center px-4">
-        <img src="/favicon.ico" class="mx-4 h-11" />
+        <img src="favicon.ico" class="mx-4 h-11" />
         <div class="self-center text-xl">
           MerkleBot
         </div>

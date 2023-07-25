@@ -1,14 +1,14 @@
 <template>
   <div class="spot" :class="{'animated': robot.robotState!=='idle'}">
-    <img class="spot-body" src="/spot/animated-pose-1/spot-body.png">
-    <img class="spot-leg1-top" src="/spot/animated-pose-1/spot-leg1-top.png">
-    <img class="spot-leg1-bottom" src="/spot/animated-pose-1/spot-leg1-bottom.png">
-    <img class="spot-leg2-top" src="/spot/animated-pose-1/spot-leg2-top.png">
-    <img class="spot-leg2-bottom" src="/spot/animated-pose-1/spot-leg2-bottom.png">
-    <img class="spot-leg3-top" src="/spot/animated-pose-1/spot-leg3-top.png">
-    <img class="spot-leg3-bottom" src="/spot/animated-pose-1/spot-leg3-bottom.png">
-    <img class="spot-leg4-top" src="/spot/animated-pose-1/spot-leg4-top.png">
-    <img class="spot-leg4-bottom" src="/spot/animated-pose-1/spot-leg4-bottom.png">
+    <img class="spot-body" src="spot/animated-pose-1/spot-body.png">
+    <img class="spot-leg1-top" src="spot/animated-pose-1/spot-leg1-top.png">
+    <img class="spot-leg1-bottom" src="spot/animated-pose-1/spot-leg1-bottom.png">
+    <img class="spot-leg2-top" src="spot/animated-pose-1/spot-leg2-top.png">
+    <img class="spot-leg2-bottom" src="spot/animated-pose-1/spot-leg2-bottom.png">
+    <img class="spot-leg3-top" src="spot/animated-pose-1/spot-leg3-top.png">
+    <img class="spot-leg3-bottom" src="spot/animated-pose-1/spot-leg3-bottom.png">
+    <img class="spot-leg4-top" src="spot/animated-pose-1/spot-leg4-top.png">
+    <img class="spot-leg4-bottom" src="spot/animated-pose-1/spot-leg4-bottom.png">
   </div>
 </template>
 

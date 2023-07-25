@@ -13,7 +13,7 @@
               Identity and access rights are managed using the cryptographic key
               from your Web3 wallet.
             </p>
-            <img src="/pictures/Frame2.png">
+            <img src="pictures/Frame2.png">
             <div class="flex items-center justify-center">
               <Account />
               <AccountConnector />
@@ -43,7 +43,7 @@
             <p class="text-md my-2 text-white mx-6">
               To make onboarding easier for our clients billing can be done in both US dollars and cryptocurrencies - money for robots.
             </p>
-            <img src="/pictures/Frame3.png">
+            <img src="pictures/Frame3.png">
             <p class="text-md my-2 text-white mx-6">
               One launch requires 1 ticket <em>or</em> 1 XRT.
             </p>
