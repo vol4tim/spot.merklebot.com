@@ -3,7 +3,7 @@ const factoryAddress = '0x3aAdA90e8e368c55b8249aD8Cfa10CB3Eaaa2826'
 const lighthouseAddress = '0x303651DF353EDC38Cf9bF4422050A473836b1E52'
 const validatorAddress = '0x0000000000000000000000000000000000000000'
 const model = 'QmPusVLw9Gd7xQX77auWtHABqpkpiPz6469xxbkGe7Ru9r'
-const topic = 'airalab.lighthouse.5.robonomics.eth'
+const topic = 'neon.channel'
 const ipfsSender = '12D3KooW9pnYz5V1jNmJ9qpZia4t6rgavcJoMsphWqVvScxH31So'
 
 export {
