@@ -16,7 +16,7 @@
     <div>
       <iframe
         style="display: block;-webkit-user-select: none;margin: auto;background-color: hsl(0, 0%, 25%);"
-        src="https://player.twitch.tv/?channel=merklebotStreamer&amp;parent=spot.merklebot.com"
+        src="https://player.twitch.tv/?channel=merklebotStreamer&amp;parent=vol4tim.github.io"
         frameborder="0"
         allowfullscreen="true"
         scrolling="no"
