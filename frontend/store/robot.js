@@ -60,7 +60,7 @@ async function demand (library, account, objective) {
   }
   const hash = demandHash(demandData)
   demandData.signature = await library.eth.sign(setPrefix(hash), account)
-  return encodeMsg(demandData)
+  return demandData
 }
 
 async function getPromisee (library, address) {
@@ -152,32 +152,43 @@ export const useRobot = defineStore('robot', {
 
       const ipfs = getIpfs()
 
+      const demandMsg = await demand(library.value, account.value, commandParamsHash)
+
       const handler = async (r) => {
         if (r.from === ipfsSender) {
-          const msg = decodeMsg(r.data)
+          const msgResponse = decodeMsg(r.data)
 
-          if (msg.liability) {
-            const p = await getPromisee(library.value, msg.liability)
-            console.log({ liability: msg.liability, p })
+          console.log(msgResponse)
+
+          if (msgResponse.liability) {
+            const p = await getPromisee(library.value, msgResponse.liability)
+            console.log({ liability: msgResponse.liability, p })
           }
-          if (msg.finalized && this.cps.liability.address) {
+          if (msgResponse.finalized && this.cps.liability.address) {
             const res = await getResult(library.value, this.cps.liability.address)
-            console.log({ liability: this.cps.liability.address, res })
+            console.log({ finalized: true, liability: this.cps.liability.address, res })
           }
 
-          if (msg.liability && await getPromisee(library.value, msg.liability) === account.value) {
-            this.cps.liability.address = msg.liability
+          if (
+            (msgResponse.gotDemand && msgResponse.demandSender === account.value && msgResponse.demandObjective === demandMsg.objective) ||
+            (msgResponse.objective === demandMsg.objective && msgResponse.sender === demandMsg.sender)
+          ) {
+            console.log('stop reapeat publish')
+            clearInterval(intervalPublish)
           }
-          if (msg.finalized && this.cps.liability.address && await getResult(library.value, this.cps.liability.address)) {
-            this.cps.liability.result = msg.finalized
+          if (msgResponse.liability && await getPromisee(library.value, msgResponse.liability) === account.value) {
+            this.cps.liability.address = msgResponse.liability
           }
-          if (msg.nftContract && this.cps.liability.address === msg.liabilityAddress) {
-            const owner = await checkNftToken(library.value, msg.nftContract, msg.tokenId)
+          if (msgResponse.finalized && this.cps.liability.address && await getResult(library.value, this.cps.liability.address)) {
+            this.cps.liability.result = msgResponse.finalized
+          }
+          if (msgResponse.nftContract && this.cps.liability.address === msgResponse.liabilityAddress) {
+            const owner = await checkNftToken(library.value, msgResponse.nftContract, msgResponse.tokenId)
             console.log({ nftowner: owner })
             if (owner === account.value) {
-              this.cps.nft.contract = msg.nftContract
-              this.cps.nft.tokenId = msg.tokenId
-              getTokenInfo(library.value, msg.nftContract, msg.tokenId)
+              this.cps.nft.contract = msgResponse.nftContract
+              this.cps.nft.tokenId = msgResponse.tokenId
+              getTokenInfo(library.value, msgResponse.nftContract, msgResponse.tokenId)
               ipfs.pubsub.unsubscribe(topic, handler)
             }
           }
@@ -185,22 +196,18 @@ export const useRobot = defineStore('robot', {
       }
 
       ipfs.pubsub.subscribe(topic, handler, { discover: true })
-      const msg = await demand(library.value, account.value, commandParamsHash)
-      const demandMsg = decodeMsg(msg)
 
-      const handlerPublish = (r) => {
-        const msgResponse = decodeMsg(r.data)
-        if (msgResponse.gotDemand && msgResponse.demandSender === account.value && msgResponse.demandObjective === demandMsg.objective) {
-          console.log('stop reapeat publish')
-          clearInterval(intervalPublish)
-          ipfs.pubsub.unsubscribe(topic, handlerPublish)
-        }
-      }
-      ipfs.pubsub.subscribe(topic, handlerPublish, { discover: true })
-      ipfs.pubsub.publish(topic, msg)
+      ipfs.pubsub.publish(topic, encodeMsg(demandMsg))
+      let count = 1
       const intervalPublish = setInterval(() => {
+        if (count >= 10) {
+          console.log('stop reapeat publish. max count')
+          clearInterval(intervalPublish)
+          return
+        }
         console.log('repeat publish')
-        ipfs.pubsub.publish(topic, msg)
+        ipfs.pubsub.publish(topic, encodeMsg(demandMsg))
+        count++
       }, 3000)
 
       this.cps.status = 'wait_tx'
