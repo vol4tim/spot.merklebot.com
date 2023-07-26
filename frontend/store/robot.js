@@ -179,9 +179,6 @@ export const useRobot = defineStore('robot', {
           if (msgResponse.liability && await getPromisee(library.value, msgResponse.liability) === account.value) {
             this.cps.liability.address = msgResponse.liability
           }
-          if (msgResponse.finalized && this.cps.liability.address && await getResult(library.value, this.cps.liability.address)) {
-            this.cps.liability.result = msgResponse.finalized
-          }
           if (msgResponse.nftContract && this.cps.liability.address === msgResponse.liabilityAddress) {
             const owner = await checkNftToken(library.value, msgResponse.nftContract, msgResponse.tokenId)
             console.log({ nftowner: owner })
@@ -189,8 +186,11 @@ export const useRobot = defineStore('robot', {
               this.cps.nft.contract = msgResponse.nftContract
               this.cps.nft.tokenId = msgResponse.tokenId
               getTokenInfo(library.value, msgResponse.nftContract, msgResponse.tokenId)
-              ipfs.pubsub.unsubscribe(topic, handler)
             }
+          }
+          if (msgResponse.finalized && this.cps.liability.address && await getResult(library.value, this.cps.liability.address)) {
+            this.cps.liability.result = msgResponse.finalized
+            ipfs.pubsub.unsubscribe(topic, handler)
           }
         }
       }
