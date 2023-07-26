@@ -1,263 +1,8 @@
-/*!
- * The buffer module from node.js, for the browser.
- *
- * @author   Feross Aboukhadijeh <http://feross.org>
- * @license  MIT
- */
-
-/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
-
-/**
- * [js-sha3]{@link https://github.com/emn178/js-sha3}
- *
- * @version 0.8.0
- * @author Chen, Yi-Cyuan [emn178@gmail.com]
- * @copyright Chen, Yi-Cyuan 2015-2018
- * @license MIT
- */
-
-
 /*
 object-assign
 (c) Sindre Sorhus
 @license MIT
 */
-
-/*!
- * The buffer module from node.js, for the browser.
- *
- * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
- * @license  MIT
- */
-
-/*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
-
-//! stable.js 0.1.8, https://github.com/Two-Screen/stable
-
-//! © 2018 Angry Bytes and contributors. MIT licensed.
-
-
-/*! ../BagReader */
-
-/*! ../bag */
-
-/*! ../index */
-
-/*! ../types */
-
-/*! ./../../../webpack/buildin/global.js */
-
-/*! ./../../node_modules/timers-browserify/main.js */
-
-/*! ./../node_modules/node-libs-browser/node_modules/buffer/index.js */
-
-/*! ./../node_modules/timers-browserify/main.js */
-
-/*! ./../node_modules/webpack/buildin/global.js */
-
-/*! ./../process/browser.js */
-
-/*! ./../webpack/buildin/global.js */
-
-/*! ./BagReader */
-
-/*! ./MessageReader */
-
-/*! ./MessageWriter */
-
-/*! ./ReadResult */
-
-/*! ./TimeUtil */
-
-/*! ./bag */
-
-/*! ./fields */
-
-/*! ./header */
-
-/*! ./lib/heap */
-
-/*! ./nmerge */
-
-/*! ./parseMessageDefinition */
-
-/*! ./record */
-
-/*! ./types */
-
-/*! base64-js */
-
-/*! buffer */
-
-/*! exports provided: MessageReader */
-
-/*! exports provided: MessageWriter */
-
-/*! exports provided: Record, BagHeader, Chunk, Connection, MessageData, IndexData, ChunkInfo */
-
-/*! exports provided: default */
-
-/*! exports provided: extractFields, extractTime */
-
-/*! exports provided: fromDate, toDate, compare, isLessThan, isGreaterThan, areSame, add */
-
-/*! exports provided: parseHeader */
-
-/*! exports provided: rosPrimitiveTypes, parseMessageDefinition */
-
-/*! heap */
-
-/*! ieee754 */
-
-/*! int53 */
-
-/*! isarray */
-
-/*! no static exports found */
-
-/*! setimmediate */
-
-/*!********************!*\
-  !*** ./src/bag.js ***!
-  \********************/
-
-/*!**********************!*\
-  !*** ./src/index.js ***!
-  \**********************/
-
-/*!**********************!*\
-  !*** ./src/types.js ***!
-  \**********************/
-
-/*!***********************!*\
-  !*** ./src/fields.js ***!
-  \***********************/
-
-/*!***********************!*\
-  !*** ./src/header.js ***!
-  \***********************/
-
-/*!***********************!*\
-  !*** ./src/nmerge.js ***!
-  \***********************/
-
-/*!***********************!*\
-  !*** ./src/record.js ***!
-  \***********************/
-
-/*!*************************!*\
-  !*** ./src/TimeUtil.js ***!
-  \*************************/
-
-/*!**************************!*\
-  !*** ./src/BagReader.js ***!
-  \**************************/
-
-/*!**************************!*\
-  !*** ./src/web/index.js ***!
-  \**************************/
-
-/*!***************************!*\
-  !*** ./src/ReadResult.js ***!
-  \***************************/
-
-/*!******************************!*\
-  !*** ./src/MessageReader.js ***!
-  \******************************/
-
-/*!******************************!*\
-  !*** ./src/MessageWriter.js ***!
-  \******************************/
-
-/*!***********************************!*\
-  !*** (webpack)/buildin/global.js ***!
-  \***********************************/
-
-/*!************************************!*\
-  !*** ./node_modules/heap/index.js ***!
-  \************************************/
-
-/*!*************************************!*\
-  !*** ./node_modules/int53/index.js ***!
-  \*************************************/
-
-/*!***************************************!*\
-  !*** ./node_modules/heap/lib/heap.js ***!
-  \***************************************/
-
-/*!***************************************!*\
-  !*** ./node_modules/ieee754/index.js ***!
-  \***************************************/
-
-/*!***************************************!*\
-  !*** ./node_modules/isarray/index.js ***!
-  \***************************************/
-
-/*!***************************************!*\
-  !*** ./src/parseMessageDefinition.js ***!
-  \***************************************/
-
-/*!*****************************************!*\
-  !*** ./node_modules/base64-js/index.js ***!
-  \*****************************************/
-
-/*!*****************************************!*\
-  !*** ./node_modules/process/browser.js ***!
-  \*****************************************/
-
-/*!************************************************!*\
-  !*** ./node_modules/timers-browserify/main.js ***!
-  \************************************************/
-
-/*!***************************************************!*\
-  !*** ./node_modules/setimmediate/setImmediate.js ***!
-  \***************************************************/
-
-/*!*********************************************************************!*\
-  !*** ./node_modules/node-libs-browser/node_modules/buffer/index.js ***!
-  \*********************************************************************/
-
-/**
-  * vue-class-component v7.0.1
-  * (c) 2015-present Evan You
-  * @license MIT
-  */
-
-/*!
- * v2.1.4-104-gc868b3a
- * 
- */
-
-/*! crc32.js (C) 2014-present SheetJS -- http://sheetjs.com */
-
-/*! https://mths.be/punycode v1.4.1 by @mathias */
-
-/**
- * [js-sha3]{@link https://github.com/emn178/js-sha3}
- *
- * @version 0.5.7
- * @author Chen, Yi-Cyuan [emn178@gmail.com]
- * @copyright Chen, Yi-Cyuan 2015-2016
- * @license MIT
- */
-
-
-/*! noble-hashes - MIT License (c) 2022 Paul Miller (paulmillr.com) */
-
-/*! noble-secp256k1 - MIT License (c) 2019 Paul Miller (paulmillr.com) */
-
-/*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
-
-/*! scure-base - MIT License (c) 2022 Paul Miller (paulmillr.com) */
-
-/*
-object-assign
-(c) Sindre Sorhus
-@license MIT
-*/
-
-/*! noble-hashes - MIT License (c) 2022 Paul Miller (paulmillr.com) */
-
 
 /*!
  * Signature Pad v2.3.2
@@ -278,9 +23,21 @@ object-assign
  */
 
 /*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+ * @license  MIT
+ */
+
+/*!
  * surveyjs - Survey JavaScript library v1.9.41
  * Copyright (c) 2015-2022 Devsoft Baltic OÜ  - http://surveyjs.io/
  * License: MIT (http://www.opensource.org/licenses/mit-license.php)
+ */
+
+/*!
+ * v2.1.4-104-gc868b3a
+ * 
  */
 
 /*! -!../../../../../node_modules/ts-loader??ref--0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./detail-button.vue?vue&type=script&lang=ts& */
@@ -993,7 +750,11 @@ object-assign
 
 /*! ../vue/window.vue */
 
+/*! ./../process/browser.js */
+
 /*! ./../settings */
+
+/*! ./../webpack/buildin/global.js */
 
 /*! ./action */
 
@@ -1507,6 +1268,8 @@ object-assign
 
 /*! ./window.vue?vue&type=template&id=62f588b2& */
 
+/*! crc32.js (C) 2014-present SheetJS -- http://sheetjs.com */
+
 /*! exports provided: Action, ActionDropdownViewModel */
 
 /*! exports provided: ActionBarItemDropdownViewModel, default */
@@ -1877,6 +1640,8 @@ object-assign
 
 /*! exports provided: applyMetadata */
 
+/*! exports provided: default */
+
 /*! exports provided: default, ActionBarItemDropdownViewModel */
 
 /*! exports provided: default, ActionBarItemViewModel */
@@ -2079,7 +1844,23 @@ object-assign
 
 /*! exports provided: unwrap, getSize, sanitizeEditableContent, getElementWidth, isContainerVisible, classesToSelector, compareVersions, confirmAction, detectIEOrEdge, detectIEBrowser, loadFileFromBase64, isMobile, isElementVisible, findScrollableParent, scrollElementByChildId, createSvg, doKey2ClickBlur, doKey2ClickUp, doKey2ClickDown, getIconNameFromProxy, increaseHeightByContent, getOriginalEvent, preventDefaults, findParentByClassNames */
 
+/*! https://mths.be/punycode v1.4.1 by @mathias */
+
 /*! no exports provided */
+
+/*! no static exports found */
+
+/*! noble-hashes - MIT License (c) 2022 Paul Miller (paulmillr.com) */
+
+/*! noble-secp256k1 - MIT License (c) 2019 Paul Miller (paulmillr.com) */
+
+/*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
+
+/*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
+
+/*! scure-base - MIT License (c) 2022 Paul Miller (paulmillr.com) */
+
+/*! setimmediate */
 
 /*! signature_pad */
 
@@ -2554,6 +2335,10 @@ object-assign
   \**********************************/
 
 /*!***********************************!*\
+  !*** (webpack)/buildin/global.js ***!
+  \***********************************/
+
+/*!***********************************!*\
   !*** ./src/images/ArrowRight.svg ***!
   \***********************************/
 
@@ -2778,6 +2563,10 @@ object-assign
   \****************************************/
 
 /*!*****************************************!*\
+  !*** ./node_modules/process/browser.js ***!
+  \*****************************************/
+
+/*!*****************************************!*\
   !*** ./src/dragdrop/ranking-choices.ts ***!
   \*****************************************/
 
@@ -2862,6 +2651,10 @@ object-assign
   \***********************************************/
 
 /*!************************************************!*\
+  !*** ./node_modules/timers-browserify/main.js ***!
+  \************************************************/
+
+/*!************************************************!*\
   !*** ./src/defaultCss/cssbootstrapmaterial.ts ***!
   \************************************************/
 
@@ -2888,6 +2681,10 @@ object-assign
 /*!**************************************************!*\
   !*** ./src/vue/row.vue?vue&type=script&lang=ts& ***!
   \**************************************************/
+
+/*!***************************************************!*\
+  !*** ./node_modules/setimmediate/setImmediate.js ***!
+  \***************************************************/
 
 /*!***************************************************!*\
   !*** ./src/vue/file.vue?vue&type=script&lang=ts& ***!
@@ -4387,8 +4184,260 @@ object-assign
   * @license MIT
   */
 
+/**
+ * [js-sha3]{@link https://github.com/emn178/js-sha3}
+ *
+ * @version 0.5.7
+ * @author Chen, Yi-Cyuan [emn178@gmail.com]
+ * @copyright Chen, Yi-Cyuan 2015-2016
+ * @license MIT
+ */
+
+//! stable.js 0.1.8, https://github.com/Two-Screen/stable
+
+//! © 2018 Angry Bytes and contributors. MIT licensed.
+
+
+/*! ../BagReader */
+
+/*! ../bag */
+
+/*! ../index */
+
+/*! ../types */
+
+/*! ./../../../webpack/buildin/global.js */
+
+/*! ./../../node_modules/timers-browserify/main.js */
+
+/*! ./../node_modules/node-libs-browser/node_modules/buffer/index.js */
+
+/*! ./../node_modules/timers-browserify/main.js */
+
+/*! ./../node_modules/webpack/buildin/global.js */
+
+/*! ./BagReader */
+
+/*! ./MessageReader */
+
+/*! ./MessageWriter */
+
+/*! ./ReadResult */
+
+/*! ./TimeUtil */
+
+/*! ./bag */
+
+/*! ./fields */
+
+/*! ./header */
+
+/*! ./lib/heap */
+
+/*! ./nmerge */
+
+/*! ./parseMessageDefinition */
+
+/*! ./record */
+
+/*! ./types */
+
+/*! base64-js */
+
+/*! buffer */
+
+/*! exports provided: MessageReader */
+
+/*! exports provided: MessageWriter */
+
+/*! exports provided: Record, BagHeader, Chunk, Connection, MessageData, IndexData, ChunkInfo */
+
+/*! exports provided: extractFields, extractTime */
+
+/*! exports provided: fromDate, toDate, compare, isLessThan, isGreaterThan, areSame, add */
+
+/*! exports provided: parseHeader */
+
+/*! exports provided: rosPrimitiveTypes, parseMessageDefinition */
+
+/*! heap */
+
+/*! ieee754 */
+
+/*! int53 */
+
+/*! isarray */
+
+/*!********************!*\
+  !*** ./src/bag.js ***!
+  \********************/
+
+/*!**********************!*\
+  !*** ./src/index.js ***!
+  \**********************/
+
+/*!**********************!*\
+  !*** ./src/types.js ***!
+  \**********************/
+
+/*!***********************!*\
+  !*** ./src/fields.js ***!
+  \***********************/
+
+/*!***********************!*\
+  !*** ./src/header.js ***!
+  \***********************/
+
+/*!***********************!*\
+  !*** ./src/nmerge.js ***!
+  \***********************/
+
+/*!***********************!*\
+  !*** ./src/record.js ***!
+  \***********************/
+
+/*!*************************!*\
+  !*** ./src/TimeUtil.js ***!
+  \*************************/
+
+/*!**************************!*\
+  !*** ./src/BagReader.js ***!
+  \**************************/
+
+/*!**************************!*\
+  !*** ./src/web/index.js ***!
+  \**************************/
+
+/*!***************************!*\
+  !*** ./src/ReadResult.js ***!
+  \***************************/
+
+/*!******************************!*\
+  !*** ./src/MessageReader.js ***!
+  \******************************/
+
+/*!******************************!*\
+  !*** ./src/MessageWriter.js ***!
+  \******************************/
+
+/*!************************************!*\
+  !*** ./node_modules/heap/index.js ***!
+  \************************************/
+
+/*!*************************************!*\
+  !*** ./node_modules/int53/index.js ***!
+  \*************************************/
+
+/*!***************************************!*\
+  !*** ./node_modules/heap/lib/heap.js ***!
+  \***************************************/
+
+/*!***************************************!*\
+  !*** ./node_modules/ieee754/index.js ***!
+  \***************************************/
+
+/*!***************************************!*\
+  !*** ./node_modules/isarray/index.js ***!
+  \***************************************/
+
+/*!***************************************!*\
+  !*** ./src/parseMessageDefinition.js ***!
+  \***************************************/
+
+/*!*****************************************!*\
+  !*** ./node_modules/base64-js/index.js ***!
+  \*****************************************/
+
+/*!*********************************************************************!*\
+  !*** ./node_modules/node-libs-browser/node_modules/buffer/index.js ***!
+  \*********************************************************************/
+
+/**
+  * vue-class-component v7.0.1
+  * (c) 2015-present Evan You
+  * @license MIT
+  */
+
+
+//! © 2018 Angry Bytes and contributors. MIT licensed.
+
 
 /*! scure-base - MIT License (c) 2022 Paul Miller (paulmillr.com) */
+
+
+/**
+ * [js-sha3]{@link https://github.com/emn178/js-sha3}
+ *
+ * @version 0.5.7
+ * @author Chen, Yi-Cyuan [emn178@gmail.com]
+ * @copyright Chen, Yi-Cyuan 2015-2016
+ * @license MIT
+ */
+
+
+/**
+ * @license
+ * Copyright 2010-2022 Three.js Authors
+ * SPDX-License-Identifier: MIT
+ */
+
+
+/*!
+  * pinia v2.0.14
+  * (c) 2022 Eduardo San Martin Morote
+  * @license MIT
+  */
+
+/*!
+ * vue-client-only v0.0.0-semantic-release
+ * (c) 2021-present egoist <0x142857@gmail.com>
+ * Released under the MIT License.
+ */
+
+/*!
+ * vue-no-ssr v1.1.1
+ * (c) 2018-present egoist <0x142857@gmail.com>
+ * Released under the MIT License.
+ */
+
+
+/*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <http://feross.org>
+ * @license  MIT
+ */
+
+/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
+
+/**
+ * [js-sha3]{@link https://github.com/emn178/js-sha3}
+ *
+ * @version 0.8.0
+ * @author Chen, Yi-Cyuan [emn178@gmail.com]
+ * @copyright Chen, Yi-Cyuan 2015-2018
+ * @license MIT
+ */
+
+
+/**
+  * vue-class-component v7.2.6
+  * (c) 2015-present Evan You
+  * @license MIT
+  */
+
+
+/*!
+  * vue-router v3.5.4
+  * (c) 2022 Evan You
+  * @license MIT
+  */
+
+/*!
+ * Vue.js v2.6.14
+ * (c) 2014-2021 Evan You
+ * Released under the MIT License.
+ */
 
 
 /*! *****************************************************************************
@@ -4415,51 +4464,3 @@ PERFORMANCE OF THIS SOFTWARE.
  * @copyright Chen, Yi-Cyuan 2015-2018
  * @license MIT
  */
-
-
-//! © 2018 Angry Bytes and contributors. MIT licensed.
-
-
-/*!
-  * pinia v2.0.14
-  * (c) 2022 Eduardo San Martin Morote
-  * @license MIT
-  */
-
-/*!
- * vue-client-only v0.0.0-semantic-release
- * (c) 2021-present egoist <0x142857@gmail.com>
- * Released under the MIT License.
- */
-
-/*!
- * vue-no-ssr v1.1.1
- * (c) 2018-present egoist <0x142857@gmail.com>
- * Released under the MIT License.
- */
-
-
-/**
- * @license
- * Copyright 2010-2022 Three.js Authors
- * SPDX-License-Identifier: MIT
- */
-
-
-/*!
-  * vue-router v3.5.4
-  * (c) 2022 Evan You
-  * @license MIT
-  */
-
-/*!
- * Vue.js v2.6.14
- * (c) 2014-2021 Evan You
- * Released under the MIT License.
- */
-
-
-//! © 2018 Angry Bytes and contributors. MIT licensed.
-
-
-//! © 2018 Angry Bytes and contributors. MIT licensed.
