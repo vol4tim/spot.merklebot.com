@@ -85,19 +85,10 @@
 </template>
 
 <script>
-import {
-  defineComponent,
-  onMounted,
-  useRoute,
-  ref
-} from '@nuxtjs/composition-api'
-import {
-  readRobonomicsLaunchTracesBySender,
-  makeIpfsFolderLink,
-  getFilecoinProvidersByipfsCid
-} from '../../plugins/merklebot'
+import { defineComponent, onMounted, ref, useRoute } from '@nuxtjs/composition-api'
+import { getFilecoinProvidersByipfsCid, makeIpfsFolderLink, readRobonomicsLaunchTracesBySender } from '../../plugins/merklebot'
+// import { getCrustFileInfo } from '~/plugins/crust'
 import { makeSubscanLink } from '~/plugins/robonomics'
-import { getCrustFileInfo } from '~/plugins/crust'
 
 export default defineComponent({
   setup () {
@@ -109,7 +100,7 @@ export default defineComponent({
     const launchTxId = ref(null)
     const datalogTxId = ref(null)
     const crustTxId = ref(null)
-    const crustFileInfo = ref(null)
+    // const crustFileInfo = ref(null)
     const providers = ref(null)
 
     if (!txId) {
@@ -140,9 +131,9 @@ export default defineComponent({
         providers.value = []
       }
 
-      if (res.crust_tx_id) {
-        crustFileInfo.value = await getCrustFileInfo(res.ipfs_cid)
-      }
+      // if (res.crust_tx_id) {
+      //   crustFileInfo.value = await getCrustFileInfo(res.ipfs_cid)
+      // }
     })
 
     const addressShort = (address) => {
@@ -159,7 +150,7 @@ export default defineComponent({
       launchTxId,
       datalogTxId,
       crustTxId,
-      crustFileInfo,
+      // crustFileInfo,
       providers,
       addressShort,
       makeSubscanLink,
