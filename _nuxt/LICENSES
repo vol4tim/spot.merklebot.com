@@ -1,22 +1,9 @@
-/*
-object-assign
-(c) Sindre Sorhus
-@license MIT
-*/
-
 /*!
  * The buffer module from node.js, for the browser.
  *
  * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
  * @license  MIT
  */
-
-/*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
-
-//! stable.js 0.1.8, https://github.com/Two-Screen/stable
-
-//! © 2018 Angry Bytes and contributors. MIT licensed.
-
 
 /*! ../BagReader */
 
@@ -205,8 +192,17 @@ object-assign
   */
 
 
-//! © 2018 Angry Bytes and contributors. MIT licensed.
+/*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/
 
+/*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
+
+//! stable.js 0.1.8, https://github.com/Two-Screen/stable
+
+//! © 2018 Angry Bytes and contributors. MIT licensed.
 
 /*! noble-hashes - MIT License (c) 2022 Paul Miller (paulmillr.com) */
 
@@ -216,10 +212,17 @@ object-assign
 
 /*! scure-base - MIT License (c) 2022 Paul Miller (paulmillr.com) */
 
-/*! noble-hashes - MIT License (c) 2022 Paul Miller (paulmillr.com) */
+/*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/
 
 
 /*! scure-base - MIT License (c) 2022 Paul Miller (paulmillr.com) */
+
+
+//! © 2018 Angry Bytes and contributors. MIT licensed.
 
 
 /*!
@@ -238,32 +241,6 @@ object-assign
  * @author Chen, Yi-Cyuan [emn178@gmail.com]
  * @copyright Chen, Yi-Cyuan 2015-2016
  * @license MIT
- */
-
-
-/**
- * @license
- * Copyright 2010-2022 Three.js Authors
- * SPDX-License-Identifier: MIT
- */
-
-
-/*!
-  * pinia v2.0.14
-  * (c) 2022 Eduardo San Martin Morote
-  * @license MIT
-  */
-
-/*!
- * vue-client-only v0.0.0-semantic-release
- * (c) 2021-present egoist <0x142857@gmail.com>
- * Released under the MIT License.
- */
-
-/*!
- * vue-no-ssr v1.1.1
- * (c) 2018-present egoist <0x142857@gmail.com>
- * Released under the MIT License.
  */
 
 
@@ -4401,6 +4378,32 @@ object-assign
   */
 
 
+/**
+ * @license
+ * Copyright 2010-2022 Three.js Authors
+ * SPDX-License-Identifier: MIT
+ */
+
+
+/*!
+  * pinia v2.0.14
+  * (c) 2022 Eduardo San Martin Morote
+  * @license MIT
+  */
+
+/*!
+ * vue-client-only v0.0.0-semantic-release
+ * (c) 2021-present egoist <0x142857@gmail.com>
+ * Released under the MIT License.
+ */
+
+/*!
+ * vue-no-ssr v1.1.1
+ * (c) 2018-present egoist <0x142857@gmail.com>
+ * Released under the MIT License.
+ */
+
+
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -4457,24 +4460,3 @@ PERFORMANCE OF THIS SOFTWARE.
  * @copyright Chen, Yi-Cyuan 2015-2018
  * @license MIT
  */
-
-
-/*!
- * Signature Pad v2.3.2
- * https://github.com/szimek/signature_pad
- *
- * Copyright 2017 Szymon Nowak
- * Released under the MIT license
- *
- * The main idea and some parts of the code (e.g. drawing variable width Bézier curve) are taken from:
- * http://corner.squareup.com/2012/07/smoother-signatures.html
- *
- * Implementation of interpolation using cubic Bézier curves is taken from:
- * http://benknowscode.wordpress.com/2012/09/14/path-interpolation-using-cubic-bezier-and-control-point-estimation-in-javascript
- *
- * Algorithm for approximated length of a Bézier curve is taken from:
- * http://www.lemoda.net/maths/bezier-length/index.html
- *
- */
-
-//! © 2018 Angry Bytes and contributors. MIT licensed.
