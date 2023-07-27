@@ -171,8 +171,8 @@ export const useRobot = defineStore('robot', {
             console.log({ finalized: true, liability: this.cps.liability.address, res })
           }
 
-          if (msgResponse.queue && msgResponse.sender === demandMsg.sender && msgResponse.nonce === demandMsg.nonce) {
-            this.cps.queue = msgResponse.queue
+          if (msgResponse.queueLength && msgResponse.sender === demandMsg.sender && msgResponse.nonce === demandMsg.nonce) {
+            this.cps.queue = msgResponse.queueLength
           }
 
           if (
