@@ -5,7 +5,13 @@
     </p>
 
     <p v-if="robot.cps.approve.tx" class="text-md mt-2 text-white">
-      approve tx: <span class="text-yellow-500">{{ robot.cps.approve.tx }}</span>
+      approve tx:
+      <a
+        class="text-yellow-500"
+        :href="`https://devnet.neonscan.org/tx/${robot.cps.approve.txs}`"
+        target="_blank"
+        rel="noopener noreferrer"
+      >{{ addressShort(robot.cps.approve.tx) }}</a>
     </p>
 
     <p class="text-md mt-2 text-white">
