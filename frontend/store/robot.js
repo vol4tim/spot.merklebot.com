@@ -10,7 +10,7 @@ import factoryAbi from '../abi/factory.json'
 import liabilityAbi from '../abi/liability.json'
 import nftAbi from '../abi/nft.json'
 import xrtAbi from '../abi/xrt.json'
-import { factoryAddress, ipfsSender, lighthouseAddress, model, topic, validatorAddress, xrtAddress } from '../connectors/config'
+import { factoryAddress, ipfsSender, ipfsSenderQueue, lighthouseAddress, model, topic, validatorAddress, xrtAddress } from '../connectors/config'
 
 import { decodeMsg, encodeMsg, getIpfs } from '~/plugins/ipfs'
 import { uploadCommandParamsToIpfs } from '~/plugins/merklebot'
@@ -157,7 +157,13 @@ export const useRobot = defineStore('robot', {
       const demandMsg = await demand(library.value, account.value, commandParamsHash)
 
       const handler = async (r) => {
-        if (r.from === ipfsSender) {
+        if (r.from === ipfsSenderQueue) {
+          const msgResponse = decodeMsg(r.data)
+
+          if (msgResponse.queueLength && msgResponse.sender === demandMsg.sender && msgResponse.nonce === demandMsg.nonce) {
+            this.cps.queue = msgResponse.queueLength
+          }
+        } else if (r.from === ipfsSender) {
           const msgResponse = decodeMsg(r.data)
 
           console.log(msgResponse)
@@ -169,10 +175,6 @@ export const useRobot = defineStore('robot', {
           if (msgResponse.finalized && this.cps.liability.address) {
             const res = await getResult(library.value, this.cps.liability.address)
             console.log({ finalized: true, liability: this.cps.liability.address, res })
-          }
-
-          if (msgResponse.queueLength && msgResponse.sender === demandMsg.sender && msgResponse.nonce === demandMsg.nonce) {
-            this.cps.queue = msgResponse.queueLength
           }
 
           if (

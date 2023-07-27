@@ -5,6 +5,7 @@ const validatorAddress = '0x0000000000000000000000000000000000000000'
 const model = 'QmPusVLw9Gd7xQX77auWtHABqpkpiPz6469xxbkGe7Ru9r'
 const topic = 'neon.channel'
 const ipfsSender = '12D3KooW9pnYz5V1jNmJ9qpZia4t6rgavcJoMsphWqVvScxH31So'
+const ipfsSenderQueue = '12D3KooWKwr4oKFN71AjaAgYrmp8uE5AkJay1bCMfJZ3oWr6wPXZ'
 
 export {
   xrtAddress,
@@ -13,5 +14,6 @@ export {
   validatorAddress,
   model,
   topic,
-  ipfsSender
+  ipfsSender,
+  ipfsSenderQueue
 }
