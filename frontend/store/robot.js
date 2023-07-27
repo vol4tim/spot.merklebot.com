@@ -93,6 +93,7 @@ export const useRobot = defineStore('robot', {
       cps: {
         address: '4FNQo2tK6PLeEhNEUuPePs8B8xKNwx15fX7tC2XnYpkC8W1j',
         status: 'unknown',
+        queue: null,
         launch: {
           txInfo: {
             tx: null
@@ -119,6 +120,7 @@ export const useRobot = defineStore('robot', {
       this.cps.approve = { status: false, tx: null }
       this.cps.liability = { address: null, result: false }
       this.cps.nft = { contract: null, tokenId: null }
+      this.cps.queue = null
 
       const commandParamsJSON = JSON.stringify(commandParams)
       const commandParamsHash = await Hash.of(commandParamsJSON)
@@ -167,6 +169,10 @@ export const useRobot = defineStore('robot', {
           if (msgResponse.finalized && this.cps.liability.address) {
             const res = await getResult(library.value, this.cps.liability.address)
             console.log({ finalized: true, liability: this.cps.liability.address, res })
+          }
+
+          if (msgResponse.queue && msgResponse.sender === demandMsg.sender && msgResponse.nonce === demandMsg.nonce) {
+            this.cps.queue = msgResponse.queue
           }
 
           if (
