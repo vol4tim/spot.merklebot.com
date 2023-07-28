@@ -1,12 +1,3 @@
-/*! noble-hashes - MIT License (c) 2022 Paul Miller (paulmillr.com) */
-
-/*! noble-secp256k1 - MIT License (c) 2019 Paul Miller (paulmillr.com) */
-
-/*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
-
-/*! scure-base - MIT License (c) 2022 Paul Miller (paulmillr.com) */
-
-
 /*
 object-assign
 (c) Sindre Sorhus
@@ -20,11 +11,22 @@ object-assign
  * @license  MIT
  */
 
+/*! noble-hashes - MIT License (c) 2022 Paul Miller (paulmillr.com) */
+
+/*! noble-secp256k1 - MIT License (c) 2019 Paul Miller (paulmillr.com) */
+
+/*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
+
 /*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
+
+/*! scure-base - MIT License (c) 2022 Paul Miller (paulmillr.com) */
 
 //! stable.js 0.1.8, https://github.com/Two-Screen/stable
 
 //! © 2018 Angry Bytes and contributors. MIT licensed.
+
+
+/*! scure-base - MIT License (c) 2022 Paul Miller (paulmillr.com) */
 
 
 /*! ../BagReader */
@@ -213,11 +215,27 @@ object-assign
   * @license MIT
   */
 
-/*
-object-assign
-(c) Sindre Sorhus
-@license MIT
-*/
+
+//! © 2018 Angry Bytes and contributors. MIT licensed.
+
+
+/*!
+ * v2.1.4-104-gc868b3a
+ * 
+ */
+
+/*! crc32.js (C) 2014-present SheetJS -- http://sheetjs.com */
+
+/*! https://mths.be/punycode v1.4.1 by @mathias */
+
+/**
+ * [js-sha3]{@link https://github.com/emn178/js-sha3}
+ *
+ * @version 0.5.7
+ * @author Chen, Yi-Cyuan [emn178@gmail.com]
+ * @copyright Chen, Yi-Cyuan 2015-2016
+ * @license MIT
+ */
 
 
 /*!
@@ -1473,8 +1491,6 @@ object-assign
 
 /*! ./window.vue?vue&type=template&id=62f588b2& */
 
-/*! crc32.js (C) 2014-present SheetJS -- http://sheetjs.com */
-
 /*! exports provided: Action, ActionDropdownViewModel */
 
 /*! exports provided: ActionBarItemDropdownViewModel, default */
@@ -2046,8 +2062,6 @@ object-assign
 /*! exports provided: surveyTimerFunctions, SurveyTimer */
 
 /*! exports provided: unwrap, getSize, sanitizeEditableContent, getElementWidth, isContainerVisible, classesToSelector, compareVersions, confirmAction, detectIEOrEdge, detectIEBrowser, loadFileFromBase64, isMobile, isElementVisible, findScrollableParent, scrollElementByChildId, createSvg, doKey2ClickBlur, doKey2ClickUp, doKey2ClickDown, getIconNameFromProxy, increaseHeightByContent, getOriginalEvent, preventDefaults, findParentByClassNames */
-
-/*! https://mths.be/punycode v1.4.1 by @mathias */
 
 /*! no exports provided */
 
@@ -4356,31 +4370,6 @@ object-assign
   * (c) 2015-present Evan You
   * @license MIT
   */
-
-/**
- * [js-sha3]{@link https://github.com/emn178/js-sha3}
- *
- * @version 0.5.7
- * @author Chen, Yi-Cyuan [emn178@gmail.com]
- * @copyright Chen, Yi-Cyuan 2015-2016
- * @license MIT
- */
-
-
-/*! scure-base - MIT License (c) 2022 Paul Miller (paulmillr.com) */
-
-
-//! © 2018 Angry Bytes and contributors. MIT licensed.
-
-
-/**
- * [js-sha3]{@link https://github.com/emn178/js-sha3}
- *
- * @version 0.5.7
- * @author Chen, Yi-Cyuan [emn178@gmail.com]
- * @copyright Chen, Yi-Cyuan 2015-2016
- * @license MIT
- */
 
 
 /**
