@@ -143,12 +143,23 @@ export const useRobot = defineStore('robot', {
         this.cps.approve.status = true
       }
 
+      let countNft = 0
       const getTokenInfo = async (library, address, id) => {
-        const nftContract = new library.eth.Contract(nftAbi, address)
-        const nftUri = await nftContract.methods.tokenURI(id).call()
-        const nftData = (await axios.get(nftUri)).data
-        this.nftData = nftData
+        try {
+          const nftContract = new library.eth.Contract(nftAbi, address)
+          const nftUri = await nftContract.methods.tokenURI(id).call()
+          this.nftData = { file: nftUri, data: false }
+          const nftData = (await axios.get(nftUri)).data
+          this.nftData = { file: nftUri, data: true, ...nftData }
+        } catch (error) {
+          console.log('NFT', error)
+          countNft++
+          if (countNft < 5) {
+            getTokenInfo(library, address, id)
+          }
+        }
       }
+
       const checkNftToken = async (library, address, id) => {
         const nftContract = new library.eth.Contract(nftAbi, address)
         return await nftContract.methods.ownerOf(id).call()

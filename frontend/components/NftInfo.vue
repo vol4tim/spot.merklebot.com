@@ -1,14 +1,26 @@
 <template>
   <div>
-    <p class="text-md mt-2 text-white">
-      <span class="text-yellow-500">{{ info.name }}</span>
-    </p>
+    <div v-if="info.data">
+      <p class="text-md mt-2 text-white">
+        <span class="text-yellow-500">{{ info.name }}</span>
+      </p>
 
-    <img :src="info.image" class="mt-2" style="width:200px">
+      <img :src="info.image" class="mt-2" style="width:200px">
 
-    <p class="text-md mt-2 text-white" style="overflow: scroll;max-width: 550px;">
-      {{ info.description }}
-    </p>
+      <p class="text-md mt-2 text-white" style="overflow: scroll;max-width: 550px;">
+        {{ info.description }}
+      </p>
+    </div>
+    <div v-else>
+      <p class="text-md mt-2 text-white">
+        NFT info: <a
+          class="text-yellow-500"
+          :href="info.file"
+          target="_blank"
+          rel="noopener noreferrer"
+        >View</a>
+      </p>
+    </div>
 
     <p class="text-md mt-2 text-white">
       token: <a
