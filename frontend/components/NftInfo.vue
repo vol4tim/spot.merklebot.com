@@ -8,7 +8,12 @@
       <img :src="info.image" class="mt-2" style="width:200px">
 
       <p class="text-md mt-2 text-white" style="overflow: scroll;max-width: 550px;">
-        {{ info.description }}
+        <a
+          class="text-yellow-500"
+          :href="info.description"
+          target="_blank"
+          rel="noopener noreferrer"
+        >{{ addressShort(info.description) }}</a>
       </p>
     </div>
     <div v-else>
