@@ -115,12 +115,14 @@ export const useRobot = defineStore('robot', {
   },
   actions: {
     async launchCps (transferXrtAmount, commandParams) {
+      this.cps.status = 'unknown'
       this.cps.launch.txInfo = { tx: null }
       this.cps.launch.txStatus = null
       this.cps.approve = { status: false, tx: null }
       this.cps.liability = { address: null, result: false }
       this.cps.nft = { contract: null, tokenId: null }
       this.cps.queue = null
+      this.nftData = null
 
       const commandParamsJSON = JSON.stringify(commandParams)
       const commandParamsHash = await Hash.of(commandParamsJSON)
@@ -160,6 +162,8 @@ export const useRobot = defineStore('robot', {
         if (r.from === ipfsSenderQueue) {
           const msgResponse = decodeMsg(r.data)
 
+          console.log(msgResponse)
+
           if (msgResponse.queueLength && msgResponse.sender === demandMsg.sender && msgResponse.nonce === demandMsg.nonce) {
             this.cps.queue = msgResponse.queueLength
           }
@@ -196,7 +200,7 @@ export const useRobot = defineStore('robot', {
               getTokenInfo(library.value, msgResponse.nftContract, msgResponse.tokenId)
             }
           }
-          if (msgResponse.finalized && this.cps.liability.address && await getResult(library.value, this.cps.liability.address)) {
+          if (msgResponse.finalized && this.cps.liability.address && msgResponse.finalizedLiabilityAddress === this.cps.liability.address) {
             this.cps.liability.result = msgResponse.finalized
             ipfs.pubsub.unsubscribe(topic, handler)
           }
