@@ -206,14 +206,20 @@ export const useRobot = defineStore('robot', {
             const owner = await checkNftToken(library.value, msgResponse.nftContract, msgResponse.tokenId)
             console.log({ nftowner: owner })
             if (owner === account.value) {
+              ipfs.pubsub.publish(topic, encodeMsg({ gotNFT: true, liabilityAddress: msgResponse.liabilityAddress }))
               this.cps.nft.contract = msgResponse.nftContract
               this.cps.nft.tokenId = msgResponse.tokenId
               getTokenInfo(library.value, msgResponse.nftContract, msgResponse.tokenId)
+              if (this.cps.liability.result) {
+                ipfs.pubsub.unsubscribe(topic, handler)
+              }
             }
           }
           if (msgResponse.finalized && this.cps.liability.address && msgResponse.finalizedLiabilityAddress === this.cps.liability.address) {
             this.cps.liability.result = msgResponse.finalized
-            ipfs.pubsub.unsubscribe(topic, handler)
+            if (this.cps.nft.contract) {
+              ipfs.pubsub.unsubscribe(topic, handler)
+            }
           }
         }
       }
