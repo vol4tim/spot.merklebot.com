@@ -30,7 +30,7 @@
     <p class="text-md mt-2 text-white">
       token: <a
         class="text-yellow-500"
-        :href="`https://devnet.neonscan.org/address/${robot.cps.nft.contract}`"
+        :href="`https://neonscan.org/address/${robot.cps.nft.contract}`"
         target="_blank"
         rel="noopener noreferrer"
       >{{ addressShort(robot.cps.nft.contract) }}</a>
