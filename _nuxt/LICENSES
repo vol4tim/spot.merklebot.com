@@ -1,3 +1,12 @@
+/*! noble-hashes - MIT License (c) 2022 Paul Miller (paulmillr.com) */
+
+/*! noble-secp256k1 - MIT License (c) 2019 Paul Miller (paulmillr.com) */
+
+/*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
+
+/*! scure-base - MIT License (c) 2022 Paul Miller (paulmillr.com) */
+
+
 /*
 object-assign
 (c) Sindre Sorhus
@@ -11,22 +20,11 @@ object-assign
  * @license  MIT
  */
 
-/*! noble-hashes - MIT License (c) 2022 Paul Miller (paulmillr.com) */
-
-/*! noble-secp256k1 - MIT License (c) 2019 Paul Miller (paulmillr.com) */
-
-/*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
-
 /*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
-
-/*! scure-base - MIT License (c) 2022 Paul Miller (paulmillr.com) */
 
 //! stable.js 0.1.8, https://github.com/Two-Screen/stable
 
 //! © 2018 Angry Bytes and contributors. MIT licensed.
-
-
-/*! scure-base - MIT License (c) 2022 Paul Miller (paulmillr.com) */
 
 
 /*! ../BagReader */
@@ -214,6 +212,28 @@ object-assign
   * (c) 2015-present Evan You
   * @license MIT
   */
+
+
+/*!
+  * vue-router v3.5.4
+  * (c) 2022 Evan You
+  * @license MIT
+  */
+
+/*!
+ * Vue.js v2.6.14
+ * (c) 2014-2021 Evan You
+ * Released under the MIT License.
+ */
+
+
+/*! scure-base - MIT License (c) 2022 Paul Miller (paulmillr.com) */
+
+/*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/
 
 
 /*!
@@ -4366,23 +4386,6 @@ object-assign
 //! © 2018 Angry Bytes and contributors. MIT licensed.
 
 
-/**
- * [js-sha3]{@link https://github.com/emn178/js-sha3}
- *
- * @version 0.5.7
- * @author Chen, Yi-Cyuan [emn178@gmail.com]
- * @copyright Chen, Yi-Cyuan 2015-2016
- * @license MIT
- */
-
-
-/**
- * @license
- * Copyright 2010-2022 Three.js Authors
- * SPDX-License-Identifier: MIT
- */
-
-
 /*!
   * pinia v2.0.14
   * (c) 2022 Eduardo San Martin Morote
@@ -4402,6 +4405,13 @@ object-assign
  */
 
 
+/**
+ * @license
+ * Copyright 2010-2022 Three.js Authors
+ * SPDX-License-Identifier: MIT
+ */
+
+
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -4418,19 +4428,6 @@ object-assign
  * @author Chen, Yi-Cyuan [emn178@gmail.com]
  * @copyright Chen, Yi-Cyuan 2015-2018
  * @license MIT
- */
-
-
-/*!
-  * vue-router v3.5.4
-  * (c) 2022 Evan You
-  * @license MIT
-  */
-
-/*!
- * Vue.js v2.6.14
- * (c) 2014-2021 Evan You
- * Released under the MIT License.
  */
 
 
@@ -4458,6 +4455,3 @@ PERFORMANCE OF THIS SOFTWARE.
  * @copyright Chen, Yi-Cyuan 2015-2018
  * @license MIT
  */
-
-
-/*! scure-base - MIT License (c) 2022 Paul Miller (paulmillr.com) */
