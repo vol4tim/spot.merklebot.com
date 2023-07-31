@@ -8,7 +8,7 @@
               You have {{ wallet.selectedAccount.balanceFormatted }}
             </p>
             <a
-              href="https://www.kraken.com/prices/robonomics.network"
+              href="https://discord.gg/mAD3aWaX"
               target="_blank"
               rel="noopener noreferrer"
               class="absolute bottom-0 inset-x-0 uppercase py-2 my-2 mx-2 px-2 bg-gray-200 text-gray-800
