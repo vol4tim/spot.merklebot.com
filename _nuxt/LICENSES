@@ -212,6 +212,12 @@ object-assign
 
 //! © 2018 Angry Bytes and contributors. MIT licensed.
 
+/*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/
+
 
 /*!
   * vue-router v3.5.4
@@ -226,13 +232,10 @@ object-assign
  */
 
 
-/*! scure-base - MIT License (c) 2022 Paul Miller (paulmillr.com) */
+//! © 2018 Angry Bytes and contributors. MIT licensed.
 
-/*
-object-assign
-(c) Sindre Sorhus
-@license MIT
-*/
+
+/*! scure-base - MIT License (c) 2022 Paul Miller (paulmillr.com) */
 
 
 /*!
@@ -254,9 +257,6 @@ object-assign
  */
 
 
-//! © 2018 Angry Bytes and contributors. MIT licensed.
-
-
 /*!
   * pinia v2.0.14
   * (c) 2022 Eduardo San Martin Morote
@@ -273,6 +273,13 @@ object-assign
  * vue-no-ssr v1.1.1
  * (c) 2018-present egoist <0x142857@gmail.com>
  * Released under the MIT License.
+ */
+
+
+/**
+ * @license
+ * Copyright 2010-2022 Three.js Authors
+ * SPDX-License-Identifier: MIT
  */
 
 
@@ -4408,13 +4415,6 @@ object-assign
   * (c) 2015-present Evan You
   * @license MIT
   */
-
-
-/**
- * @license
- * Copyright 2010-2022 Three.js Authors
- * SPDX-License-Identifier: MIT
- */
 
 
 /*!
