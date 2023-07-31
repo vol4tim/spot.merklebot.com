@@ -8,7 +8,7 @@
       approve tx:
       <a
         class="text-yellow-500"
-        :href="`https://devnet.neonscan.org/tx/${robot.cps.approve.txs}`"
+        :href="`https://neonscan.org/tx/${robot.cps.approve.txs}`"
         target="_blank"
         rel="noopener noreferrer"
       >{{ addressShort(robot.cps.approve.tx) }}</a>
@@ -18,7 +18,7 @@
       liability address:
       <a
         class="text-yellow-500"
-        :href="`https://devnet.neonscan.org/address/${robot.cps.liability.address}`"
+        :href="`https://neonscan.org/address/${robot.cps.liability.address}`"
         target="_blank"
         rel="noopener noreferrer"
       >{{ addressShort(robot.cps.liability.address) }}</a>
