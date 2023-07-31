@@ -14,7 +14,7 @@
     <!--      @error="onImageError"-->
     <!--    >-->
     <div>
-      <iframe
+      <!-- <iframe
         style="display: block;-webkit-user-select: none;margin: auto;background-color: hsl(0, 0%, 25%);"
         src="https://player.twitch.tv/?channel=merklebotStreamer&amp;parent=vol4tim.github.io"
         frameborder="0"
@@ -22,6 +22,16 @@
         scrolling="no"
         height="350"
         class="w-full"
+      /> -->
+
+      <iframe
+        width="100%"
+        height="315"
+        src="https://www.youtube.com/embed/qmXw6cVBmYM"
+        title="YouTube video player"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
       />
     </div>
     <p v-if="!imageLoaded" class="text-3xl my-6 text-center text-red-600">
