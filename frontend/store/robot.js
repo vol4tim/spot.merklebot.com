@@ -148,15 +148,33 @@ export const useRobot = defineStore('robot', {
         try {
           const nftContract = new library.eth.Contract(nftAbi, address)
           const nftUri = await nftContract.methods.tokenURI(id).call()
-          this.nftData = { file: nftUri, data: false }
+          this.nftData = { file: nftUri, data: false, video: false }
           const nftData = (await axios.get(nftUri)).data
           this.nftData = { file: nftUri, data: true, ...nftData }
+          getVideoInfo(`${nftData.description}/h264_camera.mp4`)
         } catch (error) {
           console.log('NFT', error)
           countNft++
           if (countNft < 5) {
             getTokenInfo(library, address, id)
           }
+        }
+      }
+
+      let countVideo = 0
+      const getVideoInfo = async (nftUri) => {
+        try {
+          const status = (await axios.get(nftUri)).status
+          if (status === 200) {
+            this.nftData = { ...this.nftData, video: nftUri }
+            return
+          }
+        } catch (error) {
+          console.log('VIDEO', error)
+        }
+        countVideo++
+        if (countVideo < 5) {
+          getVideoInfo(nftUri)
         }
       }
 
