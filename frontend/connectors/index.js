@@ -13,5 +13,5 @@ function getLibrary (provider) {
 setWeb3LibraryCallback(getLibrary)
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [245022926]
+  supportedChainIds: [245022926, 245022934]
 })
