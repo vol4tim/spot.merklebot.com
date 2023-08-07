@@ -217,6 +217,41 @@ object-assign
 
 
 /*!
+  * vue-router v3.5.4
+  * (c) 2022 Evan You
+  * @license MIT
+  */
+
+/*!
+ * Vue.js v2.6.14
+ * (c) 2014-2021 Evan You
+ * Released under the MIT License.
+ */
+
+
+/*! scure-base - MIT License (c) 2022 Paul Miller (paulmillr.com) */
+
+
+/*!
+ * v2.1.4-104-gc868b3a
+ * 
+ */
+
+/*! crc32.js (C) 2014-present SheetJS -- http://sheetjs.com */
+
+/*! https://mths.be/punycode v1.4.1 by @mathias */
+
+/**
+ * [js-sha3]{@link https://github.com/emn178/js-sha3}
+ *
+ * @version 0.5.7
+ * @author Chen, Yi-Cyuan [emn178@gmail.com]
+ * @copyright Chen, Yi-Cyuan 2015-2016
+ * @license MIT
+ */
+
+
+/*!
  * Signature Pad v2.3.2
  * https://github.com/szimek/signature_pad
  *
@@ -1469,8 +1504,6 @@ object-assign
 
 /*! ./window.vue?vue&type=template&id=62f588b2& */
 
-/*! crc32.js (C) 2014-present SheetJS -- http://sheetjs.com */
-
 /*! exports provided: Action, ActionDropdownViewModel */
 
 /*! exports provided: ActionBarItemDropdownViewModel, default */
@@ -2042,8 +2075,6 @@ object-assign
 /*! exports provided: surveyTimerFunctions, SurveyTimer */
 
 /*! exports provided: unwrap, getSize, sanitizeEditableContent, getElementWidth, isContainerVisible, classesToSelector, compareVersions, confirmAction, detectIEOrEdge, detectIEBrowser, loadFileFromBase64, isMobile, isElementVisible, findScrollableParent, scrollElementByChildId, createSvg, doKey2ClickBlur, doKey2ClickUp, doKey2ClickDown, getIconNameFromProxy, increaseHeightByContent, getOriginalEvent, preventDefaults, findParentByClassNames */
-
-/*! https://mths.be/punycode v1.4.1 by @mathias */
 
 /*! no exports provided */
 
@@ -4353,41 +4384,6 @@ object-assign
   * @license MIT
   */
 
-/**
- * [js-sha3]{@link https://github.com/emn178/js-sha3}
- *
- * @version 0.5.7
- * @author Chen, Yi-Cyuan [emn178@gmail.com]
- * @copyright Chen, Yi-Cyuan 2015-2016
- * @license MIT
- */
-
-
-/*!
-  * vue-router v3.5.4
-  * (c) 2022 Evan You
-  * @license MIT
-  */
-
-/*!
- * Vue.js v2.6.14
- * (c) 2014-2021 Evan You
- * Released under the MIT License.
- */
-
-
-/*! scure-base - MIT License (c) 2022 Paul Miller (paulmillr.com) */
-
-
-/**
- * [js-sha3]{@link https://github.com/emn178/js-sha3}
- *
- * @version 0.5.7
- * @author Chen, Yi-Cyuan [emn178@gmail.com]
- * @copyright Chen, Yi-Cyuan 2015-2016
- * @license MIT
- */
-
 
 /*!
   * pinia v2.0.14
@@ -4458,3 +4454,6 @@ PERFORMANCE OF THIS SOFTWARE.
  * @copyright Chen, Yi-Cyuan 2015-2018
  * @license MIT
  */
+
+
+//! © 2018 Angry Bytes and contributors. MIT licensed.
