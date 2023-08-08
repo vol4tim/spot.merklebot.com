@@ -3,7 +3,6 @@
     <div
       class="overflow-x-hidden overflow-y-auto snap-y snap-mandatory"
     >
-      <Modal ref="modal" />
       <ProgressContainer>
         <ProgressContainerElement title="Connect your wallet" :status="progressElementStatuses['connectWallet']">
           <StepContentContainer>
@@ -17,17 +16,6 @@
             <div class="flex items-center justify-center">
               <Account />
               <AccountConnector />
-              <!-- <AccountChooser /> -->
-              <!-- <div v-if="wallet.walletConnectionStatus === 'error'">
-                <p class="text-xl my-6 text-center text-white font-bold">
-                  ❗ Please install
-                  <a
-                    class="text-orange-600"
-                    href="https://talisman.xyz/"
-                    target="_blank"
-                  >Talisman web3 wallet</a> and create an account. Then reload this page.
-                </p>
-              </div> -->
             </div>
             <div>
               <p class="text-md mt-2 text-white text-center">
@@ -45,14 +33,8 @@
             </p>
             <img src="pictures/Frame3.png">
             <p class="text-md my-2 text-white mx-6">
-              One launch requires 1 ticket <em>or</em> 1 XRT.
+              One launch requires 1 XRT.
             </p>
-            <div v-if="wallet.selectedAccount.account && wallet.selectedAccount.tickets.length===0">
-              <p class="text-md my-2 text-white mx-6">
-                Leave your email below and your first demo is on us!
-              </p>
-              <UserInfoSurveyWrapper @complete="openModal" />
-            </div>
 
             <PurchaseTicket class="mt-4 mx-6 pr-16 w-full" />
           </StepContentContainer>
@@ -120,7 +102,7 @@
 </template>
 
 <script>
-import { computed, defineComponent, ref } from '@nuxtjs/composition-api'
+import { computed, defineComponent } from '@nuxtjs/composition-api'
 
 import DashboardLikeContainer from '~/components/DashboardLikeContainer'
 import ProgressContainerElement from '~/components/ProgressContainerElement'
@@ -140,10 +122,6 @@ export default defineComponent({
     const wallet = useWallet()
     const robot = useRobot()
     const dAppParameters = useDAppParameters()
-    const modal = ref()
-    const openModal = () => {
-      modal.value.openModal()
-    }
     const ipfs = useIpfs()
 
     const progressElementStatuses = computed(() => {
@@ -180,7 +158,7 @@ export default defineComponent({
       return resultStatuses
     })
 
-    return { wallet, progressElementStatuses, modal, openModal, ipfs }
+    return { wallet, progressElementStatuses, ipfs }
   }
 })
 </script>
