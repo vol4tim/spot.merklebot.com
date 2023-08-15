@@ -55,38 +55,11 @@ object-assign
  * Released under the MIT License.
  */
 
-/*!
- * v2.1.4-104-gc868b3a
- * 
- */
-
-/*! crc32.js (C) 2014-present SheetJS -- http://sheetjs.com */
-
-/*! https://mths.be/punycode v1.4.1 by @mathias */
-
 /*! noble-hashes - MIT License (c) 2022 Paul Miller (paulmillr.com) */
 
 /*! noble-secp256k1 - MIT License (c) 2019 Paul Miller (paulmillr.com) */
 
 /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
-
-/*! scure-base - MIT License (c) 2022 Paul Miller (paulmillr.com) */
-
-/**
- * [js-sha3]{@link https://github.com/emn178/js-sha3}
- *
- * @version 0.5.7
- * @author Chen, Yi-Cyuan [emn178@gmail.com]
- * @copyright Chen, Yi-Cyuan 2015-2016
- * @license MIT
- */
-
-/*
-object-assign
-(c) Sindre Sorhus
-@license MIT
-*/
-
 
 /*! scure-base - MIT License (c) 2022 Paul Miller (paulmillr.com) */
 
@@ -104,8 +77,7 @@ object-assign
  */
 
 
-//! © 2018 Angry Bytes and contributors. MIT licensed.
-
+/*! scure-base - MIT License (c) 2022 Paul Miller (paulmillr.com) */
 
 /*!
  * Signature Pad v2.3.2
@@ -4261,6 +4233,24 @@ object-assign
   * @license MIT
   */
 
+/*!
+ * v2.1.4-104-gc868b3a
+ * 
+ */
+
+/*! crc32.js (C) 2014-present SheetJS -- http://sheetjs.com */
+
+/*! https://mths.be/punycode v1.4.1 by @mathias */
+
+/**
+ * [js-sha3]{@link https://github.com/emn178/js-sha3}
+ *
+ * @version 0.5.7
+ * @author Chen, Yi-Cyuan [emn178@gmail.com]
+ * @copyright Chen, Yi-Cyuan 2015-2016
+ * @license MIT
+ */
+
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -4276,6 +4266,12 @@ LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
+
+/*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/
 
 
 /**
@@ -4293,6 +4289,9 @@ PERFORMANCE OF THIS SOFTWARE.
  * @copyright Chen, Yi-Cyuan 2015-2016
  * @license MIT
  */
+
+
+//! © 2018 Angry Bytes and contributors. MIT licensed.
 
 
 /*! ../BagReader */
