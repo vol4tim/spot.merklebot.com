@@ -4233,24 +4233,6 @@ object-assign
   * @license MIT
   */
 
-/*!
- * v2.1.4-104-gc868b3a
- * 
- */
-
-/*! crc32.js (C) 2014-present SheetJS -- http://sheetjs.com */
-
-/*! https://mths.be/punycode v1.4.1 by @mathias */
-
-/**
- * [js-sha3]{@link https://github.com/emn178/js-sha3}
- *
- * @version 0.5.7
- * @author Chen, Yi-Cyuan [emn178@gmail.com]
- * @copyright Chen, Yi-Cyuan 2015-2016
- * @license MIT
- */
-
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -4274,12 +4256,14 @@ object-assign
 */
 
 
-/**
- * @license
- * Copyright 2010-2022 Three.js Authors
- * SPDX-License-Identifier: MIT
+/*!
+ * v2.1.4-104-gc868b3a
+ * 
  */
 
+/*! crc32.js (C) 2014-present SheetJS -- http://sheetjs.com */
+
+/*! https://mths.be/punycode v1.4.1 by @mathias */
 
 /**
  * [js-sha3]{@link https://github.com/emn178/js-sha3}
@@ -4288,6 +4272,13 @@ object-assign
  * @author Chen, Yi-Cyuan [emn178@gmail.com]
  * @copyright Chen, Yi-Cyuan 2015-2016
  * @license MIT
+ */
+
+
+/**
+ * @license
+ * Copyright 2010-2022 Three.js Authors
+ * SPDX-License-Identifier: MIT
  */
 
 
